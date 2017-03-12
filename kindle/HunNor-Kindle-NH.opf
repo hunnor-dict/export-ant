@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package unique-identifier="uid">
+  <metadata>
+    <dc-metadata xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
+      <dc:Title>HunNor norvég-magyar szótár</dc:Title>
+      <dc:Language>pt</dc:Language>
+      <dc:Creator>Barnabás Dávoti</dc:Creator>
+      <dc:Description>HunNor norvég-magyar szótár</dc:Description>
+      <dc:Date>18/11/2012</dc:Date>
+    </dc-metadata>
+    <x-metadata>
+      <output encoding="utf-8" content-type="text/x-oeb1-document"></output>
+      <EmbeddedCover>hunnor_logo.png</EmbeddedCover>
+      <!-- That's how it's recognized as a dictionary - set to Portuguese, a workaround for Kindle since it does not have Norwegian -->
+      <DictionaryInLanguage>pt</DictionaryInLanguage>
+      <DictionaryOutLanguage>hu</DictionaryOutLanguage>
+    </x-metadata>
+  </metadata>
+  <manifest>
+    <item id="item1" media-type="text/x-oeb1-document" href="HunNor-Kindle-NH.html"></item>
+  </manifest>
+  <spine toc="toc">
+    <itemref idref="item1"/>
+  </spine>
+</package>

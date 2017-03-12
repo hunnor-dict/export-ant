@@ -1,0 +1,20 @@
+<fop version="1.0">
+  <renderers>
+    <renderer mime="application/pdf">
+      <fonts>
+        <font metrics-url="pdf/LiberationSerif-Regular.xml" kerning="yes" embed-url="pdf/LiberationSerif-Regular.ttf">
+          <font-triplet name="LiberationSerif" style="normal" weight="normal" />
+        </font>
+        <font metrics-url="pdf/LiberationSerif-Bold.xml" kerning="yes" embed-url="pdf/LiberationSerif-Bold.ttf">
+          <font-triplet name="LiberationSerif" style="normal" weight="bold" />
+        </font>
+        <font metrics-url="pdf/LiberationSerif-Italic.xml" kerning="yes" embed-url="pdf/LiberationSerif-Italic.ttf">
+          <font-triplet name="LiberationSerif" style="italic" weight="normal"/>
+        </font>
+        <font metrics-url="pdf/LiberationSerif-BoldItalic.xml" kerning="yes" embed-url="pdf/LiberationSerif-BoldItalic.ttf">
+          <font-triplet name="LiberationSerif" style="italic" weight="bold"/>
+        </font>
+      </fonts>
+    </renderer>
+  </renderers>
+</fop>
