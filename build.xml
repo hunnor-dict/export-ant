@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="hunnor-export-ant" default="export">
 
 	<description>Export the dictionary database and convert to various XML based formats.</description>
