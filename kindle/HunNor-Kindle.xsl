@@ -45,19 +45,25 @@
 		<xsl:variable name="headWord" select="d:formGrp/d:form[@primary='yes']/d:orth"/>
 		<idx:entry name="word" scriptable="yes">
 			<idx:orth value="{$headWord}">
-				<idx:infl>
-					<!-- inflections on the 1st orth -->
-					<xsl:apply-templates select="d:formGrp/d:form[@primary='no']/d:orth"/>
-					<xsl:apply-templates select="d:formGrp/d:form/d:inflPar/d:inflSeq"/>
+				<xsl:if test="d:formGrp/d:form[@primary='no']/d:orth
+					or d:formGrp/d:form/d:inflPar/d:inflSeq
+					or (d:formGrp/d:form/d:orth/@n='1' and following-sibling::d:entry[d:formGrp/d:form[@primary='yes']/d:orth=$headWord and (d:formGrp/d:form[@primary='no']/d:orth or d:formGrp/d:form/d:inflPar/d:inflSeq)])">
+					<idx:infl>
 
-					<!-- inflections on the other numbered orths if exist -->
-					<xsl:if test="d:formGrp/d:form/d:orth/@n='1'">
-						<xsl:for-each select="following-sibling::d:entry[d:formGrp/d:form[@primary='yes']/d:orth=$headWord]">
-							<xsl:apply-templates select="d:formGrp/d:form[@primary='no']/d:orth"/>
-							<xsl:apply-templates select="d:formGrp/d:form/d:inflPar/d:inflSeq"/>
-						</xsl:for-each>
-					</xsl:if>
-				</idx:infl>				
+						<!-- inflections on the 1st orth -->
+						<xsl:apply-templates select="d:formGrp/d:form[@primary='no']/d:orth"/>
+						<xsl:apply-templates select="d:formGrp/d:form/d:inflPar/d:inflSeq"/>
+
+						<!-- inflections on the other numbered orths if exist -->
+						<xsl:if test="d:formGrp/d:form/d:orth/@n='1'">
+							<xsl:for-each select="following-sibling::d:entry[d:formGrp/d:form[@primary='yes']/d:orth=$headWord]">
+								<xsl:apply-templates select="d:formGrp/d:form[@primary='no']/d:orth"/>
+								<xsl:apply-templates select="d:formGrp/d:form/d:inflPar/d:inflSeq"/>
+							</xsl:for-each>
+						</xsl:if>
+
+					</idx:infl>
+				</xsl:if>
 			</idx:orth>
 			
 			<!-- 1st orth -->

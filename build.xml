@@ -83,7 +83,6 @@
 	</target>
 
 	<target name="export.kindle.nb" depends="export.dump.nb">
-		<!-- TODO -->
 		<xslt style="kindle/HunNor-Kindle.xsl" in="HunNor-XML-NH.xml" out="kindle/HunNor-Kindle-NH.html">
 			<classpath location="${saxon.jar}"/>
 		</xslt>
