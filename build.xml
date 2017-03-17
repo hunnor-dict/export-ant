@@ -13,6 +13,7 @@
 	<property name="dropbox.public.databases" location="${dropbox.public}/Databases"/>
 	<property name="dropbox.public.exports" location="${dropbox.public}/Exports"/>
 	<property name="android.indexer" location="../export-lucene/target/export-lucene-1.0.0.jar"/>
+	<property name="java.home" location="/usr/lib/jvm/java-8-openjdk-amd64/jre"/>
 	<property name="kindle.compiler" location="/opt/kindlegen-2.9-amazon/kindlegen"/>
 	<property name="saxon.jar" location="/opt/saxon-9-he/saxon9he.jar"/>
 	<property name="stardict.compiler" location="/usr/lib/stardict-tools/stardict-text2bin"/>
@@ -96,6 +97,7 @@
 	<target name="export.pdf.hu" depends="export.dump.hu">
 		<exec dir="pdf" executable="fop">
 			<arg line="-q -c fonts.xml -xml ../HunNor-XML-HN.xml -xsl HunNor-PDF.xsl -pdf HunNor-PDF-HN.pdf"/>
+			<env key="JAVA_HOME" value="${java.home}"/>
 		</exec>
 		<move file="pdf/HunNor-PDF-HN.pdf" todir="${dropbox.public.exports}"/>
 	</target>
@@ -103,6 +105,7 @@
 	<target name="export.pdf.nb" depends="export.dump.nb">
 		<exec dir="pdf" executable="fop">
 			<arg line="-q -c fonts.xml -xml ../HunNor-XML-NH.xml -xsl HunNor-PDF.xsl -pdf HunNor-PDF-NH.pdf"/>
+			<env key="JAVA_HOME" value="${java.home}"/>
 		</exec>
 		<move file="pdf/HunNor-PDF-NH.pdf" todir="${dropbox.public.exports}"/>
 	</target>

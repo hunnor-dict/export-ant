@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:dict="http://dict.hunnor.net" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 
-	<xsl:output method="xml" indent="yes" />
+	<xsl:output method="xml" indent="yes"/>
 
-	<xsl:strip-space elements="*" />
+	<xsl:strip-space elements="*"/>
 
 	<xsl:template match="dict:hnDict">
 		<fo:root>
 			<fo:layout-master-set>
 				<fo:simple-page-master master-name="hn-page-head" page-height="9in" page-width="6in" margin="0.5in">
-					<fo:region-body />
+					<fo:region-body/>
 				</fo:simple-page-master>
 				<fo:simple-page-master master-name="hn-page-body" page-height="9in" page-width="6in" margin="0.5in">
-					<fo:region-body column-count="2" margin-top="0.25in" />
-					<fo:region-before />
+					<fo:region-body column-count="2" margin-top="0.25in"/>
+					<fo:region-before extent="1cm"/>
 				</fo:simple-page-master>
 			</fo:layout-master-set>
 			<fo:declarations>
@@ -58,24 +58,24 @@
 				<fo:flow flow-name="xsl-region-body">
 					<fo:block text-align="center" font-family="LiberationSerif" font-size="12pt" margin-top="5in">
 						<fo:block margin-top="0.25in">
-							<fo:block>Frissítve: <xsl:value-of select="/dict:hnDict/@updated" /></fo:block>
-							<fo:block>Szócikkek száma: <xsl:value-of select="count(//dict:entry)" /></fo:block>
+							<fo:block>Frissítve: <xsl:value-of select="/dict:hnDict/@updated"/></fo:block>
+							<fo:block>Szócikkek száma: <xsl:value-of select="count(//dict:entry)"/></fo:block>
 							<fo:block>Forrás: http://dict.hunnor.net/</fo:block>
 							<fo:block>A szótárra a GNU Általános Nyilvános Licenc vonatkozik.</fo:block>
 						</fo:block>
 						<fo:block margin-top="0.25in">
-							<fo:block>Oppdatert: <xsl:value-of select="/dict:hnDict/@updated" /></fo:block>
-							<fo:block>Antall artikler: <xsl:value-of select="count(//dict:entry)" /></fo:block>
+							<fo:block>Oppdatert: <xsl:value-of select="/dict:hnDict/@updated"/></fo:block>
+							<fo:block>Antall artikler: <xsl:value-of select="count(//dict:entry)"/></fo:block>
 							<fo:block>Kilde: http://dict.hunnor.net/</fo:block>
 							<fo:block>Ordboka er lisensiert under GNU General Public License.</fo:block>
 						</fo:block>
 						<fo:block margin-top="0.25in">
-							<fo:external-graphic src="url('./HunNor-Logo.png')" />
+							<fo:external-graphic src="url('./pdf/HunNor-Logo.png')"/>
 						</fo:block>
 					</fo:block>
 				</fo:flow>
 			</fo:page-sequence>
-			<xsl:apply-templates />
+			<xsl:apply-templates/>
 		</fo:root>
 	</xsl:template>
 
@@ -83,26 +83,30 @@
 		<xsl:if test="@head='A'">
 		<fo:page-sequence master-reference="hn-page-body" initial-page-number="1">
 			<fo:static-content flow-name="xsl-region-before">
-				<fo:block text-align="center" font-family="LiberationSerif" font-size="10pt" border-after-width="0.1mm" border-after-style="solid" border-after-color="black"><fo:page-number /></fo:block>
+				<fo:block text-align="center" font-family="LiberationSerif" font-size="8pt" border-after-width="0.1mm" border-after-style="solid" border-after-color="black">
+					<fo:page-number/>
+				</fo:block>
 			</fo:static-content>
 			<fo:flow flow-name="xsl-region-body">
 				<fo:block text-align="center" font-family="LiberationSerif" font-size="48pt" font-weight="bold">
-					<xsl:value-of select="@head" />
+					<xsl:value-of select="@head"/>
 				</fo:block>
-				<xsl:apply-templates />
+				<xsl:apply-templates/>
 			</fo:flow>
 		</fo:page-sequence>
 		</xsl:if>
 		<xsl:if test="@head!='A'">
 		<fo:page-sequence master-reference="hn-page-body">
 			<fo:static-content flow-name="xsl-region-before">
-				<fo:block text-align="center" font-family="LiberationSerif" font-size="10pt" border-after-width="0.1mm" border-after-style="solid" border-after-color="black"><fo:page-number /></fo:block>
+				<fo:block text-align="center" font-family="LiberationSerif" font-size="8pt" border-after-width="0.1mm" border-after-style="solid" border-after-color="black">
+					<fo:page-number/>
+				</fo:block>
 			</fo:static-content>
 			<fo:flow flow-name="xsl-region-body">
 				<fo:block text-align="center" font-family="LiberationSerif" font-size="48pt" font-weight="bold">
-					<xsl:value-of select="@head" />
+					<xsl:value-of select="@head"/>
 				</fo:block>
-				<xsl:apply-templates />
+				<xsl:apply-templates/>
 			</fo:flow>
 		</fo:page-sequence>
 		</xsl:if>
@@ -110,7 +114,7 @@
 
 	<xsl:template match="dict:entry">
 		<fo:block font-family="LiberationSerif" font-size="8pt">
-			<xsl:apply-templates />
+			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template>
 
@@ -119,11 +123,11 @@
 			<xsl:text> </xsl:text>
 		</xsl:if>
 		<fo:inline font-weight="bold">
-			<xsl:apply-templates />
+			<xsl:apply-templates/>
 		</fo:inline>
 		<xsl:if test="@n > 0">
 			<fo:inline baseline-shift="sub" font-size="6pt">
-				<xsl:value-of select="@n" />
+				<xsl:value-of select="@n"/>
 			</fo:inline>
 		</xsl:if>
 	</xsl:template>
@@ -154,7 +158,7 @@
 	<xsl:template match="dict:inflCode">
 		<xsl:if test="@type = 'suff'">
 			<xsl:text> </xsl:text>
-			<xsl:apply-templates />
+			<xsl:apply-templates/>
 		</xsl:if>
 	</xsl:template>
 
@@ -167,7 +171,7 @@
 				<xsl:if test="preceding-sibling::dict:inflPar">
 					<xsl:text>; </xsl:text>
 				</xsl:if>
-				<xsl:apply-templates />
+				<xsl:apply-templates/>
 				<xsl:if test="not(following-sibling::dict:inflPar)">
 					<xsl:text>)</xsl:text>
 				</xsl:if>
@@ -179,27 +183,27 @@
 		<xsl:if test="position() > 1">
 			<xsl:text>, </xsl:text>
 		</xsl:if>
-		<xsl:apply-templates />
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<xsl:template match="dict:senseGrp">
 		<xsl:if test="count(../dict:senseGrp) > 1">
 			<fo:inline font-weight="bold">
 				<xsl:text> </xsl:text>
-				<xsl:number value="position()-1" format="I" />
+				<xsl:number value="position()-1" format="I"/>
 			</fo:inline>
 		</xsl:if>
-		<xsl:apply-templates />
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<xsl:template match="dict:sense">
 		<xsl:if test="count(../dict:sense) > 1">
 			<fo:inline font-weight="bold">
 				<xsl:text> </xsl:text>
-				<xsl:number value="position()" />
+				<xsl:number value="position()"/>
 			</fo:inline>
 		</xsl:if>
-		<xsl:apply-templates />
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<xsl:template match="dict:lbl"/>
@@ -209,7 +213,7 @@
 			<xsl:text>,</xsl:text>
 		</xsl:if>
 		<xsl:text> </xsl:text>
-		<xsl:apply-templates />
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<xsl:template match="dict:eg">
@@ -217,12 +221,12 @@
 			<xsl:text>;</xsl:text>
 		</xsl:if>
 		<xsl:text> </xsl:text>
-		<xsl:apply-templates />
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<xsl:template match="dict:q">
 		<fo:inline font-style="italic">
-			<xsl:apply-templates />
+			<xsl:apply-templates/>
 		</fo:inline>
 	</xsl:template>
 
