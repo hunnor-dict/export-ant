@@ -42,6 +42,7 @@
 		<!-- Delete to ensure that the data set is empty -->
 		<delete dir="hunnor-lucene-index"/>
 		<delete dir="hunnor-lucene-spelling"/>
+		<delete file="hunnor-lucene-3.6.zip"/>
 		<!-- Index -->
 		<exec executable="java">
 			<arg line="-jar ${android.indexer} -l hu -x HunNor-XML-HN.xml -d hunnor-lucene-index -s hunnor-lucene-spelling"/>
@@ -50,10 +51,11 @@
 			<arg line="-jar ${android.indexer} -l no -x HunNor-XML-NH.xml -d hunnor-lucene-index -s hunnor-lucene-spelling"/>
 		</exec>
 		<!-- Archive Lucene index -->
-		<zip destfile="hunnor-lucene-3.6.zip" level="9">
+		<zip destfile="hunnor-lucene-3.6.zip" level="9" filesonly="yes">
 			<zipfileset dir="hunnor-lucene-index" prefix="hunnor-lucene-index"/>
 			<zipfileset dir="hunnor-lucene-spelling" prefix="hunnor-lucene-spelling"/>
 		</zip>
+		<move file="hunnor-lucene-3.6.zip" tofile="hunnor-lucene-3.6-release.zip"/>
 		<!-- Delete again to clean up obsolete files -->
 		<delete dir="hunnor-lucene-index"/>
 		<delete dir="hunnor-lucene-spelling"/>
