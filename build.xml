@@ -35,7 +35,7 @@
 		</condition>
 	</target>
 
-	<target name="export.dump.hu" depends="export.dump.hu.check" if="export.dump.hu.missing">
+	<target name="export.dump.hu" depends="export.dump.hu.check,build.dir" if="export.dump.hu.missing">
 		<exec dir="${project.dir}/admin-rails" executable="bundle">
 			<arg line="exec rake hn:export['hu','${build.dir}']"/>
 			<env key="DB_MYSQL_PASS" value="${mysql.password}"/>
@@ -45,7 +45,7 @@
 		</schemavalidate>
 	</target>
 
-	<target name="export.dump.nb" depends="export.dump.nb.check" if="export.dump.nb.missing">
+	<target name="export.dump.nb" depends="export.dump.nb.check,build.dir" if="export.dump.nb.missing">
 		<exec dir="${project.dir}/admin-rails" executable="bundle">
 			<arg line="exec rake hn:export['nb','${build.dir}']"/>
 			<env key="DB_MYSQL_PASS" value="${mysql.password}"/>
