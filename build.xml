@@ -140,33 +140,47 @@
 		<move file="pdf/HunNor-PDF-NH.pdf" todir="${dropbox.public.exports}"/>
 	</target>
 
-	<target name="export.sdict.hu" depends="export.dump.hu">
-		<xslt style="sdict/HunNor-SDict.xsl" in="HunNor-XML-HN.xml" out="HunNor-SD-HN.sdct">
+	<target name="export.sdict.convert.hu" depends="export.dump.hu">
+		<xslt style="sdict/HunNor-SDict.xsl" in="HunNor-XML-HN.xml" out="HunNor-SD-HN.sdct" force="true">
 			<classpath location="${saxon.jar}"/>
 			<param name="sourceLanguage" expression="hn"/>
 		</xslt>
+	</target>
+
+	<target name="export.sdict.deploy.hu" depends="export.sdict.convert.hu">
 		<gzip src="HunNor-SD-HN.sdct" destfile="HunNor-SD-HN.sdct.gz"/>
 		<delete file="HunNor-SD-HN.sdct"/>
 		<move file="HunNor-SD-HN.sdct.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
-	<target name="export.sdict.nb" depends="export.dump.nb">
-		<xslt style="sdict/HunNor-SDict.xsl" in="HunNor-XML-NH.xml" out="HunNor-SD-NH.sdct">
+	<target name="export.sdict.hu" depends="export.sdict.deploy.hu">
+	</target>
+
+	<target name="export.sdict.convert.nb">
+		<xslt style="sdict/HunNor-SDict.xsl" in="HunNor-XML-NH.xml" out="HunNor-SD-NH.sdct" force="true">
 			<classpath location="${saxon.jar}"/>
 			<param name="sourceLanguage" expression="nh"/>
 		</xslt>
+	</target>
+
+	<target name="export.sdict.deploy.nb" depends="export.sdict.convert.nb">
 		<gzip src="HunNor-SD-NH.sdct" destfile="HunNor-SD-NH.sdct.gz"/>
 		<delete file="HunNor-SD-NH.sdct"/>
 		<move file="HunNor-SD-NH.sdct.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
-	<target name="export.stardict.hu" depends="export.dump.hu">
-		<!-- DEFAULT -->
-		<!-- Convert to StarDict source -->
-		<xslt style="stardict/HunNor-StarDict.xsl" in="HunNor-XML-HN.xml" out="HunNor-ST-HN.xml">
+	<target name="export.sdict.nb" depends="export.sdict.deploy.nb">
+	</target>
+
+	<target name="export.stardict.convert.hu" depends="export.dump.hu">
+		<xslt style="stardict/HunNor-StarDict.xsl" in="HunNor-XML-HN.xml" out="HunNor-ST-HN.xml" force="true">
 			<classpath location="${saxon.jar}"/>
 			<param name="sourceLanguage" expression="hn"/>
 		</xslt>
+	</target>
+
+	<target name="export.stardict.hu" depends="export.stardict.convert.hu">
+		<!-- DEFAULT -->
 		<!-- Compile to StarDict format -->
 		<exec executable="${stardict.compiler}">
 			<arg line="HunNor-ST-HN.xml HunNor-ST-HN.ifo"/>
@@ -223,13 +237,15 @@
 		<move file="HunNor-ST-NoSym-Number-HN.xml.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
-	<target name="export.stardict.nb" depends="export.dump.nb">
-		<!-- DEFAULT -->
-		<!-- Convert to StarDict source -->
-		<xslt style="stardict/HunNor-StarDict.xsl" in="HunNor-XML-NH.xml" out="HunNor-ST-NH.xml">
+	<target name="export.stardict.convert.nb" depends="export.dump.nb">
+		<xslt style="stardict/HunNor-StarDict.xsl" in="HunNor-XML-NH.xml" out="HunNor-ST-NH.xml" force="true">
 			<classpath location="${saxon.jar}"/>
 			<param name="sourceLanguage" expression="nh"/>
 		</xslt>
+	</target>
+
+	<target name="export.stardict.nb" depends="export.stardict.convert.nb">
+		<!-- DEFAULT -->
 		<!-- Compile to StarDict format -->
 		<exec executable="${stardict.compiler}">
 			<arg line="HunNor-ST-NH.xml HunNor-ST-NH.ifo"/>
