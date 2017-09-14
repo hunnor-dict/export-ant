@@ -8,6 +8,7 @@
 
 	<!-- Define the location of target directories and tools -->
 	<property name="project.dir" location="/opt/hunnor-dict"/>
+	<property name="build.dir" location="build"/>
 	<property name="dropbox.backup" location="${project.dir}/Dropbox/Backup"/>
 	<property name="dropbox.public" location="${project.dir}/Dropbox/Public"/>
 	<property name="dropbox.public.databases" location="${dropbox.public}/Databases"/>
@@ -21,7 +22,7 @@
 	<target name="export.dump.hu.check">
 		<condition property="export.dump.hu.missing">
 			<not>
-				<available file="HunNor-XML-HN.xml"/>
+				<available file="${build.dir}/HunNor-XML-HN.xml"/>
 			</not>
 		</condition>
 	</target>
@@ -29,27 +30,27 @@
 	<target name="export.dump.nb.check">
 		<condition property="export.dump.nb.missing">
 			<not>
-				<available file="HunNor-XML-NH.xml"/>
+				<available file="${build.dir}/HunNor-XML-NH.xml"/>
 			</not>
 		</condition>
 	</target>
 
 	<target name="export.dump.hu" depends="export.dump.hu.check" if="export.dump.hu.missing">
 		<exec dir="${project.dir}/admin-rails" executable="bundle">
-			<arg line="exec rake hn:export['hu','../export-ant']"/>
+			<arg line="exec rake hn:export['hu','${build.dir}']"/>
 			<env key="DB_MYSQL_PASS" value="${mysql.password}"/>
 		</exec>
-		<schemavalidate file="HunNor-XML-HN.xml">
+		<schemavalidate file="${build.dir}/HunNor-XML-HN.xml">
 			<schema file="dump/hunnor.net.Schema.HN.xsd" namespace="http://dict.hunnor.net"/>
 		</schemavalidate>
 	</target>
 
 	<target name="export.dump.nb" depends="export.dump.nb.check" if="export.dump.nb.missing">
 		<exec dir="${project.dir}/admin-rails" executable="bundle">
-			<arg line="exec rake hn:export['nb','../export-ant']"/>
+			<arg line="exec rake hn:export['nb','${build.dir}']"/>
 			<env key="DB_MYSQL_PASS" value="${mysql.password}"/>
 		</exec>
-		<schemavalidate file="HunNor-XML-NH.xml">
+		<schemavalidate file="${build.dir}/HunNor-XML-NH.xml">
 			<schema file="dump/hunnor.net.Schema.NH.xsd" namespace="http://dict.hunnor.net"/>
 		</schemavalidate>
 	</target>
@@ -61,10 +62,10 @@
 		<delete file="hunnor-lucene-3.6.zip"/>
 		<!-- Index -->
 		<exec executable="java">
-			<arg line="-jar ${android.indexer} -l hu -x HunNor-XML-HN.xml -d hunnor-lucene-index -s hunnor-lucene-spelling"/>
+			<arg line="-jar ${android.indexer} -l hu -x ${build.dir}/HunNor-XML-HN.xml -d hunnor-lucene-index -s hunnor-lucene-spelling"/>
 		</exec>
 		<exec executable="java">
-			<arg line="-jar ${android.indexer} -l no -x HunNor-XML-NH.xml -d hunnor-lucene-index -s hunnor-lucene-spelling"/>
+			<arg line="-jar ${android.indexer} -l no -x ${build.dir}/HunNor-XML-NH.xml -d hunnor-lucene-index -s hunnor-lucene-spelling"/>
 		</exec>
 		<!-- Archive Lucene index -->
 		<zip destfile="hunnor-lucene-3.6.zip" level="9" filesonly="yes">
@@ -78,32 +79,32 @@
 	</target>
 
 	<target name="export.babylon.convert.hu" depends="export.dump.hu">
-		<xslt style="babylon/HunNor-Babylon.xsl" in="HunNor-XML-HN.xml" out="HunNor-BB-HN.gls" force="true">
+		<xslt style="babylon/HunNor-Babylon.xsl" in="${build.dir}/HunNor-XML-HN.xml" out="${build.dir}/HunNor-BB-HN.gls" force="true">
 			<classpath location="${saxon.jar}"/>
 			<param name="sourceLanguage" expression="hn"/>
 		</xslt>
 	</target>
 
 	<target name="export.babylon.deploy.hu" depends="export.babylon.convert.hu">
-		<gzip src="HunNor-BB-HN.gls" destfile="HunNor-BB-HN.gls.gz"/>
-		<delete file="HunNor-BB-HN.gls"/>
-		<move file="HunNor-BB-HN.gls.gz" todir="${dropbox.public.databases}"/>
+		<gzip src="${build.dir}/HunNor-BB-HN.gls" destfile="${build.dir}/HunNor-BB-HN.gls.gz"/>
+		<delete file="${build.dir}/HunNor-BB-HN.gls"/>
+		<move file="${build.dir}/HunNor-BB-HN.gls.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
 	<target name="export.babylon.hu" depends="export.babylon.deploy.hu">
 	</target>
 
 	<target name="export.babylon.convert.nb" depends="export.dump.nb">
-		<xslt style="babylon/HunNor-Babylon.xsl" in="HunNor-XML-NH.xml" out="HunNor-BB-NH.gls" force="true">
+		<xslt style="babylon/HunNor-Babylon.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-BB-NH.gls" force="true">
 			<classpath location="${saxon.jar}"/>
 			<param name="sourceLanguage" expression="nh"/>
 		</xslt>
 	</target>
 
-	<target name="export.babylon.deploy.nb">
-		<gzip src="HunNor-BB-NH.gls" destfile="HunNor-BB-NH.gls.gz"/>
-		<delete file="HunNor-BB-NH.gls"/>
-		<move file="HunNor-BB-NH.gls.gz" todir="${dropbox.public.databases}"/>
+	<target name="export.babylon.deploy.nb" depends="export.babylon.convert.nb">
+		<gzip src="${build.dir}/HunNor-BB-NH.gls" destfile="${build.dir}/HunNor-BB-NH.gls.gz"/>
+		<delete file="${build.dir}/HunNor-BB-NH.gls"/>
+		<move file="${build.dir}/HunNor-BB-NH.gls.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
 	<target name="export.babylon.nb" depends="export.babylon.deploy.nb">
@@ -114,7 +115,7 @@
 	</target>
 
 	<target name="export.kindle.nb" depends="export.dump.nb">
-		<xslt style="kindle/HunNor-Kindle.xsl" in="HunNor-XML-NH.xml" out="kindle/HunNor-Kindle-NH.html">
+		<xslt style="kindle/HunNor-Kindle.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="kindle/HunNor-Kindle-NH.html">
 			<classpath location="${saxon.jar}"/>
 		</xslt>
 		<exec dir="kindle" executable="${kindle.compiler}">
@@ -126,7 +127,7 @@
 
 	<target name="export.pdf.hu" depends="export.dump.hu">
 		<exec dir="pdf" executable="fop">
-			<arg line="-q -c fonts.xml -xml ../HunNor-XML-HN.xml -xsl HunNor-PDF.xsl -pdf HunNor-PDF-HN.pdf"/>
+			<arg line="-q -c fonts.xml -xml ${build.dir}/HunNor-XML-HN.xml -xsl HunNor-PDF.xsl -pdf HunNor-PDF-HN.pdf"/>
 			<env key="JAVA_HOME" value="${java.home}"/>
 		</exec>
 		<move file="pdf/HunNor-PDF-HN.pdf" todir="${dropbox.public.exports}"/>
@@ -134,46 +135,46 @@
 
 	<target name="export.pdf.nb" depends="export.dump.nb">
 		<exec dir="pdf" executable="fop">
-			<arg line="-q -c fonts.xml -xml ../HunNor-XML-NH.xml -xsl HunNor-PDF.xsl -pdf HunNor-PDF-NH.pdf"/>
+			<arg line="-q -c fonts.xml -xml ${build.dir}/HunNor-XML-NH.xml -xsl HunNor-PDF.xsl -pdf HunNor-PDF-NH.pdf"/>
 			<env key="JAVA_HOME" value="${java.home}"/>
 		</exec>
 		<move file="pdf/HunNor-PDF-NH.pdf" todir="${dropbox.public.exports}"/>
 	</target>
 
 	<target name="export.sdict.convert.hu" depends="export.dump.hu">
-		<xslt style="sdict/HunNor-SDict.xsl" in="HunNor-XML-HN.xml" out="HunNor-SD-HN.sdct" force="true">
+		<xslt style="sdict/HunNor-SDict.xsl" in="${build.dir}/HunNor-XML-HN.xml" out="${build.dir}/HunNor-SD-HN.sdct" force="true">
 			<classpath location="${saxon.jar}"/>
 			<param name="sourceLanguage" expression="hn"/>
 		</xslt>
 	</target>
 
 	<target name="export.sdict.deploy.hu" depends="export.sdict.convert.hu">
-		<gzip src="HunNor-SD-HN.sdct" destfile="HunNor-SD-HN.sdct.gz"/>
-		<delete file="HunNor-SD-HN.sdct"/>
-		<move file="HunNor-SD-HN.sdct.gz" todir="${dropbox.public.databases}"/>
+		<gzip src="${build.dir}/HunNor-SD-HN.sdct" destfile="${build.dir}/HunNor-SD-HN.sdct.gz"/>
+		<delete file="${build.dir}/HunNor-SD-HN.sdct"/>
+		<move file="${build.dir}/HunNor-SD-HN.sdct.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
 	<target name="export.sdict.hu" depends="export.sdict.deploy.hu">
 	</target>
 
-	<target name="export.sdict.convert.nb">
-		<xslt style="sdict/HunNor-SDict.xsl" in="HunNor-XML-NH.xml" out="HunNor-SD-NH.sdct" force="true">
+	<target name="export.sdict.convert.nb" depends="export.dump.nb">
+		<xslt style="sdict/HunNor-SDict.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-SD-NH.sdct" force="true">
 			<classpath location="${saxon.jar}"/>
 			<param name="sourceLanguage" expression="nh"/>
 		</xslt>
 	</target>
 
 	<target name="export.sdict.deploy.nb" depends="export.sdict.convert.nb">
-		<gzip src="HunNor-SD-NH.sdct" destfile="HunNor-SD-NH.sdct.gz"/>
-		<delete file="HunNor-SD-NH.sdct"/>
-		<move file="HunNor-SD-NH.sdct.gz" todir="${dropbox.public.databases}"/>
+		<gzip src="${build.dir}/HunNor-SD-NH.sdct" destfile="${build.dir}/HunNor-SD-NH.sdct.gz"/>
+		<delete file="${build.dir}/HunNor-SD-NH.sdct"/>
+		<move file="${build.dir}/HunNor-SD-NH.sdct.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
 	<target name="export.sdict.nb" depends="export.sdict.deploy.nb">
 	</target>
 
 	<target name="export.stardict.convert.hu" depends="export.dump.hu">
-		<xslt style="stardict/HunNor-StarDict.xsl" in="HunNor-XML-HN.xml" out="HunNor-ST-HN.xml" force="true">
+		<xslt style="stardict/HunNor-StarDict.xsl" in="${build.dir}/HunNor-XML-HN.xml" out="${build.dir}/HunNor-ST-HN.xml" force="true">
 			<classpath location="${saxon.jar}"/>
 			<param name="sourceLanguage" expression="hn"/>
 		</xslt>
@@ -183,62 +184,62 @@
 		<!-- DEFAULT -->
 		<!-- Compile to StarDict format -->
 		<exec executable="${stardict.compiler}">
-			<arg line="HunNor-ST-HN.xml HunNor-ST-HN.ifo"/>
+			<arg line="${build.dir}/HunNor-ST-HN.xml ${build.dir}/HunNor-ST-HN.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="HunNor-ST-HN.tmp">
-			<arg line="--bytes=+4 HunNor-ST-HN.ifo"/>
+		<exec executable="tail" output="${build.dir}/HunNor-ST-HN.tmp">
+			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-HN.ifo"/>
 		</exec>
-		<delete file="HunNor-ST-HN.ifo"/>
-		<move file="HunNor-ST-HN.tmp" tofile="HunNor-ST-HN.ifo"/>
+		<delete file="${build.dir}/HunNor-ST-HN.ifo"/>
+		<move file="${build.dir}/HunNor-ST-HN.tmp" tofile="${build.dir}/HunNor-ST-HN.ifo"/>
 		<!-- Compile Zip package and delete source files -->
-		<zip destfile="HunNor-ST-HN.zip" level="9">
-			<filelist dir="." files="HunNor-ST-HN.dict.dz,HunNor-ST-HN.ifo,HunNor-ST-HN.idx,HunNor-ST-HN.syn"/>
+		<zip destfile="${build.dir}/HunNor-ST-HN.zip" level="9">
+			<filelist dir="." files="${build.dir}/HunNor-ST-HN.dict.dz,${build.dir}/HunNor-ST-HN.ifo,${build.dir}/HunNor-ST-HN.idx,${build.dir}/HunNor-ST-HN.syn"/>
 		</zip>
-		<delete file="HunNor-ST-HN.dict.dz"/>
-		<delete file="HunNor-ST-HN.ifo"/>
-		<delete file="HunNor-ST-HN.idx"/>
-		<delete file="HunNor-ST-HN.syn"/>
+		<delete file="${build.dir}/HunNor-ST-HN.dict.dz"/>
+		<delete file="${build.dir}/HunNor-ST-HN.ifo"/>
+		<delete file="${build.dir}/HunNor-ST-HN.idx"/>
+		<delete file="${build.dir}/HunNor-ST-HN.syn"/>
 		<!-- Deploy to target directory -->
-		<move file="HunNor-ST-HN.zip" todir="${dropbox.public.exports}"/>
+		<move file="${build.dir}/HunNor-ST-HN.zip" todir="${dropbox.public.exports}"/>
 		<!-- ALTERNATIVE -->
 		<!-- Convert to StarDict source -->
-		<xslt style="stardict/HunNor-StarDict-NoSym-Number.xsl" in="HunNor-ST-HN.xml" out="HunNor-ST-NoSym-Number-HN.xml">
+		<xslt style="stardict/HunNor-StarDict-NoSym-Number.xsl" in="${build.dir}/HunNor-ST-HN.xml" out="${build.dir}/HunNor-ST-NoSym-Number-HN.xml">
 			<classpath location="${saxon.jar}"/>
 		</xslt>
 		<!-- Compile to StarDict format -->
 		<exec executable="${stardict.compiler}">
-			<arg line="HunNor-ST-NoSym-Number-HN.xml HunNor-ST-NoSym-Number-HN.ifo"/>
+			<arg line="${build.dir}/HunNor-ST-NoSym-Number-HN.xml ${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="HunNor-ST-NoSym-Number-HN.tmp">
-			<arg line="--bytes=+4 HunNor-ST-NoSym-Number-HN.ifo"/>
+		<exec executable="tail" output="${build.dir}/HunNor-ST-NoSym-Number-HN.tmp">
+			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
 		</exec>
-		<delete file="HunNor-ST-NoSym-Number-HN.ifo"/>
-		<move file="HunNor-ST-NoSym-Number-HN.tmp" tofile="HunNor-ST-NoSym-Number-HN.ifo"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
+		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.tmp" tofile="${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
 		<!-- Compile Zip package and delete source files -->
-		<zip destfile="HunNor-ST-NoSym-Number-HN.zip" level="9">
-			<filelist dir="." files="HunNor-ST-NoSym-Number-HN.dict.dz,HunNor-ST-NoSym-Number-HN.ifo,HunNor-ST-NoSym-Number-HN.idx,HunNor-ST-NoSym-Number-HN.syn"/>
+		<zip destfile="${build.dir}/HunNor-ST-NoSym-Number-HN.zip" level="9">
+			<filelist dir="." files="${build.dir}/HunNor-ST-NoSym-Number-HN.dict.dz,${build.dir}/HunNor-ST-NoSym-Number-HN.ifo,${build.dir}/HunNor-ST-NoSym-Number-HN.idx,${build.dir}/HunNor-ST-NoSym-Number-HN.syn"/>
 		</zip>
-		<delete file="HunNor-ST-NoSym-Number-HN.dict.dz"/>
-		<delete file="HunNor-ST-NoSym-Number-HN.ifo"/>
-		<delete file="HunNor-ST-NoSym-Number-HN.idx"/>
-		<delete file="HunNor-ST-NoSym-Number-HN.syn"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.dict.dz"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.idx"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.syn"/>
 		<!-- Deploy to target directory -->
-		<move file="HunNor-ST-NoSym-Number-HN.zip" todir="${dropbox.public.exports}"/>
+		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.zip" todir="${dropbox.public.exports}"/>
 		<!-- CLEANUP -->
 		<!-- Deploy XML source file for default version -->
-		<gzip src="HunNor-ST-HN.xml" destfile="HunNor-ST-HN.xml.gz"/>
-		<delete file="HunNor-ST-HN.xml"/>
-		<move file="HunNor-ST-HN.xml.gz" todir="${dropbox.public.databases}"/>
+		<gzip src="${build.dir}/HunNor-ST-HN.xml" destfile="${build.dir}/HunNor-ST-HN.xml.gz"/>
+		<delete file="${build.dir}/HunNor-ST-HN.xml"/>
+		<move file="${build.dir}/HunNor-ST-HN.xml.gz" todir="${dropbox.public.databases}"/>
 		<!-- Deploy XML source file for alternative version -->
-		<gzip src="HunNor-ST-NoSym-Number-HN.xml" destfile="HunNor-ST-NoSym-Number-HN.xml.gz"/>
-		<delete file="HunNor-ST-NoSym-Number-HN.xml"/>
-		<move file="HunNor-ST-NoSym-Number-HN.xml.gz" todir="${dropbox.public.databases}"/>
+		<gzip src="${build.dir}/HunNor-ST-NoSym-Number-HN.xml" destfile="${build.dir}/HunNor-ST-NoSym-Number-HN.xml.gz"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.xml"/>
+		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.xml.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
 	<target name="export.stardict.convert.nb" depends="export.dump.nb">
-		<xslt style="stardict/HunNor-StarDict.xsl" in="HunNor-XML-NH.xml" out="HunNor-ST-NH.xml" force="true">
+		<xslt style="stardict/HunNor-StarDict.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-ST-NH.xml" force="true">
 			<classpath location="${saxon.jar}"/>
 			<param name="sourceLanguage" expression="nh"/>
 		</xslt>
@@ -248,73 +249,77 @@
 		<!-- DEFAULT -->
 		<!-- Compile to StarDict format -->
 		<exec executable="${stardict.compiler}">
-			<arg line="HunNor-ST-NH.xml HunNor-ST-NH.ifo"/>
+			<arg line="${build.dir}/HunNor-ST-NH.xml ${build.dir}/HunNor-ST-NH.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="HunNor-ST-NH.tmp">
-			<arg line="--bytes=+4 HunNor-ST-NH.ifo"/>
+		<exec executable="tail" output="${build.dir}/HunNor-ST-NH.tmp">
+			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-NH.ifo"/>
 		</exec>
-		<delete file="HunNor-ST-NH.ifo"/>
-		<move file="HunNor-ST-NH.tmp" tofile="HunNor-ST-NH.ifo"/>
+		<delete file="${build.dir}/HunNor-ST-NH.ifo"/>
+		<move file="${build.dir}/HunNor-ST-NH.tmp" tofile="${build.dir}/HunNor-ST-NH.ifo"/>
 		<!-- Compile Zip package and delete source files -->
-		<zip destfile="HunNor-ST-NH.zip" level="9">
-			<filelist dir="." files="HunNor-ST-NH.dict.dz,HunNor-ST-NH.ifo,HunNor-ST-NH.idx,HunNor-ST-NH.syn"/>
+		<zip destfile="${build.dir}/HunNor-ST-NH.zip" level="9">
+			<filelist dir="." files="${build.dir}/HunNor-ST-NH.dict.dz,${build.dir}/HunNor-ST-NH.ifo,${build.dir}/HunNor-ST-NH.idx,${build.dir}/HunNor-ST-NH.syn"/>
 		</zip>
-		<delete file="HunNor-ST-NH.dict.dz"/>
-		<delete file="HunNor-ST-NH.ifo"/>
-		<delete file="HunNor-ST-NH.idx"/>
-		<delete file="HunNor-ST-NH.syn"/>
+		<delete file="${build.dir}/HunNor-ST-NH.dict.dz"/>
+		<delete file="${build.dir}/HunNor-ST-NH.ifo"/>
+		<delete file="${build.dir}/HunNor-ST-NH.idx"/>
+		<delete file="${build.dir}/HunNor-ST-NH.syn"/>
 		<!-- Deploy to target directory -->
-		<move file="HunNor-ST-NH.zip" todir="${dropbox.public.exports}"/>
+		<move file="${build.dir}/HunNor-ST-NH.zip" todir="${dropbox.public.exports}"/>
 		<!-- ALTERNATIVE -->
 		<!-- Convert to StarDict source -->
-		<xslt style="stardict/HunNor-StarDict-NoSym-Number.xsl" in="HunNor-ST-NH.xml" out="HunNor-ST-NoSym-Number-NH.xml">
+		<xslt style="stardict/HunNor-StarDict-NoSym-Number.xsl" in="${build.dir}/HunNor-ST-NH.xml" out="${build.dir}/HunNor-ST-NoSym-Number-NH.xml">
 			<classpath location="${saxon.jar}"/>
 		</xslt>
 		<!-- Compile to StarDict format -->
 		<exec executable="${stardict.compiler}">
-			<arg line="HunNor-ST-NoSym-Number-NH.xml HunNor-ST-NoSym-Number-NH.ifo"/>
+			<arg line="${build.dir}/HunNor-ST-NoSym-Number-NH.xml ${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="HunNor-ST-NoSym-Number-NH.tmp">
-			<arg line="--bytes=+4 HunNor-ST-NoSym-Number-NH.ifo"/>
+		<exec executable="tail" output="${build.dir}/HunNor-ST-NoSym-Number-NH.tmp">
+			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
 		</exec>
-		<delete file="HunNor-ST-NoSym-Number-NH.ifo"/>
-		<move file="HunNor-ST-NoSym-Number-NH.tmp" tofile="HunNor-ST-NoSym-Number-NH.ifo"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
+		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.tmp" tofile="${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
 		<!-- Compile Zip package and delete source files -->
-		<zip destfile="HunNor-ST-NoSym-Number-NH.zip" level="9">
-			<filelist dir="." files="HunNor-ST-NoSym-Number-NH.dict.dz,HunNor-ST-NoSym-Number-NH.ifo,HunNor-ST-NoSym-Number-NH.idx,HunNor-ST-NoSym-Number-NH.syn"/>
+		<zip destfile="${build.dir}/HunNor-ST-NoSym-Number-NH.zip" level="9">
+			<filelist dir="." files="${build.dir}/HunNor-ST-NoSym-Number-NH.dict.dz,${build.dir}/HunNor-ST-NoSym-Number-NH.ifo,${build.dir}/HunNor-ST-NoSym-Number-NH.idx,${build.dir}/HunNor-ST-NoSym-Number-NH.syn"/>
 		</zip>
-		<delete file="HunNor-ST-NoSym-Number-NH.dict.dz"/>
-		<delete file="HunNor-ST-NoSym-Number-NH.ifo"/>
-		<delete file="HunNor-ST-NoSym-Number-NH.idx"/>
-		<delete file="HunNor-ST-NoSym-Number-NH.syn"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.dict.dz"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.idx"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.syn"/>
 		<!-- Deploy to target directory -->
-		<move file="HunNor-ST-NoSym-Number-NH.zip" todir="${dropbox.public.exports}"/>
+		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.zip" todir="${dropbox.public.exports}"/>
 		<!-- CLEANUP -->
 		<!-- Deploy XML source file for default version -->
-		<gzip src="HunNor-ST-NH.xml" destfile="HunNor-ST-NH.xml.gz"/>
-		<delete file="HunNor-ST-NH.xml"/>
-		<move file="HunNor-ST-NH.xml.gz" todir="${dropbox.public.databases}"/>
+		<gzip src="${build.dir}/HunNor-ST-NH.xml" destfile="${build.dir}/HunNor-ST-NH.xml.gz"/>
+		<delete file="${build.dir}/HunNor-ST-NH.xml"/>
+		<move file="${build.dir}/HunNor-ST-NH.xml.gz" todir="${dropbox.public.databases}"/>
 		<!-- Deploy XML source file for alternative version -->
-		<gzip src="HunNor-ST-NoSym-Number-NH.xml" destfile="HunNor-ST-NoSym-Number-NH.xml.gz"/>
-		<delete file="HunNor-ST-NoSym-Number-NH.xml"/>
-		<move file="HunNor-ST-NoSym-Number-NH.xml.gz" todir="${dropbox.public.databases}"/>
+		<gzip src="${build.dir}/HunNor-ST-NoSym-Number-NH.xml" destfile="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz"/>
+		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml"/>
+		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
 	<target name="export.hu" depends="export.babylon.hu,export.kindle.hu,export.pdf.hu,export.sdict.hu,export.stardict.hu">
-		<gzip src="HunNor-XML-HN.xml" destfile="HunNor-XML-HN.xml.gz"/>
-		<delete file="HunNor-XML-HN.xml"/>
-		<move file="HunNor-XML-HN.xml.gz" todir="${dropbox.public.databases}"/>
+		<gzip src="${build.dir}/HunNor-XML-HN.xml" destfile="${build.dir}/HunNor-XML-HN.xml.gz"/>
+		<delete file="${build.dir}/HunNor-XML-HN.xml"/>
+		<move file="${build.dir}/HunNor-XML-HN.xml.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
 	<target name="export.nb" depends="export.babylon.nb,export.kindle.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb">
-		<gzip src="HunNor-XML-NH.xml" destfile="HunNor-XML-NH.xml.gz"/>
-		<delete file="HunNor-XML-NH.xml"/>
-		<move file="HunNor-XML-NH.xml.gz" todir="${dropbox.public.databases}"/>
+		<gzip src="${build.dir}/HunNor-XML-NH.xml" destfile="${build.dir}/HunNor-XML-NH.xml.gz"/>
+		<delete file="${build.dir}/HunNor-XML-NH.xml"/>
+		<move file="${build.dir}/HunNor-XML-NH.xml.gz" todir="${dropbox.public.databases}"/>
 	</target>
 
-	<target name="export" depends="export.android,export.hu,export.nb">
+	<target name="build.dir">
+		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="export" depends="build.dir,export.android,export.hu,export.nb">
 	</target>
 
 	<target name="week.of.year">
