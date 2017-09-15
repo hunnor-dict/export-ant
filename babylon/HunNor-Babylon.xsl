@@ -69,14 +69,6 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="dict:eg">
-		<xsl:if test="position() > 1">
-			<xsl:text>;</xsl:text>
-		</xsl:if>
-		<xsl:text> </xsl:text>
-		<xsl:apply-templates/>
-	</xsl:template>
-
 	<xsl:template match="dict:q">
 		<xsl:text>&lt;i&gt;</xsl:text>
 			<xsl:apply-templates/>

@@ -7,4 +7,11 @@
 		<x:expect label="The content of 'lbl' is ignored">
 		</x:expect>
 	</x:scenario>
+	<x:scenario label="Separate 'eg' tags with semicolon">
+		<x:context>
+			<eg xmlns="http://dict.hunnor.net"></eg>
+			<eg xmlns="http://dict.hunnor.net"></eg>
+		</x:context>
+		<x:expect label="Separate 'eg' tags with semicolon"><![CDATA[ ; ]]></x:expect>
+	</x:scenario>
 </x:description>

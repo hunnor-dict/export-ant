@@ -3,4 +3,12 @@
 
 	<xsl:template match="dict:lbl"/>
 
+	<xsl:template match="dict:eg">
+		<xsl:if test="position() > 1">
+			<xsl:text>;</xsl:text>
+		</xsl:if>
+		<xsl:text> </xsl:text>
+		<xsl:apply-templates/>
+	</xsl:template>
+
 </xsl:stylesheet>
