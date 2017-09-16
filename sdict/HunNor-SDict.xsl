@@ -231,9 +231,8 @@
 		<xsl:text>&lt;/b&gt;</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="*">
-	</xsl:template>
-	<xsl:template match="*" mode="references">
-	</xsl:template>
+	<xsl:template match="*"/>
+
+	<xsl:template match="*" mode="references"/>
 
 </xsl:stylesheet>
