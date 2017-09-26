@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../common/simple-html.xsl">
+
+	<x:scenario label="Processing a single senseGrp">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp></senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The result is an empty string. A single senseGrp doesn't need a sequence number.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Processing several senseGrp">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp></senseGrp>
+				<senseGrp></senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The result is a sequence of Roman numerals. Numbers are separated by 2 spaces. The last number is followed by 1 space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]><b>I</b>  <b>II</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Processing a single sense">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense></sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The result is an empty string. A single sense doesn't need a sequence number.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Processing several sense">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense></sense>
+					<sense></sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The result is a sequence of numbers. Numbers are separated by 2 spaces. The last number is followed by 1 space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]><b>1</b>  <b>2</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Processing several senseGrp and sense">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense></sense>
+					<sense></sense>
+				</senseGrp>
+				<senseGrp>
+					<sense></sense>
+					<sense></sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="Sequence numbers are separated from each other correctly.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]><b>I</b> <b>1</b>  <b>2</b>  <b>II</b> <b>1</b>  <b>2</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between lbl and lbl">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense>
+						<lbl>lbl1</lbl>
+						<lbl>lbl2</lbl>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The glue string is a comma and a single space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]><i>lbl1</i>, <i>lbl2</i><![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between trans and lbl">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense>
+						<trans>trans</trans>
+						<lbl>lbl</lbl>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The glue string is a single space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]>trans <i>lbl</i><![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between lbl and trans">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense>
+						<lbl>lbl</lbl>
+						<trans>trans</trans>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The glue string is a single space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> trans<![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between trans and trans">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense>
+						<trans>trans1</trans>
+						<trans>trans2</trans>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The glue string is a comma and a single space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]>trans1, trans2<![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between lbl and eg">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense>
+						<lbl>lbl</lbl>
+						<eg></eg>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The glue string is a single space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> <![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between trans and eg">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense>
+						<trans>trans</trans>
+						<eg></eg>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The glue string is a single space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]>trans; <![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between eg and eg">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense>
+						<eg></eg>
+						<eg></eg>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The glue string is a single space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]>; <![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between q and q">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense>
+						<eg>
+							<q>q1</q>
+							<q>q2</q>
+						</eg>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The glue string is a comma and a single space, formatted bold. Usage examples are bold. A single eg doesn't add space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]><b>q1</b><b>, </b><b>q2</b><![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between q and trans">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<sense>
+						<eg>
+							<q>q</q>
+							<trans>trans</trans>
+						</eg>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The glue string is a single space. Usage examples are bold. A single eg doesn't add space.">
+			<entry>
+				<translations-html><![CDATA[<![CDATA[]]><b>q</b> trans<![CDATA[]]]]><![CDATA[>]]></translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+</x:description>
