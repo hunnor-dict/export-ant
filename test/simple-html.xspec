@@ -1,6 +1,207 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../common/simple-html.xsl">
 
+	<x:scenario label="Metadata">
+		<x:context>
+			<hnDict xmlns="http://dict.hunnor.net" updated="1234-56-78"></hnDict>
+		</x:context>
+		<x:expect label="The update attribute is transferred">
+			<dictionary updated="1234-56-78"></dictionary>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Empty formGrp">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<formGrp></formGrp>
+			</entry>
+		</x:context>
+		<x:expect label="Empty string.">
+			<entry>
+				<forms-html></forms-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Empty form">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<formGrp>
+					<form></form>
+				</formGrp>
+			</entry>
+		</x:context>
+		<x:expect label="Empty string.">
+			<entry>
+				<forms-html></forms-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Single written form">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<formGrp>
+					<form>
+						<orth>orth</orth>
+					</form>
+				</formGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The form in bold.">
+			<entry>
+				<forms>
+					<form>orth</form>
+				</forms>
+				<forms-html><b>orth</b></forms-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Several written forms">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<formGrp>
+					<form>
+						<orth>orth1</orth>
+						<orth>orth2</orth>
+					</form>
+				</formGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The forms in bold, separated by a comma and a space in bold.">
+			<entry>
+				<forms>
+					<form>orth1</form>
+					<form>orth2</form>
+				</forms>
+				<forms-html><b>orth1</b><b>, </b><b>orth2</b></forms-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Part-of speech and non-primary forms">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<formGrp>
+					<form primary="yes">
+						<orth>orth1</orth>
+						<pos>pos1</pos>
+					</form>
+					<form primary="no">
+						<orth>orth2</orth>
+						<pos>pos2</pos>
+					</form>
+				</formGrp>
+			</entry>
+		</x:context>
+		<x:expect label="Part-of-speech is only displayed for primary forms. Non-primary forms are separated by a space.">
+			<entry>
+				<forms>
+					<form>orth1</form>
+					<form>orth2</form>
+				</forms>
+				<forms-html><b>orth1</b> pos1 <b>orth2</b></forms-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Inflection paradigms">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<formGrp>
+					<form primary="yes">
+						<orth>orth</orth>
+						<pos>pos</pos>
+						<inflCode type="bob">bob</inflCode>
+						<inflCode type="suff">-suff</inflCode>
+					</form>
+				</formGrp>
+			</entry>
+		</x:context>
+		<x:expect label="Only suffixes are displayed">
+			<entry>
+				<forms>
+					<form>orth</form>
+				</forms>
+				<forms-html><b>orth</b> pos -suff</forms-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Inflected forms (single)">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<formGrp>
+					<form primary="yes">
+						<orth>orth</orth>
+						<pos>pos</pos>
+						<inflCode type="bob">bob</inflCode>
+						<inflCode type="suff">-suff</inflCode>
+						<inflPar>
+							<inflSeq form="0-0">form0-0</inflSeq>
+							<inflSeq form="0-1">form0-1</inflSeq>
+							<inflSeq form="0-2">form0-2</inflSeq>
+						</inflPar>
+					</form>
+				</formGrp>
+			</entry>
+		</x:context>
+		<x:expect label="Only suffixes are displayed">
+			<entry>
+				<forms>
+					<form>orth</form>
+				</forms>
+				<inflections>
+					<inflection>form0-0</inflection>
+					<inflection>form0-1</inflection>
+					<inflection>form0-2</inflection>
+				</inflections>
+				<forms-html><b>orth</b> pos -suff &lt;i&gt;(form0-0, form0-1, form0-2)&lt;/i&gt;</forms-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Inflected forms">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<formGrp>
+					<form primary="yes">
+						<orth>orth</orth>
+						<pos>pos</pos>
+						<inflCode type="bob">bob</inflCode>
+						<inflCode type="suff">-suff</inflCode>
+						<inflPar>
+							<inflSeq form="0-0">form0-0</inflSeq>
+							<inflSeq form="0-1">formX</inflSeq>
+							<inflSeq form="0-2">form0-2</inflSeq>
+						</inflPar>
+						<inflPar>
+							<inflSeq form="1-0">form1-0</inflSeq>
+							<inflSeq form="1-1">formX</inflSeq>
+							<inflSeq form="1-2">form1-2</inflSeq>
+						</inflPar>
+					</form>
+				</formGrp>
+			</entry>
+		</x:context>
+		<x:expect label="Only suffixes are displayed">
+			<entry>
+				<forms>
+					<form>orth</form>
+				</forms>
+				<inflections>
+					<inflection>form0-0</inflection>
+					<inflection>form0-2</inflection>
+					<inflection>form1-0</inflection>
+					<inflection>form1-2</inflection>
+					<inflection>formX</inflection>
+				</inflections>
+				<forms-html><b>orth</b> pos -suff &lt;i&gt;(form0-0, formX, form0-2; form1-0, formX, form1-2)&lt;/i&gt;</forms-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
 	<x:scenario label="Processing a single senseGrp">
 		<x:context>
 			<entry xmlns="http://dict.hunnor.net">
@@ -9,7 +210,7 @@
 		</x:context>
 		<x:expect label="The result is an empty string. A single senseGrp doesn't need a sequence number.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -23,7 +224,7 @@
 		</x:context>
 		<x:expect label="The result is a sequence of Roman numerals. Numbers are separated by 2 spaces. The last number is followed by 1 space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><b>I</b>  <b>II</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><b>I</b>  <b>II</b> </translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -38,7 +239,7 @@
 		</x:context>
 		<x:expect label="The result is an empty string. A single sense doesn't need a sequence number.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -54,7 +255,7 @@
 		</x:context>
 		<x:expect label="The result is a sequence of numbers. Numbers are separated by 2 spaces. The last number is followed by 1 space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><b>1</b>  <b>2</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><b>1</b>  <b>2</b> </translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -74,7 +275,7 @@
 		</x:context>
 		<x:expect label="Sequence numbers are separated from each other correctly.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><b>I</b> <b>1</b>  <b>2</b>  <b>II</b> <b>1</b>  <b>2</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><b>I</b> <b>1</b>  <b>2</b>  <b>II</b> <b>1</b>  <b>2</b> </translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -92,7 +293,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><i>lbl1</i>, <i>lbl2</i><![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><i>lbl1</i>, <i>lbl2</i></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -110,7 +311,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]>trans <i>lbl</i><![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html>trans <i>lbl</i></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -128,7 +329,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> trans<![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><i>lbl</i> trans</translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -146,7 +347,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]>trans1, trans2<![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html>trans1, trans2</translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -164,7 +365,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> <![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><i>lbl</i> </translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -182,7 +383,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]>trans; <![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html>trans; </translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -200,7 +401,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]>; <![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html>; </translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -220,7 +421,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space, formatted bold. Usage examples are bold. A single eg doesn't add space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><b>q1</b><b>, </b><b>q2</b><![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><b>q1</b><b>, </b><b>q2</b></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -240,7 +441,46 @@
 		</x:context>
 		<x:expect label="The glue string is a single space. Usage examples are bold. A single eg doesn't add space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><b>q</b> trans<![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><b>q</b> trans</translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Processing lbl before sense (single)">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<lbl>lbl</lbl>
+					<sense>
+						<trans>trans</trans>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The label is displayed before the translation">
+			<entry>
+				<translations-html><i>lbl</i> trans</translations-html>
+			</entry>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Processing lbl before sense">
+		<x:context>
+			<entry xmlns="http://dict.hunnor.net">
+				<senseGrp>
+					<lbl>lbl</lbl>
+					<sense>
+						<trans>trans1</trans>
+					</sense>
+					<sense>
+						<trans>trans2</trans>
+					</sense>
+				</senseGrp>
+			</entry>
+		</x:context>
+		<x:expect label="The label is displayed before the translation">
+			<entry>
+				<translations-html><i>lbl</i> <b>1</b> trans1 <b>2</b> trans2</translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
