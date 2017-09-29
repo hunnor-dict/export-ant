@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:dict="http://dict.hunnor.net" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="dict">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:include href="../common/flat-html.xsl"/>
-
-	<xsl:param name="sourceLanguage"/>
+	<xsl:param name="direction"/>
 
 	<xsl:output method="xml" indent="yes" encoding="us-ascii"/>
 
 	<xsl:strip-space elements="*"/>
 
-	<xsl:template match="dict:hnDict">
+	<xsl:template match="dictionary">
 		<stardict>
 			<info>
 				<version>3.0.0</version>
 				<bookname>
 					<xsl:text>HunNor közösségi szótár </xsl:text>
-					<xsl:value-of select="upper-case($sourceLanguage)"/>
+					<xsl:value-of select="upper-case($direction)"/>
 				</bookname>
 				<author>Ádám Z. Kövér</author>
 				<website>http://dict.hunnor.net/</website>
@@ -24,85 +22,33 @@
 				<xsl:apply-templates/>
 			</contents>
 		</stardict>
-		<xsl:text>&#xA;</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="dict:entryGrp">
-		<xsl:apply-templates/>
-	</xsl:template>
-
-	<xsl:template match="dict:entry">
+	<xsl:template match="entry">
 		<article>
-			<xsl:apply-templates select="dict:formGrp"/>
+			<key>
+				<xsl:value-of select="forms/form[1]"/>
+			</key>
+			<xsl:call-template name="synonyms">
+				<xsl:with-param name="key" select="forms/form[1]"/>
+				<xsl:with-param name="synonyms" select="distinct-values(forms/form | inflections/inflection)"/>
+			</xsl:call-template>
 			<definition>
 				<xsl:text disable-output-escaping="yes"><![CDATA[<![CDATA[]]></xsl:text>
-				<xsl:apply-templates mode="formInfo"/>
-				<xsl:apply-templates select="dict:senseGrp"/>
-				<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
+				<xsl:apply-templates select="forms-html"/>
+				<xsl:text> </xsl:text>
+				<xsl:apply-templates select="translations-html"/>
+				<xsl:text disable-output-escaping="yes"><![CDATA[]]]]><![CDATA[>]]></xsl:text>
 			</definition>
 		</article>
 	</xsl:template>
 
-	<xsl:template match="dict:formGrp" mode="formInfo">
-		<xsl:apply-templates mode="formInfo"/>
-	</xsl:template>
-
-	<xsl:template match="dict:form" mode="formInfo">
-		<xsl:choose>
-			<xsl:when test="@primary='yes'">
-				<xsl:value-of select="dict:pos"/>
-				<xsl:text> </xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text disable-output-escaping="yes">&lt;b&gt;</xsl:text>
-				<xsl:value-of select="dict:orth"/>
-				<xsl:text disable-output-escaping="yes">&lt;/b&gt; </xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:apply-templates mode="formInfo"/>
-	</xsl:template>
-
-	<xsl:template match="dict:inflCode[@type='suff']" mode="formInfo">
-		<xsl:text disable-output-escaping="yes">&lt;i&gt;</xsl:text>
-		<xsl:apply-templates/>
-		<xsl:text disable-output-escaping="yes">&lt;/i&gt; </xsl:text>
-	</xsl:template>
-
-	<xsl:template match="dict:inflPar" mode="formInfo">
-		<xsl:if test="not(preceding-sibling::dict:inflCode)">
-			<xsl:choose>
-				<xsl:when test="preceding-sibling::dict:inflPar">
-					<xsl:text>; </xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text disable-output-escaping="yes">&lt;i&gt;(</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:apply-templates mode="formInfo"/>
-			<xsl:choose>
-				<xsl:when test="not(following-sibling::dict:inflPar)">
-					<xsl:text disable-output-escaping="yes">)&lt;/i&gt; </xsl:text>
-				</xsl:when>
-			</xsl:choose>
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="dict:inflSeq" mode="formInfo">
-		<xsl:if test="preceding-sibling::dict:inflSeq">
-			<xsl:text>, </xsl:text>
-		</xsl:if>
-		<xsl:apply-templates/>
-	</xsl:template>
-
-	<xsl:template match="*" mode="formInfo"/>
-
-	<xsl:template match="dict:formGrp">
-		<xsl:variable name="headWord" select="dict:form[@primary='yes']/dict:orth"/>
-		<key>
-			<xsl:value-of select="dict:form[@primary='yes']/dict:orth"/>
-		</key>
-		<xsl:for-each select="distinct-values(dict:form[@primary='no']/dict:orth|dict:form/dict:inflPar/dict:inflSeq)">
-			<xsl:if test="not(.=$headWord)">
+	<xsl:template name="synonyms">
+		<xsl:param name="key"/>
+		<xsl:param name="synonyms"/>
+		<xsl:for-each select="$synonyms">
+			<xsl:sort select="."/>
+			<xsl:if test=". != $key">
 				<synonym>
 					<xsl:value-of select="."/>
 				</synonym>
@@ -110,51 +56,22 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template match="dict:senseGrp">
-		<xsl:if test="position() > 1">
-			<xsl:text> </xsl:text>
-		</xsl:if>
-		<xsl:if test="count(../dict:senseGrp) > 1">
-			<xsl:text disable-output-escaping="yes">&lt;b&gt;</xsl:text>
-			<xsl:number value="position()" format="I"/>
-			<xsl:text disable-output-escaping="yes">&lt;/b&gt; </xsl:text>
-		</xsl:if>
+	<xsl:template match="forms-html | translations-html">
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="dict:sense">
-		<xsl:if test="position() > 1">
-			<xsl:text> </xsl:text>
-		</xsl:if>
-		<xsl:if test="count(../dict:sense) > 1">
-			<xsl:text disable-output-escaping="yes">&lt;b&gt;</xsl:text>
-			<xsl:number value="position()"/>
-			<xsl:text disable-output-escaping="yes">&lt;/b&gt; </xsl:text>
-		</xsl:if>
+	<xsl:template match="text()">
+		<xsl:value-of select="." disable-output-escaping="yes"/>
+	</xsl:template>
+
+	<xsl:template match="*">
+		<xsl:text disable-output-escaping="yes">&lt;</xsl:text>
+		<xsl:value-of select="local-name()"/>
+		<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 		<xsl:apply-templates/>
+		<xsl:text disable-output-escaping="yes">&lt;/</xsl:text>
+		<xsl:value-of select="local-name()"/>
+		<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 	</xsl:template>
-
-	<xsl:template match="dict:trans">
-		<xsl:choose>
-			<xsl:when test="preceding-sibling::dict:lbl">
-				<xsl:text> </xsl:text>
-			</xsl:when>
-			<xsl:when test="preceding-sibling::dict:trans">
-				<xsl:text>, </xsl:text>
-			</xsl:when>
-			<xsl:when test="preceding-sibling::dict:q">
-				<xsl:text> </xsl:text>
-			</xsl:when>
-		</xsl:choose>
-		<xsl:apply-templates/>
-	</xsl:template>
-
-	<xsl:template match="dict:q">
-		<xsl:text disable-output-escaping="yes">&lt;i&gt;</xsl:text>
-			<xsl:apply-templates/>
-		<xsl:text disable-output-escaping="yes">&lt;/i&gt;</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="*"/>
 
 </xsl:stylesheet>
