@@ -17,6 +17,7 @@
 	<property name="project.dir" location="/opt/hunnor-dict"/>
 
 	<property name="android.indexer" location="../export-lucene/target/export-lucene-1.0.0.jar"/>
+	<property name="sqlite.indexer" location="../export-sqlite/target/export-sqlite-1.0.0.jar"/>
 
 	<property name="dropbox.dir" location="${project.dir}/Dropbox"/>
 	<property name="dropbox.backup.dir" location="${dropbox.dir}/Backup"/>
@@ -357,7 +358,17 @@
 		<delete dir="hunnor-lucene-spelling"/>
 	</target>
 
-	<target name="export.all" depends="build.dir,export.hu,export.nb,export.android">
+	<target name="export.sqlite" depends="export.simple-html.hu,export.simple-html.nb">
+		<delete file="${build.dir}/HunNor-SQLite.sqlite3"/>
+		<exec executable="java">
+			<arg line="-jar ${sqlite.indexer} -l hu -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SimpleHTML-HN.xml"/>
+		</exec>
+		<exec executable="java">
+			<arg line="-jar ${sqlite.indexer} -l nb -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SimpleHTML-NH.xml"/>
+		</exec>
+	</target>
+
+	<target name="export.all" depends="build.dir,export.hu,export.nb,export.android,export.sqlite">
 	</target>
 
 	<target name="export.cleanup.hu" depends="export.all">
