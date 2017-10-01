@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../common/simple-html.xsl">
 
-	<x:scenario label="Metadata">
+	<x:scenario label="Dictionary metadata">
 		<x:context>
 			<hnDict xmlns="http://dict.hunnor.net" updated="1234-56-78"></hnDict>
 		</x:context>
 		<x:expect label="The update attribute is transferred">
 			<dictionary updated="1234-56-78"></dictionary>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Entry metadata">
+		<x:context>
+			<hnDict xmlns="http://dict.hunnor.net">
+				<entryGrp>
+					<entry id="1"></entry>
+				</entryGrp>
+			</hnDict>
+		</x:context>
+		<x:expect label="The id attribute is transferred">
+			<dictionary>
+				<entry id="1"/>
+			</dictionary>
 		</x:expect>
 	</x:scenario>
 
@@ -18,7 +33,7 @@
 		</x:context>
 		<x:expect label="Empty string.">
 			<entry>
-				<forms-html></forms-html>
+				<forms-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></forms-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -33,7 +48,7 @@
 		</x:context>
 		<x:expect label="Empty string.">
 			<entry>
-				<forms-html></forms-html>
+				<forms-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></forms-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -53,7 +68,7 @@
 				<forms>
 					<form>orth</form>
 				</forms>
-				<forms-html><b>orth</b></forms-html>
+				<forms-html><![CDATA[<![CDATA[]]><b>orth</b><![CDATA[]]]]><![CDATA[>]]></forms-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -75,7 +90,7 @@
 					<form>orth1</form>
 					<form>orth2</form>
 				</forms>
-				<forms-html><b>orth1</b><b>, </b><b>orth2</b></forms-html>
+				<forms-html><![CDATA[<![CDATA[]]><b>orth1</b><b>, </b><b>orth2</b><![CDATA[]]]]><![CDATA[>]]></forms-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -101,7 +116,7 @@
 					<form>orth1</form>
 					<form>orth2</form>
 				</forms>
-				<forms-html><b>orth1</b> pos1 <b>orth2</b></forms-html>
+				<forms-html><![CDATA[<![CDATA[]]><b>orth1</b> pos1 <b>orth2</b><![CDATA[]]]]><![CDATA[>]]></forms-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -124,7 +139,7 @@
 				<forms>
 					<form>orth</form>
 				</forms>
-				<forms-html><b>orth</b> pos -suff</forms-html>
+				<forms-html><![CDATA[<![CDATA[]]><b>orth</b> pos -suff<![CDATA[]]]]><![CDATA[>]]></forms-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -157,7 +172,7 @@
 					<inflection>form0-1</inflection>
 					<inflection>form0-2</inflection>
 				</inflections>
-				<forms-html><b>orth</b> pos -suff &lt;i&gt;(form0-0, form0-1, form0-2)&lt;/i&gt;</forms-html>
+				<forms-html><![CDATA[<![CDATA[]]><b>orth</b> pos -suff &lt;i&gt;(form0-0, form0-1, form0-2)&lt;/i&gt;<![CDATA[]]]]><![CDATA[>]]></forms-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -197,7 +212,7 @@
 					<inflection>form1-2</inflection>
 					<inflection>formX</inflection>
 				</inflections>
-				<forms-html><b>orth</b> pos -suff &lt;i&gt;(form0-0, formX, form0-2; form1-0, formX, form1-2)&lt;/i&gt;</forms-html>
+				<forms-html><![CDATA[<![CDATA[]]><b>orth</b> pos -suff &lt;i&gt;(form0-0, formX, form0-2; form1-0, formX, form1-2)&lt;/i&gt;<![CDATA[]]]]><![CDATA[>]]></forms-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -210,7 +225,7 @@
 		</x:context>
 		<x:expect label="The result is an empty string. A single senseGrp doesn't need a sequence number.">
 			<entry>
-				<translations-html></translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -224,7 +239,7 @@
 		</x:context>
 		<x:expect label="The result is a sequence of Roman numerals. Numbers are separated by 2 spaces. The last number is followed by 1 space.">
 			<entry>
-				<translations-html><b>I</b>  <b>II</b> </translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><b>I</b>  <b>II</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -239,7 +254,7 @@
 		</x:context>
 		<x:expect label="The result is an empty string. A single sense doesn't need a sequence number.">
 			<entry>
-				<translations-html></translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -255,7 +270,7 @@
 		</x:context>
 		<x:expect label="The result is a sequence of numbers. Numbers are separated by 2 spaces. The last number is followed by 1 space.">
 			<entry>
-				<translations-html><b>1</b>  <b>2</b> </translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><b>1</b>  <b>2</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -275,7 +290,7 @@
 		</x:context>
 		<x:expect label="Sequence numbers are separated from each other correctly.">
 			<entry>
-				<translations-html><b>I</b> <b>1</b>  <b>2</b>  <b>II</b> <b>1</b>  <b>2</b> </translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><b>I</b> <b>1</b>  <b>2</b>  <b>II</b> <b>1</b>  <b>2</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -293,7 +308,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space.">
 			<entry>
-				<translations-html><i>lbl1</i>, <i>lbl2</i></translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><i>lbl1</i>, <i>lbl2</i><![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -311,7 +326,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html>trans <i>lbl</i></translations-html>
+				<translations-html><![CDATA[<![CDATA[]]>trans <i>lbl</i><![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -329,7 +344,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><i>lbl</i> trans</translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> trans<![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -347,7 +362,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space.">
 			<entry>
-				<translations-html>trans1, trans2</translations-html>
+				<translations-html><![CDATA[<![CDATA[]]>trans1, trans2<![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -365,7 +380,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><i>lbl</i> </translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> <![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -383,7 +398,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html>trans; </translations-html>
+				<translations-html><![CDATA[<![CDATA[]]>trans; <![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -401,7 +416,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html>; </translations-html>
+				<translations-html><![CDATA[<![CDATA[]]>; <![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -421,7 +436,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space, formatted bold. Usage examples are bold. A single eg doesn't add space.">
 			<entry>
-				<translations-html><b>q1</b><b>, </b><b>q2</b></translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><b>q1</b><b>, </b><b>q2</b><![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -441,7 +456,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space. Usage examples are bold. A single eg doesn't add space.">
 			<entry>
-				<translations-html><b>q</b> trans</translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><b>q</b> trans<![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -459,7 +474,7 @@
 		</x:context>
 		<x:expect label="The label is displayed before the translation">
 			<entry>
-				<translations-html><i>lbl</i> trans</translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> trans<![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -480,7 +495,7 @@
 		</x:context>
 		<x:expect label="The label is displayed before the translation">
 			<entry>
-				<translations-html><i>lbl</i> <b>1</b> trans1 <b>2</b> trans2</translations-html>
+				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> <b>1</b> trans1 <b>2</b> trans2<![CDATA[]]]]><![CDATA[>]]></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>

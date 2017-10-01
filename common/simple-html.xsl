@@ -20,6 +20,7 @@
 
 	<xsl:template match="dict:entry">
 		<entry>
+			<xsl:copy-of select="@id"/>
 			<xsl:if test="dict:formGrp">
 				<xsl:if test="dict:formGrp/dict:form/dict:orth">
 					<forms>
@@ -42,12 +43,16 @@
 					</inflections>
 				</xsl:if>
 				<forms-html>
+					<xsl:text disable-output-escaping="yes"><![CDATA[<![CDATA[]]></xsl:text>
 					<xsl:apply-templates select="dict:formGrp"/>
+					<xsl:text disable-output-escaping="yes"><![CDATA[]]]]><![CDATA[>]]></xsl:text>
 				</forms-html>
 			</xsl:if>
 			<xsl:if test="dict:senseGrp">
 				<translations-html>
+					<xsl:text disable-output-escaping="yes"><![CDATA[<![CDATA[]]></xsl:text>
 					<xsl:apply-templates select="dict:senseGrp"/>
+					<xsl:text disable-output-escaping="yes"><![CDATA[]]]]><![CDATA[>]]></xsl:text>
 				</translations-html>
 			</xsl:if>
 		</entry>
@@ -93,13 +98,13 @@
 				<xsl:text>; </xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:text> &lt;i&gt;(</xsl:text>
+				<xsl:text disable-output-escaping="yes"> &lt;i&gt;(</xsl:text>
 			</xsl:otherwise>
 		</xsl:choose>
 		<xsl:apply-templates/>
 		<xsl:choose>
 			<xsl:when test="not(following-sibling::dict:inflPar)">
-				<xsl:text>)&lt;/i&gt;</xsl:text>
+				<xsl:text disable-output-escaping="yes">)&lt;/i&gt;</xsl:text>
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>

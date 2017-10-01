@@ -30,18 +30,4 @@
 		<xsl:text>&#xA;</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="forms-html | translations-html">
-		<xsl:apply-templates/>
-	</xsl:template>
-
-	<xsl:template match="*">
-		<xsl:text>&lt;</xsl:text>
-		<xsl:value-of select="local-name()"/>
-		<xsl:text>&gt;</xsl:text>
-		<xsl:apply-templates/>
-		<xsl:text>&lt;/</xsl:text>
-		<xsl:value-of select="local-name()"/>
-		<xsl:text>&gt;</xsl:text>
-	</xsl:template>
-
 </xsl:stylesheet>

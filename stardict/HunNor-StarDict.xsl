@@ -56,22 +56,8 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template match="forms-html | translations-html">
-		<xsl:apply-templates/>
-	</xsl:template>
-
 	<xsl:template match="text()">
 		<xsl:value-of select="." disable-output-escaping="yes"/>
-	</xsl:template>
-
-	<xsl:template match="*">
-		<xsl:text disable-output-escaping="yes">&lt;</xsl:text>
-		<xsl:value-of select="local-name()"/>
-		<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
-		<xsl:apply-templates/>
-		<xsl:text disable-output-escaping="yes">&lt;/</xsl:text>
-		<xsl:value-of select="local-name()"/>
-		<xsl:text disable-output-escaping="yes">&gt;</xsl:text>
 	</xsl:template>
 
 </xsl:stylesheet>
