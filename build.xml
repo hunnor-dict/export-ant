@@ -348,11 +348,11 @@
 			<arg line="-jar ${android.indexer} -l no -x ${build.dir}/HunNor-XML-NH.xml -d hunnor-lucene-index -s hunnor-lucene-spelling"/>
 		</exec>
 		<!-- Archive Lucene index -->
-		<zip destfile="hunnor-lucene-3.6.zip" level="9" filesonly="yes">
+		<zip destfile="${build.dir}/hunnor-lucene-3.6.zip" level="9" filesonly="yes">
 			<zipfileset dir="hunnor-lucene-index" prefix="hunnor-lucene-index"/>
 			<zipfileset dir="hunnor-lucene-spelling" prefix="hunnor-lucene-spelling"/>
 		</zip>
-		<move file="hunnor-lucene-3.6.zip" tofile="hunnor-lucene-3.6-release.zip"/>
+		<move file="${build.dir}/hunnor-lucene-3.6.zip" tofile="${build.dir}/hunnor-lucene-3.6-release.zip"/>
 		<!-- Delete again to clean up obsolete files -->
 		<delete dir="hunnor-lucene-index"/>
 		<delete dir="hunnor-lucene-spelling"/>
