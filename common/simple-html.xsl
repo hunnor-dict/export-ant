@@ -43,16 +43,12 @@
 					</inflections>
 				</xsl:if>
 				<forms-html>
-					<xsl:text disable-output-escaping="yes"><![CDATA[<![CDATA[]]></xsl:text>
 					<xsl:apply-templates select="dict:formGrp"/>
-					<xsl:text disable-output-escaping="yes"><![CDATA[]]]]><![CDATA[>]]></xsl:text>
 				</forms-html>
 			</xsl:if>
 			<xsl:if test="dict:senseGrp">
 				<translations-html>
-					<xsl:text disable-output-escaping="yes"><![CDATA[<![CDATA[]]></xsl:text>
 					<xsl:apply-templates select="dict:senseGrp"/>
-					<xsl:text disable-output-escaping="yes"><![CDATA[]]]]><![CDATA[>]]></xsl:text>
 				</translations-html>
 			</xsl:if>
 		</entry>
@@ -117,29 +113,35 @@
 	</xsl:template>
 
 	<xsl:template match="dict:senseGrp">
-		<xsl:if test="count(../dict:senseGrp) > 1">
-			<xsl:if test="position() > 1">
+		<span class="senseGrp">
+			<xsl:if test="count(../dict:senseGrp) > 1">
+				<xsl:attribute name="class" select="'senseGrp numbered'"/>
+				<xsl:if test="position() > 1">
+					<xsl:text> </xsl:text>
+				</xsl:if>
+				<b>
+					<xsl:number value="position()" format="I"/>
+				</b>
 				<xsl:text> </xsl:text>
 			</xsl:if>
-			<b>
-				<xsl:number value="position()" format="I"/>
-			</b>
-			<xsl:text> </xsl:text>
-		</xsl:if>
-		<xsl:apply-templates/>
+			<xsl:apply-templates/>
+		</span>
 	</xsl:template>
 
 	<xsl:template match="dict:sense">
-		<xsl:if test="count(../dict:sense) > 1">
-			<xsl:if test="preceding-sibling::dict:sense">
+		<span class="sense">
+			<xsl:if test="count(../dict:sense) > 1">
+				<xsl:attribute name="class" select="'sense numbered'"/>
+				<xsl:if test="preceding-sibling::dict:sense">
+					<xsl:text> </xsl:text>
+				</xsl:if>
+				<b>
+					<xsl:number value="count(preceding-sibling::dict:sense) + 1"/>
+				</b>
 				<xsl:text> </xsl:text>
 			</xsl:if>
-			<b>
-				<xsl:number value="count(preceding-sibling::dict:sense) + 1"/>
-			</b>
-			<xsl:text> </xsl:text>
-		</xsl:if>
-		<xsl:apply-templates/>
+			<xsl:apply-templates/>
+		</span>
 	</xsl:template>
 
 	<xsl:template match="dict:lbl">

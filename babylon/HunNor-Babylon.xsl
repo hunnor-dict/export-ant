@@ -3,8 +3,6 @@
 
 	<xsl:output method="text" omit-xml-declaration="yes"/>
 
-	<xsl:strip-space elements="*"/>
-
 	<xsl:param name="direction"/>
 
 	<xsl:template match="dictionary">
@@ -28,6 +26,16 @@
 		<xsl:apply-templates select="translations-html"/>
 		<xsl:text>&#xA;</xsl:text>
 		<xsl:text>&#xA;</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="b|i">
+		<xsl:text>&lt;</xsl:text>
+		<xsl:value-of select="local-name()"/>
+		<xsl:text>&gt;</xsl:text>
+		<xsl:apply-templates/>
+		<xsl:text>&lt;</xsl:text>
+		<xsl:value-of select="local-name()"/>
+		<xsl:text>&gt;</xsl:text>
 	</xsl:template>
 
 </xsl:stylesheet>

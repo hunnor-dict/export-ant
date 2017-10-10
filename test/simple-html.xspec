@@ -1,298 +1,344 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../common/simple-html.xsl">
 
-	<x:scenario label="Dictionary metadata">
-		<x:context>
-			<hnDict xmlns="http://dict.hunnor.net" updated="1234-56-78"></hnDict>
-		</x:context>
-		<x:expect label="The update attribute is transferred">
-			<dictionary updated="1234-56-78"></dictionary>
-		</x:expect>
+	<x:scenario label="Dictionary">
+		<x:scenario label="The updated attribute is set">
+			<x:context>
+				<hnDict xmlns="http://dict.hunnor.net" updated="1234-56-78"></hnDict>
+			</x:context>
+			<x:expect label="The attribute value is present in the export.">
+				<dictionary updated="1234-56-78"></dictionary>
+			</x:expect>
+		</x:scenario>
 	</x:scenario>
 
-	<x:scenario label="Entry metadata">
-		<x:context>
-			<hnDict xmlns="http://dict.hunnor.net">
-				<entryGrp>
-					<entry id="1"></entry>
-				</entryGrp>
-			</hnDict>
-		</x:context>
-		<x:expect label="The id attribute is transferred">
-			<dictionary>
-				<entry id="1"/>
-			</dictionary>
-		</x:expect>
+	<x:scenario label="Entry">
+		<x:scenario label="The ID attribute is set">
+			<x:context>
+				<hnDict xmlns="http://dict.hunnor.net">
+					<entryGrp>
+						<entry id="1"></entry>
+					</entryGrp>
+				</hnDict>
+			</x:context>
+			<x:expect label="The attribute value is present in the export.">
+				<dictionary>
+					<entry id="1"/>
+				</dictionary>
+			</x:expect>
+		</x:scenario>
 	</x:scenario>
 
-	<x:scenario label="Empty formGrp">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<formGrp></formGrp>
-			</entry>
-		</x:context>
-		<x:expect label="Empty string.">
-			<entry>
-				<forms-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></forms-html>
-			</entry>
-		</x:expect>
+	<x:scenario label="Form groups and forms">
+		<x:scenario label="A single empty formGrp">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<formGrp></formGrp>
+				</entry>
+			</x:context>
+			<x:expect label="The result is an empty string.">
+				<entry>
+					<forms-html></forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="A single empty form">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<formGrp>
+						<form></form>
+					</formGrp>
+				</entry>
+			</x:context>
+			<x:expect label="The result is an empty string.">
+				<entry>
+					<forms-html></forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
 	</x:scenario>
 
-	<x:scenario label="Empty form">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<formGrp>
-					<form></form>
-				</formGrp>
-			</entry>
-		</x:context>
-		<x:expect label="Empty string.">
-			<entry>
-				<forms-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></forms-html>
-			</entry>
-		</x:expect>
+	<x:scenario label="Written forms and part of speech">
+		<x:scenario label="A single written form">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<formGrp>
+						<form>
+							<orth>orth</orth>
+						</form>
+					</formGrp>
+				</entry>
+			</x:context>
+			<x:expect label="The form is in bold.">
+				<entry>
+					<forms>
+						<form>orth</form>
+					</forms>
+					<forms-html><b>orth</b></forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="Several written forms">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<formGrp>
+						<form>
+							<orth>orth1</orth>
+							<orth>orth2</orth>
+						</form>
+					</formGrp>
+				</entry>
+			</x:context>
+			<x:expect label="The forms are in bold, separated by a comma and a space in bold.">
+				<entry>
+					<forms>
+						<form>orth1</form>
+						<form>orth2</form>
+					</forms>
+					<forms-html><b>orth1</b><b>, </b><b>orth2</b></forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="Part of speech is present for both primary and non-primary forms">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<formGrp>
+						<form primary="yes">
+							<orth>orth1</orth>
+							<pos>pos1</pos>
+						</form>
+						<form primary="no">
+							<orth>orth2</orth>
+							<pos>pos2</pos>
+						</form>
+					</formGrp>
+				</entry>
+			</x:context>
+			<x:expect label="Part of speech is only displayed for primary forms. Non-primary forms are separated by a space.">
+				<entry>
+					<forms>
+						<form>orth1</form>
+						<form>orth2</form>
+					</forms>
+					<forms-html><b>orth1</b> pos1 <b>orth2</b></forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
 	</x:scenario>
 
-	<x:scenario label="Single written form">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<formGrp>
-					<form>
-						<orth>orth</orth>
-					</form>
-				</formGrp>
-			</entry>
-		</x:context>
-		<x:expect label="The form in bold.">
-			<entry>
-				<forms>
-					<form>orth</form>
-				</forms>
-				<forms-html><![CDATA[<![CDATA[]]><b>orth</b><![CDATA[]]]]><![CDATA[>]]></forms-html>
-			</entry>
-		</x:expect>
+	<x:scenario label="Inflections">
+		<x:scenario label="Both inflection codes and suffixes are present">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<formGrp>
+						<form primary="yes">
+							<orth>orth</orth>
+							<pos>pos</pos>
+							<inflCode type="bob">bob</inflCode>
+							<inflCode type="suff">-suff</inflCode>
+						</form>
+					</formGrp>
+				</entry>
+			</x:context>
+			<x:expect label="Only suffixes are displayed.">
+				<entry>
+					<forms>
+						<form>orth</form>
+					</forms>
+					<forms-html><b>orth</b> pos -suff</forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="A single inflectional paradigm">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<formGrp>
+						<form primary="yes">
+							<orth>orth</orth>
+							<pos>pos</pos>
+							<inflCode type="bob">bob</inflCode>
+							<inflCode type="suff">-suff</inflCode>
+							<inflPar>
+								<inflSeq form="0-0">form0-0</inflSeq>
+								<inflSeq form="0-1">form0-1</inflSeq>
+								<inflSeq form="0-2">form0-2</inflSeq>
+							</inflPar>
+						</form>
+					</formGrp>
+				</entry>
+			</x:context>
+			<x:expect label="Inflected forms are in parentheses, separated by commma, in italic.">
+				<entry>
+					<forms>
+						<form>orth</form>
+					</forms>
+					<inflections>
+						<inflection>form0-0</inflection>
+						<inflection>form0-1</inflection>
+						<inflection>form0-2</inflection>
+					</inflections>
+					<forms-html><b>orth</b> pos -suff &lt;i&gt;(form0-0, form0-1, form0-2)&lt;/i&gt;</forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="Several inflectional paradigms">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<formGrp>
+						<form primary="yes">
+							<orth>orth</orth>
+							<pos>pos</pos>
+							<inflCode type="bob">bob</inflCode>
+							<inflCode type="suff">-suff</inflCode>
+							<inflPar>
+								<inflSeq form="0-0">form0-0</inflSeq>
+								<inflSeq form="0-1">formX</inflSeq>
+								<inflSeq form="0-2">form0-2</inflSeq>
+							</inflPar>
+							<inflPar>
+								<inflSeq form="1-0">form1-0</inflSeq>
+								<inflSeq form="1-1">formX</inflSeq>
+								<inflSeq form="1-2">form1-2</inflSeq>
+							</inflPar>
+						</form>
+					</formGrp>
+				</entry>
+			</x:context>
+			<x:expect label="Inflectef forms are displayed for both paradigms. The list of inflected forms doesn't contain duplicates.">
+				<entry>
+					<forms>
+						<form>orth</form>
+					</forms>
+					<inflections>
+						<inflection>form0-0</inflection>
+						<inflection>form0-2</inflection>
+						<inflection>form1-0</inflection>
+						<inflection>form1-2</inflection>
+						<inflection>formX</inflection>
+					</inflections>
+					<forms-html><b>orth</b> pos -suff &lt;i&gt;(form0-0, formX, form0-2; form1-0, formX, form1-2)&lt;/i&gt;</forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
 	</x:scenario>
 
-	<x:scenario label="Several written forms">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<formGrp>
-					<form>
-						<orth>orth1</orth>
-						<orth>orth2</orth>
-					</form>
-				</formGrp>
-			</entry>
-		</x:context>
-		<x:expect label="The forms in bold, separated by a comma and a space in bold.">
-			<entry>
-				<forms>
-					<form>orth1</form>
-					<form>orth2</form>
-				</forms>
-				<forms-html><![CDATA[<![CDATA[]]><b>orth1</b><b>, </b><b>orth2</b><![CDATA[]]]]><![CDATA[>]]></forms-html>
-			</entry>
-		</x:expect>
+	<x:scenario label="Sense groups">
+		<x:scenario label="A single empty senseGrp tag">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<senseGrp></senseGrp>
+				</entry>
+			</x:context>
+			<x:expect label="The result is an empty span. A single senseGrp doesn't need a sequence number.">
+				<entry>
+					<translations-html><span class="senseGrp"></span></translations-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="A sequence of empty senseGrp tags">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<senseGrp></senseGrp>
+					<senseGrp></senseGrp>
+				</entry>
+			</x:context>
+			<x:expect label="The result is a sequence of spans with the sequence number in Roman numerals in bold. The spans are separated by a single space. The numbers are followed by a single space.">
+				<entry>
+					<translations-html><span class="senseGrp numbered"><b>I</b> </span> <span class="senseGrp numbered"><b>II</b> </span></translations-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
 	</x:scenario>
 
-	<x:scenario label="Part-of speech and non-primary forms">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<formGrp>
-					<form primary="yes">
-						<orth>orth1</orth>
-						<pos>pos1</pos>
-					</form>
-					<form primary="no">
-						<orth>orth2</orth>
-						<pos>pos2</pos>
-					</form>
-				</formGrp>
-			</entry>
-		</x:context>
-		<x:expect label="Part-of-speech is only displayed for primary forms. Non-primary forms are separated by a space.">
-			<entry>
-				<forms>
-					<form>orth1</form>
-					<form>orth2</form>
-				</forms>
-				<forms-html><![CDATA[<![CDATA[]]><b>orth1</b> pos1 <b>orth2</b><![CDATA[]]]]><![CDATA[>]]></forms-html>
-			</entry>
-		</x:expect>
+	<x:scenario label="Senses">
+		<x:scenario label="A single empty sense">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<senseGrp>
+						<sense></sense>
+					</senseGrp>
+				</entry>
+			</x:context>
+			<x:expect label="The result is an empty span for both senseGrp and sense. A single sense doesn't need a sequence number.">
+				<entry>
+					<translations-html><span class="senseGrp"><span class="sense"></span></span></translations-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="A sequence of empty sense tags">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<senseGrp>
+						<sense></sense>
+						<sense></sense>
+					</senseGrp>
+				</entry>
+			</x:context>
+			<x:expect label="The result is a sequence of spans with the sequence number in bold. The spans are separated by a single space. The numbers are followed by a single space.">
+				<entry>
+					<translations-html><span class="senseGrp"><span class="sense numbered"><b>1</b> </span> <span class="sense numbered"><b>2</b> </span></span></translations-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="Several senseGrp and sense tags">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<senseGrp>
+						<sense></sense>
+						<sense></sense>
+					</senseGrp>
+					<senseGrp>
+						<sense></sense>
+						<sense></sense>
+					</senseGrp>
+				</entry>
+			</x:context>
+			<x:expect label="Sequence numbers are separated from each other correctly.">
+				<entry>
+					<translations-html><span class="senseGrp numbered"><b>I</b> <span class="sense numbered"><b>1</b> </span> <span class="sense numbered"><b>2</b> </span></span> <span class="senseGrp numbered"><b>II</b> <span class="sense numbered"><b>1</b> </span> <span class="sense numbered"><b>2</b> </span></span></translations-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
 	</x:scenario>
 
-	<x:scenario label="Inflection paradigms">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<formGrp>
-					<form primary="yes">
-						<orth>orth</orth>
-						<pos>pos</pos>
-						<inflCode type="bob">bob</inflCode>
-						<inflCode type="suff">-suff</inflCode>
-					</form>
-				</formGrp>
-			</entry>
-		</x:context>
-		<x:expect label="Only suffixes are displayed">
-			<entry>
-				<forms>
-					<form>orth</form>
-				</forms>
-				<forms-html><![CDATA[<![CDATA[]]><b>orth</b> pos -suff<![CDATA[]]]]><![CDATA[>]]></forms-html>
-			</entry>
-		</x:expect>
-	</x:scenario>
-
-	<x:scenario label="Inflected forms (single)">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<formGrp>
-					<form primary="yes">
-						<orth>orth</orth>
-						<pos>pos</pos>
-						<inflCode type="bob">bob</inflCode>
-						<inflCode type="suff">-suff</inflCode>
-						<inflPar>
-							<inflSeq form="0-0">form0-0</inflSeq>
-							<inflSeq form="0-1">form0-1</inflSeq>
-							<inflSeq form="0-2">form0-2</inflSeq>
-						</inflPar>
-					</form>
-				</formGrp>
-			</entry>
-		</x:context>
-		<x:expect label="Only suffixes are displayed">
-			<entry>
-				<forms>
-					<form>orth</form>
-				</forms>
-				<inflections>
-					<inflection>form0-0</inflection>
-					<inflection>form0-1</inflection>
-					<inflection>form0-2</inflection>
-				</inflections>
-				<forms-html><![CDATA[<![CDATA[]]><b>orth</b> pos -suff &lt;i&gt;(form0-0, form0-1, form0-2)&lt;/i&gt;<![CDATA[]]]]><![CDATA[>]]></forms-html>
-			</entry>
-		</x:expect>
-	</x:scenario>
-
-	<x:scenario label="Inflected forms">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<formGrp>
-					<form primary="yes">
-						<orth>orth</orth>
-						<pos>pos</pos>
-						<inflCode type="bob">bob</inflCode>
-						<inflCode type="suff">-suff</inflCode>
-						<inflPar>
-							<inflSeq form="0-0">form0-0</inflSeq>
-							<inflSeq form="0-1">formX</inflSeq>
-							<inflSeq form="0-2">form0-2</inflSeq>
-						</inflPar>
-						<inflPar>
-							<inflSeq form="1-0">form1-0</inflSeq>
-							<inflSeq form="1-1">formX</inflSeq>
-							<inflSeq form="1-2">form1-2</inflSeq>
-						</inflPar>
-					</form>
-				</formGrp>
-			</entry>
-		</x:context>
-		<x:expect label="Only suffixes are displayed">
-			<entry>
-				<forms>
-					<form>orth</form>
-				</forms>
-				<inflections>
-					<inflection>form0-0</inflection>
-					<inflection>form0-2</inflection>
-					<inflection>form1-0</inflection>
-					<inflection>form1-2</inflection>
-					<inflection>formX</inflection>
-				</inflections>
-				<forms-html><![CDATA[<![CDATA[]]><b>orth</b> pos -suff &lt;i&gt;(form0-0, formX, form0-2; form1-0, formX, form1-2)&lt;/i&gt;<![CDATA[]]]]><![CDATA[>]]></forms-html>
-			</entry>
-		</x:expect>
-	</x:scenario>
-
-	<x:scenario label="Processing a single senseGrp">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<senseGrp></senseGrp>
-			</entry>
-		</x:context>
-		<x:expect label="The result is an empty string. A single senseGrp doesn't need a sequence number.">
-			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></translations-html>
-			</entry>
-		</x:expect>
-	</x:scenario>
-
-	<x:scenario label="Processing several senseGrp">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<senseGrp></senseGrp>
-				<senseGrp></senseGrp>
-			</entry>
-		</x:context>
-		<x:expect label="The result is a sequence of Roman numerals. Numbers are separated by 2 spaces. The last number is followed by 1 space.">
-			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><b>I</b>  <b>II</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
-			</entry>
-		</x:expect>
-	</x:scenario>
-
-	<x:scenario label="Processing a single sense">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<senseGrp>
-					<sense></sense>
-				</senseGrp>
-			</entry>
-		</x:context>
-		<x:expect label="The result is an empty string. A single sense doesn't need a sequence number.">
-			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></translations-html>
-			</entry>
-		</x:expect>
-	</x:scenario>
-
-	<x:scenario label="Processing several sense">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<senseGrp>
-					<sense></sense>
-					<sense></sense>
-				</senseGrp>
-			</entry>
-		</x:context>
-		<x:expect label="The result is a sequence of numbers. Numbers are separated by 2 spaces. The last number is followed by 1 space.">
-			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><b>1</b>  <b>2</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
-			</entry>
-		</x:expect>
-	</x:scenario>
-
-	<x:scenario label="Processing several senseGrp and sense">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<senseGrp>
-					<sense></sense>
-					<sense></sense>
-				</senseGrp>
-				<senseGrp>
-					<sense></sense>
-					<sense></sense>
-				</senseGrp>
-			</entry>
-		</x:context>
-		<x:expect label="Sequence numbers are separated from each other correctly.">
-			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><b>I</b> <b>1</b>  <b>2</b>  <b>II</b> <b>1</b>  <b>2</b> <![CDATA[]]]]><![CDATA[>]]></translations-html>
-			</entry>
-		</x:expect>
+	<x:scenario label="Labels">
+		<x:scenario label="Label before a single sense with a single translation">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<senseGrp>
+						<lbl>lbl</lbl>
+						<sense>
+							<trans>trans</trans>
+						</sense>
+					</senseGrp>
+				</entry>
+			</x:context>
+			<x:expect label="The label is displayed before the translation.">
+				<entry>
+					<translations-html><span class="senseGrp"><i>lbl</i> <span class="sense">trans</span></span></translations-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="Label before a sequence of senses">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<senseGrp>
+						<lbl>lbl</lbl>
+						<sense>
+							<trans>trans1</trans>
+						</sense>
+						<sense>
+							<trans>trans2</trans>
+						</sense>
+					</senseGrp>
+				</entry>
+			</x:context>
+			<x:expect label="The label is displayed before the sequence number.">
+				<entry>
+					<translations-html><span class="senseGrp"><i>lbl</i> <span class="sense numbered"><b>1</b> trans1</span> <span class="sense numbered"><b>2</b> trans2</span></span></translations-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
 	</x:scenario>
 
 	<x:scenario label="Glue string between lbl and lbl">
@@ -308,7 +354,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><i>lbl1</i>, <i>lbl2</i><![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense"><i>lbl1</i>, <i>lbl2</i></span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -326,7 +372,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]>trans <i>lbl</i><![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense">trans <i>lbl</i></span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -344,7 +390,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> trans<![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense"><i>lbl</i> trans</span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -362,7 +408,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]>trans1, trans2<![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense">trans1, trans2</span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -380,7 +426,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> <![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense"><i>lbl</i> </span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -398,7 +444,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]>trans; <![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense">trans; </span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -416,7 +462,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]>; <![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense">; </span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -436,7 +482,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space, formatted bold. Usage examples are bold. A single eg doesn't add space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><b>q1</b><b>, </b><b>q2</b><![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense"><b>q1</b><b>, </b><b>q2</b></span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -456,46 +502,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space. Usage examples are bold. A single eg doesn't add space.">
 			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><b>q</b> trans<![CDATA[]]]]><![CDATA[>]]></translations-html>
-			</entry>
-		</x:expect>
-	</x:scenario>
-
-	<x:scenario label="Processing lbl before sense (single)">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<senseGrp>
-					<lbl>lbl</lbl>
-					<sense>
-						<trans>trans</trans>
-					</sense>
-				</senseGrp>
-			</entry>
-		</x:context>
-		<x:expect label="The label is displayed before the translation">
-			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> trans<![CDATA[]]]]><![CDATA[>]]></translations-html>
-			</entry>
-		</x:expect>
-	</x:scenario>
-
-	<x:scenario label="Processing lbl before sense">
-		<x:context>
-			<entry xmlns="http://dict.hunnor.net">
-				<senseGrp>
-					<lbl>lbl</lbl>
-					<sense>
-						<trans>trans1</trans>
-					</sense>
-					<sense>
-						<trans>trans2</trans>
-					</sense>
-				</senseGrp>
-			</entry>
-		</x:context>
-		<x:expect label="The label is displayed before the translation">
-			<entry>
-				<translations-html><![CDATA[<![CDATA[]]><i>lbl</i> <b>1</b> trans1 <b>2</b> trans2<![CDATA[]]]]><![CDATA[>]]></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense"><b>q</b> trans</span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>

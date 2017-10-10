@@ -3,9 +3,9 @@
 
 	<xsl:output method="text" omit-xml-declaration="yes"/>
 
-	<xsl:strip-space elements="*"/>
-
 	<xsl:param name="direction"/>
+
+	<xsl:strip-space elements="dictionary"/>
 
 	<xsl:template match="dictionary">
 		<xsl:text># HunNor közösségi szótár&#xA;</xsl:text>
@@ -65,6 +65,16 @@
 				<xsl:text>&lt;/r&gt;&#xA;</xsl:text>
 			</xsl:if>
 		</xsl:for-each>
+	</xsl:template>
+
+	<xsl:template match="b|i">
+		<xsl:text>&lt;</xsl:text>
+		<xsl:value-of select="local-name()"/>
+		<xsl:text>&gt;</xsl:text>
+		<xsl:apply-templates/>
+		<xsl:text>&lt;</xsl:text>
+		<xsl:value-of select="local-name()"/>
+		<xsl:text>&gt;</xsl:text>
 	</xsl:template>
 
 </xsl:stylesheet>
