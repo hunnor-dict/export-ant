@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="babylon.xsl">
+
+	<x:param name="direction" select="'dir'"/>
+
+	<x:scenario label="Header">
+		<x:context>
+			<dictionary/>
+		</x:context>
+		<x:expect label="The Babylon file header is generated">
+#bookname=HunNor közösségi szótár DIR
+
+</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Entries">
+		<x:scenario label="When the entry contains a list of dictionary forms and inflected forms">
+			<x:context>
+				<entry>
+					<forms>
+						<form>a</form>
+						<form>b</form>
+					</forms>
+					<inflections>
+						<inflection>b</inflection>
+						<inflection>c</inflection>
+					</inflections>
+				</entry>
+			</x:context>
+			<x:expect label="Then unique forms are listed, separated by the pipe character">a|b|c
+ 
+
+</x:expect>
+		</x:scenario>
+		<x:scenario label="When the entry contains HTML for forms and translations">
+			<x:context>
+				<entry>
+					<forms>
+						<form>a</form>
+					</forms>
+					<forms-html>forms</forms-html>
+					<translations-html>translations</translations-html>
+				</entry>
+			</x:context>
+			<x:expect label="Then forms and translations are separated by a space">a
+forms translations
+
+</x:expect>
+		</x:scenario>
+		<x:scenario label="When the dictionary contains several entries">
+			<x:context>
+				<dictionary>
+					<entry>
+						<forms>
+							<form>a</form>
+						</forms>
+						<forms-html>forms-a</forms-html>
+						<translations-html>translations-a</translations-html>
+					</entry>
+					<entry>
+						<forms>
+							<form>b</form>
+						</forms>
+						<forms-html>forms-b</forms-html>
+						<translations-html>translations-b</translations-html>
+					</entry>
+				</dictionary>
+			</x:context>
+			<x:expect label="Then all entries begin on a new line">
+#bookname=HunNor közösségi szótár DIR
+
+a
+forms-a translations-a
+
+b
+forms-b translations-b
+
+</x:expect>
+		</x:scenario>
+	</x:scenario>
+
+</x:description>

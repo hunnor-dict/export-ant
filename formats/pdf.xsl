@@ -70,7 +70,7 @@
 							<fo:block>Ordboka er lisensiert under GNU General Public License.</fo:block>
 						</fo:block>
 						<fo:block margin-top="0.25in">
-							<fo:external-graphic src="url('../pdf/HunNor-Logo.png')"/>
+							<fo:external-graphic src="url('../images/logo-gold.png')"/>
 						</fo:block>
 					</fo:block>
 				</fo:flow>

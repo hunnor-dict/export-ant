@@ -3,6 +3,8 @@
 
 	<xsl:output method="text" omit-xml-declaration="yes"/>
 
+	<xsl:strip-space elements="dictionary"/>
+
 	<xsl:param name="direction"/>
 
 	<xsl:template match="dictionary">
