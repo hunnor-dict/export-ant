@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="hunnor-ant" default="export">
 
-	<description>Export the dictionary database and convert to various XML based formats. Back up the dictionary database.</description>
+	<description>Convert the dictionary database to various XML based formats.</description>
 
 	<property file="project.properties"/>
 
@@ -11,13 +11,11 @@
 	<property name="stardict.compiler" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
 	<property name="build.dir" location="build"/>
-	<property name="project.dir" location="/opt/hunnor-dict"/>
 
 	<property name="android.indexer" location="../export-lucene/target/export-lucene-1.0.0.jar"/>
 	<property name="sqlite.indexer" location="../export-sqlite/target/export-sqlite-1.0.0.jar"/>
 
-	<property name="deploy.dir" location="${project.dir}/Dropbox"/>
-	<property name="deploy.backup.dir" location="${deploy.dir}/Backup"/>
+	<property name="deploy.dir" location="/opt/hunnor-dict/Dropbox"/>
 	<property name="deploy.public.dir" location="${deploy.dir}/Public"/>
 	<property name="deploy.public.databases.dir" location="${deploy.public.dir}/Databases"/>
 	<property name="deploy.public.exports.dir" location="${deploy.public.dir}/Exports"/>
@@ -26,46 +24,16 @@
 		<mkdir dir="${build.dir}"/>
 	</target>
 
-	<target name="export.dump.hu.check">
-		<condition property="export.dump.hu.missing">
-			<not>
-				<available file="${build.dir}/HunNor-XML-HN.xml"/>
-			</not>
-		</condition>
-	</target>
-
-	<target name="export.dump.nb.check">
-		<condition property="export.dump.nb.missing">
-			<not>
-				<available file="${build.dir}/HunNor-XML-NH.xml"/>
-			</not>
-		</condition>
-	</target>
-
-	<target name="export.dump.hu" depends="build.dir,export.dump.hu.check" if="export.dump.hu.missing">
-		<exec dir="${project.dir}/admin-rails" executable="bundle">
-			<arg line="exec rake hn:export['hu','${build.dir}']"/>
-			<env key="DB_MYSQL_PASS" value="${mysql.password}"/>
-		</exec>
-	</target>
-
-	<target name="export.dump.nb" depends="build.dir,export.dump.nb.check" if="export.dump.nb.missing">
-		<exec dir="${project.dir}/admin-rails" executable="bundle">
-			<arg line="exec rake hn:export['nb','${build.dir}']"/>
-			<env key="DB_MYSQL_PASS" value="${mysql.password}"/>
-		</exec>
-	</target>
-
 	<!-- Simple HTML: An intermediate XML format which is the basis of further transformation to various offline formats. -->
 
-	<target name="export.simple-html.hu" depends="export.dump.hu">
+	<target name="export.simple-html.hu">
 		<xslt style="formats/simple-html.xsl" in="${build.dir}/HunNor-XML-HN.xml" out="${build.dir}/HunNor-SimpleHTML-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${saxon.jar}"/>
 		</xslt>
 	</target>
 
-	<target name="export.simple-html.nb" depends="export.dump.nb">
+	<target name="export.simple-html.nb">
 		<xslt style="formats/simple-html.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-SimpleHTML-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${saxon.jar}"/>
@@ -110,11 +78,11 @@
 
 	<!-- Kindle -->
 
-	<target name="export.kindle.hu" depends="export.dump.hu">
+	<target name="export.kindle.hu">
 		<!-- Intentionally left blank -->
 	</target>
 
-	<target name="export.kindle.nb" depends="export.dump.nb">
+	<target name="export.kindle.nb">
 		<xslt style="formats/kindle.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.html">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${saxon.jar}"/>
@@ -137,7 +105,7 @@
 
 	<!-- PDF -->
 
-	<target name="export.pdf.hu" depends="export.dump.hu">
+	<target name="export.pdf.hu">
 		<exec executable="fop">
 			<arg line="-q -c fonts/fonts.xml -xml ${build.dir}/HunNor-XML-HN.xml -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
 			<env key="JAVA_HOME" value="${java.home}"/>
@@ -145,7 +113,7 @@
 		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${deploy.public.exports.dir}"/>
 	</target>
 
-	<target name="export.pdf.nb" depends="export.dump.nb">
+	<target name="export.pdf.nb">
 		<exec executable="fop">
 			<arg line="-q -c fonts/fonts.xml -xml ${build.dir}/HunNor-XML-NH.xml -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-NH.pdf"/>
 			<env key="JAVA_HOME" value="${java.home}"/>
@@ -337,7 +305,7 @@
 	<target name="export.nb" depends="export.babylon.nb,export.kindle.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb">
 	</target>
 
-	<target name="export.android" depends="export.dump.hu,export.dump.nb">
+	<target name="export.android">
 		<!-- Delete to ensure that the data set is empty -->
 		<delete dir="${build.dir}/hunnor-lucene-index"/>
 		<delete dir="${build.dir}/hunnor-lucene-spelling"/>
@@ -392,24 +360,6 @@
 	</target>
 
 	<target name="export" depends="export.cleanup.all">
-	</target>
-
-	<!-- Backup -->
-
-	<target name="week.of.year">
-		<tstamp>
-			<format property="week" pattern="w"/>
-		</tstamp>
-	</target>
-
-	<target name="backup" depends="week.of.year">
-		<exec executable="mysqldump" output="hunnor.MySQL.${week}.sql">
-			<arg line="-u hunnor hunnor hn_hun_segment hn_hun_tr_nob_tmp hn_nob_segment hn_nob_tr_hun_tmp"></arg>
-		</exec>
-		<gzip src="hunnor.MySQL.${week}.sql" destfile="hunnor.MySQL.${week}.sql.gz"/>
-		<delete file="hunnor.MySQL.${week}.sql"/>
-		<copy file="hunnor.MySQL.${week}.sql.gz" tofile="${deploy.public.databases.dir}/HunNor-MySQL.sql.gz"/>
-		<move file="hunnor.MySQL.${week}.sql.gz" todir="${deploy.backup.dir}"/>
 	</target>
 
 </project>

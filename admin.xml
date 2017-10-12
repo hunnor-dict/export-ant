@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="hunnor-admin-ant" default="dump">
+
+	<description>Export the dictionary database to XML. Back up the dictionary database.</description>
+
+	<property file="project.properties"/>
+
+	<property name="build.dir" location="build"/>
+	<property name="project.dir" location="/opt/hunnor-dict"/>
+
+	<property name="deploy.dir" location="/opt/hunnor-dict/Dropbox"/>
+	<property name="deploy.backup.dir" location="${deploy.dir}/Backup"/>
+	<property name="deploy.public.dir" location="${deploy.dir}/Public"/>
+	<property name="deploy.public.databases.dir" location="${deploy.public.dir}/Databases"/>
+
+	<!-- Export -->
+
+	<target name="build.dir">
+		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="dump.hu" depends="build.dir">
+		<exec dir="${project.dir}/admin-rails" executable="bundle">
+			<arg line="exec rake hn:export['hu','${build.dir}']"/>
+			<env key="DB_MYSQL_PASS" value="${mysql.password}"/>
+		</exec>
+	</target>
+
+	<target name="dump.nb" depends="build.dir">
+		<exec dir="${project.dir}/admin-rails" executable="bundle">
+			<arg line="exec rake hn:export['nb','${build.dir}']"/>
+			<env key="DB_MYSQL_PASS" value="${mysql.password}"/>
+		</exec>
+	</target>
+
+	<target name="dump" depends="dump.hu,dump.nb"/>
+
+	<!-- Backup -->
+
+	<target name="week.of.year">
+		<tstamp>
+			<format property="week" pattern="w"/>
+		</tstamp>
+	</target>
+
+	<target name="backup" depends="week.of.year">
+		<exec executable="mysqldump" output="hunnor.MySQL.${week}.sql">
+			<arg line="-u hunnor hunnor hn_hun_segment hn_hun_tr_nob_tmp hn_nob_segment hn_nob_tr_hun_tmp"/>
+		</exec>
+		<gzip src="hunnor.MySQL.${week}.sql" destfile="hunnor.MySQL.${week}.sql.gz"/>
+		<delete file="hunnor.MySQL.${week}.sql"/>
+		<copy file="hunnor.MySQL.${week}.sql.gz" tofile="${deploy.public.databases.dir}/HunNor-MySQL.sql.gz"/>
+		<move file="hunnor.MySQL.${week}.sql.gz" todir="${deploy.backup.dir}"/>
+	</target>
+
+</project>
