@@ -20,6 +20,9 @@
 	<property name="env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR" location="${env.HUNNOR_ANT_DEPLOY_PUB_DIR}/Databases"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR" location="${env.HUNNOR_ANT_DEPLOY_PUB_DIR}/Exports"/>
 
+	<property name="env.HUNNOR_ANT_DUMP_HU" location="${build.dir}/HunNor-XML-HN.xml"/>
+	<property name="env.HUNNOR_ANT_DUMP_NB" location="${build.dir}/HunNor-XML-NH.xml"/>
+
 	<target name="build.dir">
 		<mkdir dir="${build.dir}"/>
 	</target>
@@ -27,14 +30,14 @@
 	<!-- Simple HTML: An intermediate XML format which is the basis of further transformation to various offline formats. -->
 
 	<target name="export.simple-html.hu">
-		<xslt style="formats/simple-html.xsl" in="${build.dir}/HunNor-XML-HN.xml" out="${build.dir}/HunNor-SimpleHTML-HN.xml" force="true">
+		<xslt style="formats/simple-html.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${build.dir}/HunNor-SimpleHTML-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
 	<target name="export.simple-html.nb">
-		<xslt style="formats/simple-html.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-SimpleHTML-NH.xml" force="true">
+		<xslt style="formats/simple-html.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-SimpleHTML-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
@@ -83,11 +86,11 @@
 	</target>
 
 	<target name="export.kindle.nb">
-		<xslt style="formats/kindle.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.html">
+		<xslt style="formats/kindle.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Kindle-NH.html">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
-		<xslt style="formats/kindle-opf.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.opf">
+		<xslt style="formats/kindle-opf.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Kindle-NH.opf">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="contentFile" expression="HunNor-Kindle-NH.html"/>
@@ -107,7 +110,7 @@
 
 	<target name="export.pdf.hu">
 		<exec executable="fop">
-			<arg line="-q -c fonts/fonts.xml -xml ${build.dir}/HunNor-XML-HN.xml -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
+			<arg line="-q -c fonts/fonts.xml -xml ${env.HUNNOR_ANT_DUMP_HU} -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
 			<env key="env.HUNNOR_ANT_JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
 		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
@@ -115,7 +118,7 @@
 
 	<target name="export.pdf.nb">
 		<exec executable="fop">
-			<arg line="-q -c fonts/fonts.xml -xml ${build.dir}/HunNor-XML-NH.xml -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-NH.pdf"/>
+			<arg line="-q -c fonts/fonts.xml -xml ${env.HUNNOR_ANT_DUMP_NB} -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-NH.pdf"/>
 			<env key="env.HUNNOR_ANT_JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
 		<move file="${build.dir}/HunNor-PDF-NH.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
@@ -312,10 +315,10 @@
 		<delete file="${build.dir}/HunNor-Lucene.zip"/>
 		<!-- Index -->
 		<exec executable="java">
-			<arg line="-jar ${env.HUNNOR_ANT_ANDROID_JAR} -l hu -x ${build.dir}/HunNor-XML-HN.xml -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
+			<arg line="-jar ${env.HUNNOR_ANT_ANDROID_JAR} -l hu -x ${env.HUNNOR_ANT_DUMP_HU} -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
 		</exec>
 		<exec executable="java">
-			<arg line="-jar ${env.HUNNOR_ANT_ANDROID_JAR} -l no -x ${build.dir}/HunNor-XML-NH.xml -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
+			<arg line="-jar ${env.HUNNOR_ANT_ANDROID_JAR} -l no -x ${env.HUNNOR_ANT_DUMP_NB} -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
 		</exec>
 		<!-- Archive Lucene index -->
 		<zip destfile="${build.dir}/HunNor-Lucene.zip" level="9" filesonly="yes">
@@ -344,16 +347,16 @@
 
 	<target name="export.cleanup.hu" depends="export.all">
 		<delete file="${build.dir}/HunNor-SimpleHTML-HN.xml"/>
-		<gzip src="${build.dir}/HunNor-XML-HN.xml" destfile="${build.dir}/HunNor-XML-HN.xml.gz"/>
-		<delete file="${build.dir}/HunNor-XML-HN.xml"/>
-		<move file="${build.dir}/HunNor-XML-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_DUMP_HU}" destfile="${env.HUNNOR_ANT_DUMP_HU}.gz"/>
+		<delete file="${env.HUNNOR_ANT_DUMP_HU}"/>
+		<move file="${env.HUNNOR_ANT_DUMP_HU}.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.cleanup.nb" depends="export.all">
 		<delete file="${build.dir}/HunNor-SimpleHTML-NH.xml"/>
-		<gzip src="${build.dir}/HunNor-XML-NH.xml" destfile="${build.dir}/HunNor-XML-NH.xml.gz"/>
-		<delete file="${build.dir}/HunNor-XML-NH.xml"/>
-		<move file="${build.dir}/HunNor-XML-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_DUMP_NB}" destfile="${env.HUNNOR_ANT_DUMP_NB}.gz"/>
+		<delete file="${env.HUNNOR_ANT_DUMP_NB}"/>
+		<move file="${env.HUNNOR_ANT_DUMP_NB}.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.cleanup.all" depends="export.cleanup.hu,export.cleanup.nb">
