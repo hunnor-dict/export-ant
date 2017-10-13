@@ -3,22 +3,22 @@
 
 	<description>Convert the dictionary database to various XML based formats.</description>
 
-	<property file="project.properties"/>
-
-	<property name="java.home" location="/usr/lib/jvm/java-8-openjdk-amd64/jre"/>
-	<property name="kindle.compiler" location="/opt/kindlegen-2.9-amazon/kindlegen"/>
-	<property name="saxon.jar" location="/opt/saxon-9-he/saxon9he.jar"/>
-	<property name="stardict.compiler" location="/usr/lib/stardict-tools/stardict-text2bin"/>
-
 	<property name="build.dir" location="build"/>
 
-	<property name="android.indexer" location="../export-lucene/target/export-lucene-1.0.0.jar"/>
-	<property name="sqlite.indexer" location="../export-sqlite/target/export-sqlite-1.0.0.jar"/>
+	<property environment="env"/>
 
-	<property name="deploy.dir" location="/opt/hunnor-dict/Dropbox"/>
-	<property name="deploy.public.dir" location="${deploy.dir}/Public"/>
-	<property name="deploy.public.databases.dir" location="${deploy.public.dir}/Databases"/>
-	<property name="deploy.public.exports.dir" location="${deploy.public.dir}/Exports"/>
+	<property name="env.HUNNOR_ANT_JAVA_HOME" location="/usr/lib/jvm/java-8-openjdk-amd64/jre"/>
+	<property name="env.HUNNOR_ANT_KINDLE_COMPILER" location="/opt/kindlegen-2.9-amazon/kindlegen"/>
+	<property name="env.HUNNOR_ANT_SAXON_JAR" location="/opt/saxon-9-he/saxon9he.jar"/>
+	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
+
+	<property name="env.HUNNOR_ANT_ANDROID_JAR" location="../export-lucene/target/export-lucene-1.0.0.jar"/>
+	<property name="env.HUNNOR_ANT_SQLITE_JAR" location="../export-sqlite/target/export-sqlite-1.0.0.jar"/>
+
+	<property name="env.HUNNOR_ANT_DEPLOY_DIR" location="/opt/hunnor-dict/Dropbox"/>
+	<property name="env.HUNNOR_ANT_DEPLOY_PUB_DIR" location="${env.HUNNOR_ANT_DEPLOY_DIR}/Public"/>
+	<property name="env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR" location="${env.HUNNOR_ANT_DEPLOY_PUB_DIR}/Databases"/>
+	<property name="env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR" location="${env.HUNNOR_ANT_DEPLOY_PUB_DIR}/Exports"/>
 
 	<target name="build.dir">
 		<mkdir dir="${build.dir}"/>
@@ -29,14 +29,14 @@
 	<target name="export.simple-html.hu">
 		<xslt style="formats/simple-html.xsl" in="${build.dir}/HunNor-XML-HN.xml" out="${build.dir}/HunNor-SimpleHTML-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
 	<target name="export.simple-html.nb">
 		<xslt style="formats/simple-html.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-SimpleHTML-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
@@ -45,7 +45,7 @@
 	<target name="export.babylon.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/babylon.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-BB-HN.gls" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
@@ -53,7 +53,7 @@
 	<target name="export.babylon.convert.nb" depends="export.simple-html.nb">
 		<xslt style="formats/babylon.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-BB-NH.gls" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 	</target>
@@ -61,13 +61,13 @@
 	<target name="export.babylon.deploy.hu" depends="export.babylon.convert.hu">
 		<gzip src="${build.dir}/HunNor-BB-HN.gls" destfile="${build.dir}/HunNor-BB-HN.gls.gz"/>
 		<delete file="${build.dir}/HunNor-BB-HN.gls"/>
-		<move file="${build.dir}/HunNor-BB-HN.gls.gz" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-BB-HN.gls.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.babylon.deploy.nb" depends="export.babylon.convert.nb">
 		<gzip src="${build.dir}/HunNor-BB-NH.gls" destfile="${build.dir}/HunNor-BB-NH.gls.gz"/>
 		<delete file="${build.dir}/HunNor-BB-NH.gls"/>
-		<move file="${build.dir}/HunNor-BB-NH.gls.gz" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-BB-NH.gls.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.babylon.hu" depends="export.babylon.deploy.hu">
@@ -85,22 +85,22 @@
 	<target name="export.kindle.nb">
 		<xslt style="formats/kindle.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.html">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 		<xslt style="formats/kindle-opf.xsl" in="${build.dir}/HunNor-XML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.opf">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="contentFile" expression="HunNor-Kindle-NH.html"/>
 			<param name="logoFile" expression="../images/logo-colors.png"/>
 			<param name="inLanguage" expression="pt"/>
 			<param name="outLanguage" expression="hu"/>
 		</xslt>
-		<exec dir="${build.dir}" executable="${kindle.compiler}">
+		<exec dir="${build.dir}" executable="${env.HUNNOR_ANT_KINDLE_COMPILER}">
 			<arg line="HunNor-Kindle-NH.opf"/>
 		</exec>
 		<delete file="${build.dir}/HunNor-Kindle-NH.html"/>
 		<delete file="${build.dir}/HunNor-Kindle-NH.opf"/>
-		<move file="${build.dir}/HunNor-Kindle-NH.mobi" todir="${deploy.public.exports.dir}"/>
+		<move file="${build.dir}/HunNor-Kindle-NH.mobi" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<!-- PDF -->
@@ -108,17 +108,17 @@
 	<target name="export.pdf.hu">
 		<exec executable="fop">
 			<arg line="-q -c fonts/fonts.xml -xml ${build.dir}/HunNor-XML-HN.xml -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
-			<env key="JAVA_HOME" value="${java.home}"/>
+			<env key="env.HUNNOR_ANT_JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
-		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${deploy.public.exports.dir}"/>
+		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.pdf.nb">
 		<exec executable="fop">
 			<arg line="-q -c fonts/fonts.xml -xml ${build.dir}/HunNor-XML-NH.xml -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-NH.pdf"/>
-			<env key="JAVA_HOME" value="${java.home}"/>
+			<env key="env.HUNNOR_ANT_JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
-		<move file="${build.dir}/HunNor-PDF-NH.pdf" todir="${deploy.public.exports.dir}"/>
+		<move file="${build.dir}/HunNor-PDF-NH.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<!-- SDictionary: A text file format that can be compiled to a binary .dct dictionary file with the tools included in the SDictionary project. -->
@@ -126,7 +126,7 @@
 	<target name="export.sdict.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/sdict.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-SD-HN.sdct" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
@@ -134,7 +134,7 @@
 	<target name="export.sdict.convert.nb" depends="export.simple-html.nb">
 		<xslt style="formats/sdict.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-SD-NH.sdct" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 	</target>
@@ -142,13 +142,13 @@
 	<target name="export.sdict.deploy.hu" depends="export.sdict.convert.hu">
 		<gzip src="${build.dir}/HunNor-SD-HN.sdct" destfile="${build.dir}/HunNor-SD-HN.sdct.gz"/>
 		<delete file="${build.dir}/HunNor-SD-HN.sdct"/>
-		<move file="${build.dir}/HunNor-SD-HN.sdct.gz" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-SD-HN.sdct.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.sdict.deploy.nb" depends="export.sdict.convert.nb">
 		<gzip src="${build.dir}/HunNor-SD-NH.sdct" destfile="${build.dir}/HunNor-SD-NH.sdct.gz"/>
 		<delete file="${build.dir}/HunNor-SD-NH.sdct"/>
-		<move file="${build.dir}/HunNor-SD-NH.sdct.gz" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-SD-NH.sdct.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.sdict.hu" depends="export.sdict.deploy.hu">
@@ -162,7 +162,7 @@
 	<target name="export.stardict.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-ST-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
@@ -170,13 +170,13 @@
 	<target name="export.stardict.convert.nb" depends="export.simple-html.nb">
 		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-ST-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 	</target>
 
 	<target name="export.stardict.compile.hu" depends="export.stardict.convert.hu">
-		<exec executable="${stardict.compiler}">
+		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
 			<arg line="${build.dir}/HunNor-ST-HN.xml ${build.dir}/HunNor-ST-HN.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
@@ -188,7 +188,7 @@
 	</target>
 
 	<target name="export.stardict.compile.nb" depends="export.stardict.convert.nb">
-		<exec executable="${stardict.compiler}">
+		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
 			<arg line="${build.dir}/HunNor-ST-NH.xml ${build.dir}/HunNor-ST-NH.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
@@ -207,7 +207,7 @@
 		<delete file="${build.dir}/HunNor-ST-HN.ifo"/>
 		<delete file="${build.dir}/HunNor-ST-HN.idx"/>
 		<delete file="${build.dir}/HunNor-ST-HN.syn"/>
-		<move file="${build.dir}/HunNor-ST-HN.zip" todir="${deploy.public.exports.dir}"/>
+		<move file="${build.dir}/HunNor-ST-HN.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.stardict.deploy.nb" depends="export.stardict.compile.nb">
@@ -218,23 +218,23 @@
 		<delete file="${build.dir}/HunNor-ST-NH.ifo"/>
 		<delete file="${build.dir}/HunNor-ST-NH.idx"/>
 		<delete file="${build.dir}/HunNor-ST-NH.syn"/>
-		<move file="${build.dir}/HunNor-ST-NH.zip" todir="${deploy.public.exports.dir}"/>
+		<move file="${build.dir}/HunNor-ST-NH.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.stardict.nosym.num.convert.hu" depends="export.stardict.convert.hu">
 		<xslt style="formats/stardict-nosym-number.xsl" in="${build.dir}/HunNor-ST-HN.xml" out="${build.dir}/HunNor-ST-NoSym-Number-HN.xml">
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
 	<target name="export.stardict.nosym.num.convert.nb" depends="export.stardict.convert.nb">
 		<xslt style="formats/stardict-nosym-number.xsl" in="${build.dir}/HunNor-ST-NH.xml" out="${build.dir}/HunNor-ST-NoSym-Number-NH.xml">
-			<classpath location="${saxon.jar}"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
 	<target name="export.stardict.nosym.num.compile.hu" depends="export.stardict.nosym.num.convert.hu">
-		<exec executable="${stardict.compiler}">
+		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
 			<arg line="${build.dir}/HunNor-ST-NoSym-Number-HN.xml ${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
@@ -246,7 +246,7 @@
 	</target>
 
 	<target name="export.stardict.nosym.num.compile.nb" depends="export.stardict.nosym.num.convert.nb">
-		<exec executable="${stardict.compiler}">
+		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
 			<arg line="${build.dir}/HunNor-ST-NoSym-Number-NH.xml ${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
@@ -265,7 +265,7 @@
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.idx"/>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.syn"/>
-		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.zip" todir="${deploy.public.exports.dir}"/>
+		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.stardict.nosym.num.deploy.nb" depends="export.stardict.nosym.num.compile.nb">
@@ -276,25 +276,25 @@
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.idx"/>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.syn"/>
-		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.zip" todir="${deploy.public.exports.dir}"/>
+		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.stardict.hu" depends="export.stardict.deploy.hu,export.stardict.nosym.num.deploy.hu">
 		<gzip src="${build.dir}/HunNor-ST-HN.xml" destfile="${build.dir}/HunNor-ST-HN.xml.gz"/>
 		<delete file="${build.dir}/HunNor-ST-HN.xml"/>
-		<move file="${build.dir}/HunNor-ST-HN.xml.gz" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-ST-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 		<gzip src="${build.dir}/HunNor-ST-NoSym-Number-HN.xml" destfile="${build.dir}/HunNor-ST-NoSym-Number-HN.xml.gz"/>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.xml"/>
-		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.xml.gz" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.stardict.nb" depends="export.stardict.deploy.nb,export.stardict.nosym.num.deploy.nb">
 		<gzip src="${build.dir}/HunNor-ST-NH.xml" destfile="${build.dir}/HunNor-ST-NH.xml.gz"/>
 		<delete file="${build.dir}/HunNor-ST-NH.xml"/>
-		<move file="${build.dir}/HunNor-ST-NH.xml.gz" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-ST-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 		<gzip src="${build.dir}/HunNor-ST-NoSym-Number-NH.xml" destfile="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz"/>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml"/>
-		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<!-- Top-level export targets -->
@@ -312,17 +312,17 @@
 		<delete file="${build.dir}/HunNor-Lucene.zip"/>
 		<!-- Index -->
 		<exec executable="java">
-			<arg line="-jar ${android.indexer} -l hu -x ${build.dir}/HunNor-XML-HN.xml -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
+			<arg line="-jar ${env.HUNNOR_ANT_ANDROID_JAR} -l hu -x ${build.dir}/HunNor-XML-HN.xml -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
 		</exec>
 		<exec executable="java">
-			<arg line="-jar ${android.indexer} -l no -x ${build.dir}/HunNor-XML-NH.xml -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
+			<arg line="-jar ${env.HUNNOR_ANT_ANDROID_JAR} -l no -x ${build.dir}/HunNor-XML-NH.xml -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
 		</exec>
 		<!-- Archive Lucene index -->
 		<zip destfile="${build.dir}/HunNor-Lucene.zip" level="9" filesonly="yes">
 			<zipfileset dir="${build.dir}/hunnor-lucene-index" prefix="hunnor-lucene-index"/>
 			<zipfileset dir="${build.dir}/hunnor-lucene-spelling" prefix="hunnor-lucene-spelling"/>
 		</zip>
-		<move file="${build.dir}/HunNor-Lucene.zip" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-Lucene.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 		<!-- Delete again to clean up obsolete files -->
 		<delete dir="${build.dir}/hunnor-lucene-index"/>
 		<delete dir="${build.dir}/hunnor-lucene-spelling"/>
@@ -331,12 +331,12 @@
 	<target name="export.sqlite" depends="export.simple-html.hu,export.simple-html.nb">
 		<delete file="${build.dir}/HunNor-SQLite.sqlite3"/>
 		<exec executable="java">
-			<arg line="-jar ${sqlite.indexer} -l hu -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SimpleHTML-HN.xml"/>
+			<arg line="-jar ${env.HUNNOR_ANT_SQLITE_JAR} -l hu -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SimpleHTML-HN.xml"/>
 		</exec>
 		<exec executable="java">
-			<arg line="-jar ${sqlite.indexer} -l nb -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SimpleHTML-NH.xml"/>
+			<arg line="-jar ${env.HUNNOR_ANT_SQLITE_JAR} -l nb -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SimpleHTML-NH.xml"/>
 		</exec>
-		<move file="${build.dir}/HunNor-SQLite.sqlite3" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-SQLite.sqlite3" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.all" depends="build.dir,export.hu,export.nb,export.android,export.sqlite">
@@ -346,14 +346,14 @@
 		<delete file="${build.dir}/HunNor-SimpleHTML-HN.xml"/>
 		<gzip src="${build.dir}/HunNor-XML-HN.xml" destfile="${build.dir}/HunNor-XML-HN.xml.gz"/>
 		<delete file="${build.dir}/HunNor-XML-HN.xml"/>
-		<move file="${build.dir}/HunNor-XML-HN.xml.gz" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-XML-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.cleanup.nb" depends="export.all">
 		<delete file="${build.dir}/HunNor-SimpleHTML-NH.xml"/>
 		<gzip src="${build.dir}/HunNor-XML-NH.xml" destfile="${build.dir}/HunNor-XML-NH.xml.gz"/>
 		<delete file="${build.dir}/HunNor-XML-NH.xml"/>
-		<move file="${build.dir}/HunNor-XML-NH.xml.gz" todir="${deploy.public.databases.dir}"/>
+		<move file="${build.dir}/HunNor-XML-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.cleanup.all" depends="export.cleanup.hu,export.cleanup.nb">
