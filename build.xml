@@ -339,6 +339,7 @@
 		<exec executable="java">
 			<arg line="-jar ${env.HUNNOR_ANT_SQLITE_JAR} -l nb -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SimpleHTML-NH.xml"/>
 		</exec>
+		<mkdir dir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 		<move file="${build.dir}/HunNor-SQLite.sqlite3" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
