@@ -332,15 +332,25 @@
 	</target>
 
 	<target name="export.sqlite" depends="export.simple-html.hu,export.simple-html.nb">
+		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-SQLite-HN.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+		</xslt>
+		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-SQLite-NH.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+		</xslt>
 		<delete file="${build.dir}/HunNor-SQLite.sqlite3"/>
 		<exec executable="java">
-			<arg line="-jar ${env.HUNNOR_ANT_SQLITE_JAR} -l hu -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SimpleHTML-HN.xml"/>
+			<arg line="-jar ${env.HUNNOR_ANT_SQLITE_JAR} -l hu -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SQLite-HN.xml"/>
 		</exec>
 		<exec executable="java">
-			<arg line="-jar ${env.HUNNOR_ANT_SQLITE_JAR} -l nb -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SimpleHTML-NH.xml"/>
+			<arg line="-jar ${env.HUNNOR_ANT_SQLITE_JAR} -l nb -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SQLite-NH.xml"/>
 		</exec>
 		<mkdir dir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 		<move file="${build.dir}/HunNor-SQLite.sqlite3" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<delete file="${build.dir}/HunNor-SQLite-HN.xml"/>
+		<delete file="${build.dir}/HunNor-SQLite-NH.xml"/>
 	</target>
 
 	<target name="export.all" depends="build.dir,export.hu,export.nb,export.android,export.sqlite">
