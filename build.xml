@@ -111,7 +111,7 @@
 	<target name="export.pdf.hu">
 		<exec executable="fop">
 			<arg line="-q -c fonts/fonts.xml -xml ${env.HUNNOR_ANT_DUMP_HU} -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
-			<env key="env.HUNNOR_ANT_JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
+			<env key="JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
 		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
