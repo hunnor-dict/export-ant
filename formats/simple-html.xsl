@@ -88,21 +88,23 @@
 		</xsl:if>
 	</xsl:template>
 
+	<xsl:template match="dict:inflPar[1]">
+		<xsl:text> </xsl:text>
+		<i>
+			<xsl:text>(</xsl:text>
+			<xsl:apply-templates select="../dict:inflPar" mode="inflPar"/>
+			<xsl:text>)</xsl:text>
+		</i>
+	</xsl:template>
+
 	<xsl:template match="dict:inflPar">
-		<xsl:choose>
-			<xsl:when test="preceding-sibling::dict:inflPar">
-				<xsl:text>; </xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text disable-output-escaping="yes"> &lt;i&gt;(</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template match="dict:inflPar" mode="inflPar">
+		<xsl:if test="preceding-sibling::dict:inflPar">
+			<xsl:text>; </xsl:text>
+		</xsl:if>
 		<xsl:apply-templates/>
-		<xsl:choose>
-			<xsl:when test="not(following-sibling::dict:inflPar)">
-				<xsl:text disable-output-escaping="yes">)&lt;/i&gt;</xsl:text>
-			</xsl:when>
-		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="dict:inflSeq">

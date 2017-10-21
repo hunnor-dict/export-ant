@@ -177,7 +177,7 @@
 						<inflection>form0-1</inflection>
 						<inflection>form0-2</inflection>
 					</inflections>
-					<forms-html><b>orth</b> pos -suff &lt;i&gt;(form0-0, form0-1, form0-2)&lt;/i&gt;</forms-html>
+					<forms-html><b>orth</b> pos -suff <i>(form0-0, form0-1, form0-2)</i></forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -216,7 +216,7 @@
 						<inflection>form1-2</inflection>
 						<inflection>formX</inflection>
 					</inflections>
-					<forms-html><b>orth</b> pos -suff &lt;i&gt;(form0-0, formX, form0-2; form1-0, formX, form1-2)&lt;/i&gt;</forms-html>
+					<forms-html><b>orth</b> pos -suff <i>(form0-0, formX, form0-2; form1-0, formX, form1-2)</i></forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
