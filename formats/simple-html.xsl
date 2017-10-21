@@ -92,7 +92,7 @@
 
 	<xsl:template match="dict:inflPar[1]">
 		<xsl:text> </xsl:text>
-		<i>
+		<i class="infl">
 			<xsl:text>(</xsl:text>
 			<xsl:apply-templates select="../dict:inflPar" mode="inflPar"/>
 			<xsl:text>)</xsl:text>
