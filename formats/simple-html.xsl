@@ -77,7 +77,9 @@
 	<xsl:template match="dict:pos">
 		<xsl:if test="ancestor::dict:form[@primary = 'yes']">
 			<xsl:text> </xsl:text>
-			<xsl:apply-templates/>
+			<i class="pos">
+				<xsl:apply-templates/>
+			</i>
 		</xsl:if>
 	</xsl:template>
 

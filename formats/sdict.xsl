@@ -68,13 +68,17 @@
 	</xsl:template>
 
 	<xsl:template match="b|i">
-		<xsl:text>&lt;</xsl:text>
-		<xsl:value-of select="local-name()"/>
-		<xsl:text>&gt;</xsl:text>
+		<xsl:if test="not(@class = 'pos')">
+			<xsl:text>&lt;</xsl:text>
+			<xsl:value-of select="local-name()"/>
+			<xsl:text>&gt;</xsl:text>
+		</xsl:if>
 		<xsl:apply-templates/>
-		<xsl:text>&lt;</xsl:text>
-		<xsl:value-of select="local-name()"/>
-		<xsl:text>&gt;</xsl:text>
+		<xsl:if test="not(@class = 'pos')">
+			<xsl:text>&lt;</xsl:text>
+			<xsl:value-of select="local-name()"/>
+			<xsl:text>&gt;</xsl:text>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>
