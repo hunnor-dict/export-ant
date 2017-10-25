@@ -12,7 +12,7 @@
 	<property name="env.HUNNOR_ANT_SAXON_JAR" location="/opt/saxon-9-he/saxon9he.jar"/>
 	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
-	<property name="env.HUNNOR_ANT_ANDROID_JAR" location="../export-lucene/target/export-lucene-1.0.0.jar"/>
+	<property name="env.HUNNOR_ANT_LUCENE_JAR" location="../export-lucene/target/export-lucene-1.0.0.jar"/>
 	<property name="env.HUNNOR_ANT_SQLITE_JAR" location="../export-sqlite/target/export-sqlite-1.0.0.jar"/>
 
 	<property name="env.HUNNOR_ANT_DEPLOY_DIR" location="/opt/hunnor-dict/Dropbox"/>
@@ -315,10 +315,10 @@
 		<delete file="${build.dir}/HunNor-Lucene.zip"/>
 		<!-- Index -->
 		<exec executable="java">
-			<arg line="-jar ${env.HUNNOR_ANT_ANDROID_JAR} -l hu -x ${env.HUNNOR_ANT_DUMP_HU} -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
+			<arg line="-jar ${env.HUNNOR_ANT_LUCENE_JAR} -l hu -x ${env.HUNNOR_ANT_DUMP_HU} -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
 		</exec>
 		<exec executable="java">
-			<arg line="-jar ${env.HUNNOR_ANT_ANDROID_JAR} -l no -x ${env.HUNNOR_ANT_DUMP_NB} -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
+			<arg line="-jar ${env.HUNNOR_ANT_LUCENE_JAR} -l no -x ${env.HUNNOR_ANT_DUMP_NB} -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
 		</exec>
 		<!-- Archive Lucene index -->
 		<zip destfile="${build.dir}/HunNor-Lucene.zip" level="9" filesonly="yes">
