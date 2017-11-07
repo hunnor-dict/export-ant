@@ -62,7 +62,9 @@
 		<xsl:if test="preceding-sibling::dict:form">
 			<xsl:text> </xsl:text>
 		</xsl:if>
-		<xsl:apply-templates/>
+		<span class="form">
+			<xsl:apply-templates/>
+		</span>
 	</xsl:template>
 
 	<xsl:template match="dict:orth">
