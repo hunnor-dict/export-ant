@@ -50,9 +50,11 @@
 					</formGrp>
 				</entry>
 			</x:context>
-			<x:expect label="The result is an empty string.">
+			<x:expect label="The result is an empty form span.">
 				<entry>
-					<forms-html></forms-html>
+					<forms-html>
+						<span class="form"></span>
+					</forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -74,7 +76,11 @@
 					<forms>
 						<form>orth</form>
 					</forms>
-					<forms-html><b>orth</b></forms-html>
+					<forms-html>
+						<span class="form">
+							<b>orth</b>
+						</span>
+					</forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -95,7 +101,11 @@
 						<form>orth1</form>
 						<form>orth2</form>
 					</forms>
-					<forms-html><b>orth1</b><b>, </b><b>orth2</b></forms-html>
+					<forms-html>
+						<span class="form">
+							<b>orth1</b><b>, </b><b>orth2</b>
+						</span>
+					</forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -120,7 +130,15 @@
 						<form>orth1</form>
 						<form>orth2</form>
 					</forms>
-					<forms-html><b>orth1</b> <i class="pos">pos1</i> <b>orth2</b></forms-html>
+					<forms-html>
+						<span class="form">
+							<b>orth1</b> <i class="pos">pos1</i>
+						</span>
+						 
+						<span class="form">
+							<b>orth2</b>
+						</span>
+					</forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -145,7 +163,7 @@
 					<forms>
 						<form>orth</form>
 					</forms>
-					<forms-html><b>orth</b> <i class="pos">pos</i> -suff</forms-html>
+					<forms-html><span class="form"><b>orth</b> <i class="pos">pos</i> -suff</span></forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -177,7 +195,11 @@
 						<inflection>form0-1</inflection>
 						<inflection>form0-2</inflection>
 					</inflections>
-					<forms-html><b>orth</b> <i class="pos">pos</i> -suff <i class="infl">(form0-0, form0-1, form0-2)</i></forms-html>
+					<forms-html>
+						<span class="form">
+							<b>orth</b> <i class="pos">pos</i> -suff <i class="infl">(form0-0, form0-1, form0-2)</i>
+						</span>
+					</forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -216,7 +238,11 @@
 						<inflection>form1-2</inflection>
 						<inflection>formX</inflection>
 					</inflections>
-					<forms-html><b>orth</b> <i class="pos">pos</i> -suff <i class="infl">(form0-0, formX, form0-2; form1-0, formX, form1-2)</i></forms-html>
+					<forms-html>
+						<span class="form">
+							<b>orth</b> <i class="pos">pos</i> -suff <i class="infl">(form0-0, formX, form0-2; form1-0, formX, form1-2)</i>
+						</span>
+					</forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -276,7 +302,7 @@
 			</x:context>
 			<x:expect label="The result is a sequence of spans with the sequence number in bold. The spans are separated by a single space. The numbers are followed by a single space.">
 				<entry>
-					<translations-html><span class="senseGrp"><span class="sense numbered"><b>1</b> </span> <span class="sense numbered"><b>2</b> </span></span></translations-html>
+					<translations-html><span class="senseGrp"><span class="sense numbered"><b>1</b> </span><span class="sense numbered"><span class="senseGlue"> </span><b>2</b> </span></span></translations-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -295,7 +321,7 @@
 			</x:context>
 			<x:expect label="Sequence numbers are separated from each other correctly.">
 				<entry>
-					<translations-html><span class="senseGrp numbered"><b>I</b> <span class="sense numbered"><b>1</b> </span> <span class="sense numbered"><b>2</b> </span></span> <span class="senseGrp numbered"><b>II</b> <span class="sense numbered"><b>1</b> </span> <span class="sense numbered"><b>2</b> </span></span></translations-html>
+					<translations-html><span class="senseGrp numbered"><b>I</b> <span class="sense numbered"><b>1</b> </span> <span class="sense numbered"><span class="senseGlue"> </span><b>2</b> </span></span> <span class="senseGrp numbered"><b>II</b> <span class="sense numbered"><b>1</b> </span> <span class="sense numbered"><span class="senseGlue"> </span><b>2</b> </span></span></translations-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -335,7 +361,7 @@
 			</x:context>
 			<x:expect label="The label is displayed before the sequence number.">
 				<entry>
-					<translations-html><span class="senseGrp"><i>lbl</i> <span class="sense numbered"><b>1</b> trans1</span> <span class="sense numbered"><b>2</b> trans2</span></span></translations-html>
+					<translations-html><span class="senseGrp"><i>lbl</i> <span class="sense numbered"><b>1</b> trans1</span> <span class="sense numbered"><span class="senseGlue"> </span><b>2</b> trans2</span></span></translations-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
