@@ -32,6 +32,12 @@
 		</translation>
 	</xsl:template>
 
+	<xsl:template match="span[@class='senseGlue']">
+		<xsl:if test="ancestor::span[@class='senseGrp numbered']">
+			<xsl:apply-templates/>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template match="i">
 		<xsl:choose>
 			<xsl:when test="@class = 'infl'"/>
