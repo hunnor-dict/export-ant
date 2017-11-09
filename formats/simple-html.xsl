@@ -139,7 +139,9 @@
 			<xsl:if test="count(../dict:sense) > 1">
 				<xsl:attribute name="class" select="'sense numbered'"/>
 				<xsl:if test="preceding-sibling::dict:sense">
-					<span class="senseGlue"> </span>
+					<span class="senseGlue">
+						<xsl:text> </xsl:text>
+					</span>
 				</xsl:if>
 				<b>
 					<xsl:number value="count(preceding-sibling::dict:sense) + 1"/>
