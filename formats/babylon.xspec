@@ -77,6 +77,21 @@ forms-b translations-b
 
 </x:expect>
 		</x:scenario>
+		<x:scenario label="When the HTML contains spans and attributes">
+			<x:context>
+				<entry>
+					<forms>
+						<form>a</form>
+					</forms>
+					<forms-html>a <b class="b">b</b> c</forms-html>
+					<translations-html>d</translations-html>
+				</entry>
+			</x:context>
+			<x:expect label="Then spans and attributes are removed">a
+a &lt;b&gt;b&lt;/b&gt; c d
+
+</x:expect>
+		</x:scenario>
 	</x:scenario>
 
 </x:description>

@@ -62,7 +62,7 @@
 		</xsl:if>
 		<xsl:apply-templates/>
 		<xsl:if test="not(@class = 'pos')">
-			<xsl:text>&lt;</xsl:text>
+			<xsl:text>&lt;/</xsl:text>
 			<xsl:value-of select="local-name()"/>
 			<xsl:text>&gt;</xsl:text>
 		</xsl:if>
