@@ -16,6 +16,21 @@
 		<xsl:apply-templates mode="inflections" select="i[@class='infl']"/>
 	</xsl:template>
 
+	<xsl:template match="i">
+		<xsl:copy>
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="i[@class='infl']">
+	</xsl:template>
+
+	<xsl:template match="i[@class='infl']" mode="inflections">
+		<inflections>
+			<xsl:apply-templates/>
+		</inflections>
+	</xsl:template>
+
 	<xsl:template match="span[@class='senseGrp'] | span[@class='senseGrp numbered']">
 		<xsl:apply-templates select="span"/>
 	</xsl:template>
@@ -35,25 +50,6 @@
 	<xsl:template match="span[@class='senseGlue']">
 		<xsl:if test="ancestor::span[@class='senseGrp numbered']">
 			<xsl:apply-templates/>
-		</xsl:if>
-	</xsl:template>
-
-	<xsl:template match="i">
-		<xsl:choose>
-			<xsl:when test="@class = 'infl'"/>
-			<xsl:otherwise>
-				<i>
-					<xsl:apply-templates/>
-				</i>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template match="i" mode="inflections">
-		<xsl:if test="@class = 'infl'">
-			<inflections>
-				<xsl:apply-templates/>
-			</inflections>
 		</xsl:if>
 	</xsl:template>
 

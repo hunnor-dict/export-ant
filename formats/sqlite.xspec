@@ -1,4 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="sdict.xsl">
-	<x:pending/>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="sqlite.xsl">
+
+	<x:scenario label="Forms">
+
+		<x:scenario label="When forms-html is present">
+			<x:context>
+				<entry>
+					<forms-html>a</forms-html>
+				</entry>
+			</x:context>
+			<x:expect label="Then the content is wrapped in a CDATA section">
+				<entry>
+					<forms-html><![CDATA[<![CDATA[]]>a<![CDATA[]]]]><![CDATA[>]]></forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When forms-html includes form spans">
+			<x:context>
+				<entry>
+					<forms-html><span class="form">a</span></forms-html>
+				</entry>
+			</x:context>
+			<x:expect label="Then the content of the spans is copied to base elements">
+				<entry>
+					<forms-html><![CDATA[<![CDATA[]]><base>a</base><![CDATA[]]]]><![CDATA[>]]></forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When form span includes inflections">
+			<x:context>
+				<entry>
+					<forms-html><span class="form">a <i class="pos">pos</i> <i>-suff</i> <i class="infl">b</i></span></forms-html>
+				</entry>
+			</x:context>
+			<x:expect label="Then the inflections are extracted to inflections elements">
+				<entry>
+					<forms-html><![CDATA[<![CDATA[]]><base>a <i>pos</i> <i>-suff</i> </base><inflections>b</inflections><![CDATA[]]]]><![CDATA[>]]></forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+
+	</x:scenario>
+
+	<x:scenario label="Translations">
+
+		<x:scenario label="When trans-html is present">
+			<x:context>
+				<entry>
+					<translations-html>a</translations-html>
+				</entry>
+			</x:context>
+			<x:expect label="Then the content is wrapped in a CDATA section">
+				<entry>
+					<translations-html><![CDATA[<![CDATA[]]>a<![CDATA[]]]]><![CDATA[>]]></translations-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When translations-html contains senses">
+			<x:context>
+				<entry>
+					<translations-html><span class="senseGrp"><span class="sense numbered"><b>1</b> a</span><span class="sense numbered"><span class="senseGlue"> </span><b>2</b> b</span></span></translations-html>
+				</entry>
+			</x:context>
+			<x:expect label="Then senses are copied to translation elements">
+				<entry>
+					<translations-html><![CDATA[<![CDATA[]]><translation><b>1</b> a</translation><translation><b>2</b> b</translation><![CDATA[]]]]><![CDATA[>]]></translations-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When translations-html contains numbered senseGrp spans">
+			<x:context>
+				<entry>
+					<translations-html><span class="senseGrp numbered"><b>I</b> <span class="sense numbered"><b>1</b> a</span><span class="sense numbered"><span class="senseGlue"> </span><b>2</b> b</span></span></translations-html>
+				</entry>
+			</x:context>
+			<x:expect label="Then the roman numeral is merged with the sense sequence number">
+				<entry>
+					<translations-html><![CDATA[<![CDATA[]]><translation><b>I</b> <b>1</b> a</translation><translation><b>I</b> <b>2</b> b</translation><![CDATA[]]]]><![CDATA[>]]></translations-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+
+	</x:scenario>
+
 </x:description>
