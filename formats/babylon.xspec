@@ -84,7 +84,7 @@ forms-b translations-b
 						<form>a</form>
 					</forms>
 					<forms-html>a <b class="b">b</b> c</forms-html>
-					<translations-html>d</translations-html>
+					<translations-html><span>d</span></translations-html>
 				</entry>
 			</x:context>
 			<x:expect label="Then spans and attributes are removed">a
