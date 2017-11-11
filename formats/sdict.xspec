@@ -1,4 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="sdict.xsl">
-	<x:pending/>
+
+	<x:param name="direction" select="'dir'"/>
+
+	<x:scenario label="Header">
+
+		<x:context>
+			<x:param name="direction" select="'hn'"/>
+			<dictionary updated="YYYY-MM-DD"/>
+		</x:context>
+		<x:expect label="The SDictionary file header is generated"># HunNor közösségi szótár
+# SDictionary formátum
+&lt;header&gt;
+title = HunNor közösségi szótár DIR
+copyright = GNU Általános Nyilvános Licenc
+version = YYYY-MM-DD
+w_lang = hu
+a_lang = no
+&lt;/header&gt;
+</x:expect>
+
+	</x:scenario>
+
+	<x:scenario label="Entries">
+
+		<x:scenario label="When an entry is processed">
+			<x:context>
+				<entry>
+					<forms>
+						<form>f1</form>
+						<form>f2</form>
+					</forms>
+					<inflections>
+						<inflection>i1</inflection>
+						<inflection>i2</inflection>
+					</inflections>
+					<forms-html>forms-html</forms-html>
+					<translations-html>translations-html</translations-html>
+				</entry>
+			</x:context>
+			<x:expect label="Then the SDict entry is generated">f1___forms-html&lt;br/&gt;translations-html
+f2___ld. &lt;r&gt;f1&lt;/r&gt;
+i1___ld. &lt;r&gt;f1&lt;/r&gt;
+i2___ld. &lt;r&gt;f1&lt;/r&gt;
+</x:expect>
+		</x:scenario>
+
+	</x:scenario>
+
 </x:description>
