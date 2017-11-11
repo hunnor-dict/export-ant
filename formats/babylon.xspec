@@ -83,7 +83,7 @@ forms-b translations-b
 					<forms>
 						<form>a</form>
 					</forms>
-					<forms-html>a <b class="b">b</b> c</forms-html>
+					<forms-html><span class="form">a <b class="b">b</b> c</span></forms-html>
 					<translations-html><span>d</span></translations-html>
 				</entry>
 			</x:context>
