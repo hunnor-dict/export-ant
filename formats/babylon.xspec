@@ -56,27 +56,22 @@ forms-html1 translations-html1
 
 		<x:scenario label="When the dictionary contains several entries">
 			<x:context>
-				<dictionary>
-					<entry>
-						<forms>
-							<form>w1</form>
-						</forms>
-						<forms-html>forms-html1</forms-html>
-						<translations-html>translations-html1</translations-html>
-					</entry>
-					<entry>
-						<forms>
-							<form>w2</form>
-						</forms>
-						<forms-html>forms-html2</forms-html>
-						<translations-html>translations-html2</translations-html>
-					</entry>
-				</dictionary>
+				<entry>
+					<forms>
+						<form>w1</form>
+					</forms>
+					<forms-html>forms-html1</forms-html>
+					<translations-html>translations-html1</translations-html>
+				</entry>
+				<entry>
+					<forms>
+						<form>w2</form>
+					</forms>
+					<forms-html>forms-html2</forms-html>
+					<translations-html>translations-html2</translations-html>
+				</entry>
 			</x:context>
-			<x:expect label="Then all entries begin on a new line">
-#bookname=HunNor közösségi szótár DIR
-
-w1
+			<x:expect label="Then all entries begin on a new line">w1
 forms-html1 translations-html1
 
 w2
