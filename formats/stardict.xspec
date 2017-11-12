@@ -1,4 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="stardict.xsl">
-	<x:pending/>
+
+	<x:param name="direction" select="'dir'"/>
+
+	<x:scenario label="Header">
+		<x:context>
+			<dictionary/>
+		</x:context>
+		<x:expect label="The StarDict file header is generated">
+			<stardict>
+				<info>
+					<version>3.0.0</version>
+					<bookname>HunNor közösségi szótár DIR</bookname>
+					<author>Ádám Z. Kövér</author>
+					<website>http://dict.hunnor.net/</website>
+				</info>
+				<contents type="h"/>
+			</stardict>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Entries">
+		<x:scenario label="When an entry is processed">
+			<x:context>
+				<entry>
+					<forms>
+						<form>f1</form>
+						<form>f2</form>
+					</forms>
+					<inflections>
+						<inflection>i1</inflection>
+						<inflection>i2</inflection>
+					</inflections>
+					<forms-html><b>a</b> b <i class="pos">c</i></forms-html>
+					<translations-html><span class="sense">d</span></translations-html>
+				</entry>
+			</x:context>
+			<x:expect label="Then the StarDict entry is generated">
+				<article>
+					<key>f1</key>
+					<synonym>f2</synonym>
+					<synonym>i1</synonym>
+					<synonym>i2</synonym>
+					<definition><![CDATA[<![CDATA[]]>&lt;b&gt;a&lt;/b&gt; b c d<![CDATA[]]]]><![CDATA[>]]></definition>
+				</article>
+			</x:expect>
+		</x:scenario>
+	</x:scenario>
+
 </x:description>
