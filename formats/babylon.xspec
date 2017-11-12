@@ -4,16 +4,21 @@
 	<x:param name="direction" select="'dir'"/>
 
 	<x:scenario label="Header">
-		<x:context>
-			<dictionary/>
-		</x:context>
-		<x:expect label="The Babylon file header is generated">
+
+		<x:scenario label="When the dictionary element is present">
+			<x:context>
+				<dictionary/>
+			</x:context>
+			<x:expect label="Then the Babylon file header is generated">
 #bookname=HunNor közösségi szótár DIR
 
 </x:expect>
+		</x:scenario>
+
 	</x:scenario>
 
 	<x:scenario label="Entries">
+
 		<x:scenario label="When the entry contains a list of dictionary forms and inflected forms">
 			<x:context>
 				<entry>
@@ -32,6 +37,7 @@
 
 </x:expect>
 		</x:scenario>
+
 		<x:scenario label="When the entry contains HTML for forms and translations">
 			<x:context>
 				<entry>
@@ -47,6 +53,7 @@ forms-html1 translations-html1
 
 </x:expect>
 		</x:scenario>
+
 		<x:scenario label="When the dictionary contains several entries">
 			<x:context>
 				<dictionary>
@@ -77,6 +84,7 @@ forms-html2 translations-html2
 
 </x:expect>
 		</x:scenario>
+
 		<x:scenario label="When the HTML contains spans and attributes">
 			<x:context>
 				<entry>
@@ -92,6 +100,7 @@ f1 f2 f3 t1 t2 &lt;b&gt;t3&lt;/b&gt;
 
 </x:expect>
 		</x:scenario>
+
 	</x:scenario>
 
 </x:description>
