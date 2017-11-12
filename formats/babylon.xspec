@@ -18,16 +18,16 @@
 			<x:context>
 				<entry>
 					<forms>
-						<form>a</form>
-						<form>b</form>
+						<form>w1</form>
+						<form>w2</form>
 					</forms>
 					<inflections>
-						<inflection>b</inflection>
-						<inflection>c</inflection>
+						<inflection>w2</inflection>
+						<inflection>w3</inflection>
 					</inflections>
 				</entry>
 			</x:context>
-			<x:expect label="Then unique forms are listed, separated by the pipe character">a|b|c
+			<x:expect label="Then unique forms are listed, separated by the pipe character">w1|w2|w3
  
 
 </x:expect>
@@ -36,14 +36,14 @@
 			<x:context>
 				<entry>
 					<forms>
-						<form>a</form>
+						<form>w1</form>
 					</forms>
-					<forms-html>forms</forms-html>
-					<translations-html>translations</translations-html>
+					<forms-html>forms-html1</forms-html>
+					<translations-html>translations-html1</translations-html>
 				</entry>
 			</x:context>
-			<x:expect label="Then forms and translations are separated by a space">a
-forms translations
+			<x:expect label="Then forms and translations are separated by a space">w1
+forms-html1 translations-html1
 
 </x:expect>
 		</x:scenario>
@@ -52,28 +52,28 @@ forms translations
 				<dictionary>
 					<entry>
 						<forms>
-							<form>a</form>
+							<form>w1</form>
 						</forms>
-						<forms-html>forms-a</forms-html>
-						<translations-html>translations-a</translations-html>
+						<forms-html>forms-html1</forms-html>
+						<translations-html>translations-html1</translations-html>
 					</entry>
 					<entry>
 						<forms>
-							<form>b</form>
+							<form>w2</form>
 						</forms>
-						<forms-html>forms-b</forms-html>
-						<translations-html>translations-b</translations-html>
+						<forms-html>forms-html2</forms-html>
+						<translations-html>translations-html2</translations-html>
 					</entry>
 				</dictionary>
 			</x:context>
 			<x:expect label="Then all entries begin on a new line">
 #bookname=HunNor közösségi szótár DIR
 
-a
-forms-a translations-a
+w1
+forms-html1 translations-html1
 
-b
-forms-b translations-b
+w2
+forms-html2 translations-html2
 
 </x:expect>
 		</x:scenario>
@@ -81,14 +81,14 @@ forms-b translations-b
 			<x:context>
 				<entry>
 					<forms>
-						<form>a</form>
+						<form>w1</form>
 					</forms>
-					<forms-html><span class="form">a <b class="b">b</b> c</span></forms-html>
-					<translations-html><span>d</span></translations-html>
+					<forms-html><span class="form">f1 <i class="pos">f2</i> f3</span></forms-html>
+					<translations-html><span>t1</span> t2 <b class="b">t3</b></translations-html>
 				</entry>
 			</x:context>
-			<x:expect label="Then spans and attributes are removed">a
-a &lt;b&gt;b&lt;/b&gt; c d
+			<x:expect label="Then spans and attributes are removed; i[@class='pos'] is removed">w1
+f1 f2 f3 t1 t2 &lt;b&gt;t3&lt;/b&gt;
 
 </x:expect>
 		</x:scenario>

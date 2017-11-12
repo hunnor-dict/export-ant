@@ -31,17 +31,17 @@
 	</xsl:template>
 
 	<xsl:template match="b|i">
-		<xsl:if test="not(@class = 'pos')">
-			<xsl:text>&lt;</xsl:text>
-			<xsl:value-of select="local-name()"/>
-			<xsl:text>&gt;</xsl:text>
-		</xsl:if>
+		<xsl:text>&lt;</xsl:text>
+		<xsl:value-of select="local-name()"/>
+		<xsl:text>&gt;</xsl:text>
 		<xsl:apply-templates/>
-		<xsl:if test="not(@class = 'pos')">
-			<xsl:text>&lt;/</xsl:text>
-			<xsl:value-of select="local-name()"/>
-			<xsl:text>&gt;</xsl:text>
-		</xsl:if>
+		<xsl:text>&lt;/</xsl:text>
+		<xsl:value-of select="local-name()"/>
+		<xsl:text>&gt;</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="i[@class='pos']">
+		<xsl:apply-templates/>
 	</xsl:template>
 
 </xsl:stylesheet>
