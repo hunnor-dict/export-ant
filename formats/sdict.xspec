@@ -4,7 +4,6 @@
 	<x:param name="direction" select="'dir'"/>
 
 	<x:scenario label="Header">
-
 		<x:context>
 			<x:param name="direction" select="'hn'"/>
 			<dictionary updated="YYYY-MM-DD"/>
@@ -19,11 +18,9 @@ w_lang = hu
 a_lang = no
 &lt;/header&gt;
 </x:expect>
-
 	</x:scenario>
 
 	<x:scenario label="Entries">
-
 		<x:scenario label="When an entry is processed">
 			<x:context>
 				<entry>
@@ -45,7 +42,6 @@ i1___ld. &lt;r&gt;f1&lt;/r&gt;
 i2___ld. &lt;r&gt;f1&lt;/r&gt;
 </x:expect>
 		</x:scenario>
-
 	</x:scenario>
 
 </x:description>
