@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:saxon="http://saxon.sf.net/" exclude-result-prefixes="saxon">
 
 	<xsl:param name="direction"/>
 
-	<xsl:output method="xml" indent="yes" encoding="us-ascii"/>
+	<xsl:output method="xml" indent="yes" encoding="us-ascii" saxon:suppress-indentation="definition"/>
 
 	<xsl:template match="dictionary">
 		<stardict>
@@ -54,18 +54,14 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template match="b|i">
-		<xsl:if test="not(@class = 'pos')">
-			<xsl:text>&lt;</xsl:text>
-			<xsl:value-of select="local-name()"/>
-			<xsl:text>&gt;</xsl:text>
-		</xsl:if>
+	<xsl:template match="i[@class='pos']">
 		<xsl:apply-templates/>
-		<xsl:if test="not(@class = 'pos')">
-			<xsl:text>&lt;/</xsl:text>
-			<xsl:value-of select="local-name()"/>
-			<xsl:text>&gt;</xsl:text>
-		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="b|i">
+		<xsl:copy>
+			<xsl:apply-templates/>
+		</xsl:copy>
 	</xsl:template>
 
 </xsl:stylesheet>
