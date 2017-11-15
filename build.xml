@@ -85,7 +85,7 @@
 		<!-- Intentionally left blank -->
 	</target>
 
-	<target name="export.kindle.nb">
+	<target name="export.kindle.convert.nb">
 		<xslt style="formats/kindle.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Kindle-NH.html">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
@@ -98,12 +98,21 @@
 			<param name="inLanguage" expression="pt"/>
 			<param name="outLanguage" expression="hu"/>
 		</xslt>
+	</target>
+
+	<target name="export.kindle.compile.nb" depends="export.kindle.convert.nb">
 		<exec dir="${build.dir}" executable="${env.HUNNOR_ANT_KINDLE_COMPILER}">
 			<arg line="HunNor-Kindle-NH.opf"/>
 		</exec>
+	</target>
+
+	<target name="export.kindle.deploy.nb" depends="export.kindle.compile.nb">
 		<delete file="${build.dir}/HunNor-Kindle-NH.html"/>
 		<delete file="${build.dir}/HunNor-Kindle-NH.opf"/>
 		<move file="${build.dir}/HunNor-Kindle-NH.mobi" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+	</target>
+
+	<target name="export.kindle.nb" depends="export.kindle.deploy.nb">
 	</target>
 
 	<!-- PDF -->
