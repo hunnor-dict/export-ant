@@ -1,4 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="kindle-opf.xsl">
-	<x:pending/>
+
+	<x:param name="contentFile" select="'kindle-content.html'"/>
+	<x:param name="logoFile" select="'images/logo.png'"/>
+	<x:param name="inLanguage" select="'IN'"/>
+	<x:param name="outLanguage" select="'OUT'"/>
+
+	<x:scenario label="When the dictionary element is present">
+		<x:context>
+			<hnDict xmlns="http://dict.hunnor.net" updated="YYYY-MM-DD"/>
+		</x:context>
+		<x:expect label="Then the Kindle manifest file is generated">
+			<package unique-identifier="uid">
+				<metadata>
+					<dc-metadata xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
+						<dc:Title>HunNor norvég-magyar szótár</dc:Title>
+						<dc:Language>IN</dc:Language>
+						<dc:Creator>Barnabás Dávoti</dc:Creator>
+						<dc:Description>HunNor norvég-magyar szótár</dc:Description>
+						<dc:Date>YYYY-MM-DD</dc:Date>
+					</dc-metadata>
+					<x-metadata>
+						<output encoding="utf-8" content-type="text/x-oeb1-document"/>
+						<EmbeddedCover>images/logo.png</EmbeddedCover>
+						<DictionaryInLanguage>IN</DictionaryInLanguage>
+						<DictionaryOutLanguage>OUT</DictionaryOutLanguage>
+					</x-metadata>
+				</metadata>
+				<manifest>
+					<item id="item1" media-type="text/x-oeb1-document" href="kindle-content.html"/>
+				</manifest>
+				<spine toc="toc">
+					<itemref idref="item1"/>
+				</spine>
+			</package>
+		</x:expect>
+	</x:scenario>
 </x:description>
