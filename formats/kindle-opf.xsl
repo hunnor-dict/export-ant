@@ -6,6 +6,8 @@
 	<xsl:param name="inLanguage"/>
 	<xsl:param name="outLanguage"/>
 
+	<xsl:output indent="yes"/>
+
 	<xsl:template match="d:hnDict">
 		<package unique-identifier="uid">
 			<metadata>
