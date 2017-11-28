@@ -100,7 +100,7 @@
 		</xslt>
 	</target>
 
-	<target name="export.kindle.compile.nb" depends="export.kindle.convert.nb">
+	<target name="export.kindle.compile.nb" depends="export.kindle.convert.nb,export.kindle.compiler">
 		<exec dir="${build.dir}" executable="${env.HUNNOR_ANT_KINDLE_COMPILER}">
 			<arg line="HunNor-Kindle-NH.opf"/>
 		</exec>
@@ -113,6 +113,21 @@
 	</target>
 
 	<target name="export.kindle.nb" depends="export.kindle.deploy.nb">
+	</target>
+
+	<target name ="export.kindle.compiler.check">
+		<available file="${env.HUNNOR_ANT_KINDLE_COMPILER}" property="export.kindle.compiler.available"/>
+	</target>
+
+	<target name="export.kindle.compiler" depends="export.kindle.compiler.check" unless="export.kindle.compiler.available">
+		<get src="http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz" dest="." skipexisting="true"/>
+		<dirname file="${env.HUNNOR_ANT_KINDLE_COMPILER}" property="kindle.dir"/>
+		<gunzip src="kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
+		<delete file="kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
+		<mkdir dir="${kindle.dir}"/>
+		<untar src="kindlegen_linux_2.6_i386_v2_9.tar" dest="${kindle.dir}"/>
+		<delete file="kindlegen_linux_2.6_i386_v2_9.tar"/>
+		<chmod file="${env.HUNNOR_ANT_KINDLE_COMPILER}" perm="755"/>
 	</target>
 
 	<!-- PDF -->
