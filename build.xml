@@ -8,6 +8,8 @@
 	<property environment="env"/>
 
 	<property name="env.HUNNOR_ANT_JAVA_HOME" location="/usr/lib/jvm/java-8-openjdk-amd64/jre"/>
+	<property name="env.HUNNOR_APPLE_DDK_COMPILER">/opt/apple-ddk-9/bin/build_dict.sh</property>
+	<property name="env.HUNNOR_APPLE_DDK_DIR">/opt/apple-ddk-9</property>
 	<property name="env.HUNNOR_ANT_KINDLE_COMPILER" location="/opt/kindlegen-2.9-amazon/kindlegen"/>
 	<property name="env.HUNNOR_ANT_SAXON_JAR" location="/opt/saxon-9-he/saxon9he.jar"/>
 	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
@@ -324,12 +326,75 @@
 		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
-	<!-- Top-level export targets -->
 
-	<target name="export.hu" depends="export.babylon.hu,export.kindle.hu,export.pdf.hu,export.sdict.hu,export.stardict.hu">
+	<target name="export.apple.convert.hu" depends="export.simple-html.hu">
+		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="hn"/>
+		</xslt>
+		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN-PList.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="hn"/>
+		</xslt>
 	</target>
 
-	<target name="export.nb" depends="export.babylon.nb,export.kindle.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb">
+	<target name="export.apple.convert.nb" depends="export.simple-html.nb">
+		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="nh"/>
+		</xslt>
+		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH-PList.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="nh"/>
+		</xslt>
+	</target>
+
+	<target name="export.apple.compile.hu" depends="export.apple.convert.hu">
+		<!-- TODO Compile on Linux -->
+		<!-- exec executable="${env.HUNNOR_APPLE_DDK_COMPILER}">
+			<arg value="HunNor közösségi szótár"/>
+			<arg value="${build.dir}/HunNor-Apple-HN.xml"/>
+			<arg value="formate/apple.css"/>
+			<arg value="${build.dir}/HunNor-Apple-HN-PList.xml"/>
+			<env key="DICT_NAME" value="HunNor közösségi szótár HN"/>
+			<env key="DICT_SRC_PATH" value="${build.dir}/HunNor-Apple-HN.xml"/>
+			<env key="CSS_PATH" value="formate/apple.css"/>
+			<env key="PLIST_PATH" value="${build.dir}/HunNor-Apple-HN-PList.xml"/>
+			<env key="DICT_BUILD_TOOL_DIR" value="${env.HUNNOR_APPLE_DDK_DIR}"/>
+			<env key="DICT_BUILD_TOOL_BIN" value="${env.HUNNOR_APPLE_DDK_DIR}/bin"/>
+			<env key="DICT_DEV_KIT_OBJ_DIR" value="${build.dir}/apple"/>
+		</exec-->
+	</target>
+
+	<target name="export.apple.compile.nb" depends="export.apple.convert.nb">
+	</target>
+
+	<target name="export.apple.deploy.hu" depends="export.apple.compile.hu">
+		<move file="${build.dir}/HunNor-Apple-HN.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<move file="${build.dir}/HunNor-Apple-HN-PList.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.apple.deploy.nb" depends="export.apple.convert.nb">
+		<move file="${build.dir}/HunNor-Apple-NH.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<move file="${build.dir}/HunNor-Apple-NH-PList.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.apple.hu" depends="export.apple.deploy.hu">
+	</target>
+
+	<target name="export.apple.nb" depends="export.apple.deploy.nb">
+	</target>
+
+	<!-- Top-level export targets -->
+
+	<target name="export.hu" depends="export.apple.hu,export.babylon.hu,export.kindle.hu,export.pdf.hu,export.sdict.hu,export.stardict.hu">
+	</target>
+
+	<target name="export.nb" depends="export.apple.nb,export.babylon.nb,export.kindle.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb">
 	</target>
 
 	<target name="export.android">
