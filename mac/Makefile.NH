@@ -10,7 +10,7 @@
 
 DICT_NAME		=	"HunNor közösségi szótár NH"
 DICT_SRC_PATH		=	../build/HunNor-Apple-NH.xml
-CSS_PATH		=	../formats/apple.css
+CSS_PATH		=	apple.css
 PLIST_PATH		=	../build/HunNor-Apple-NH-PList.xml
 
 DICT_BUILD_OPTS		=
