@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>net.hunnor.dict</groupId>
+	<artifactId>export-ant</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>Export (Ant)</name>
+	<description>Test runner for XSpec tests</description>	
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<defaultGoal>test</defaultGoal>
+		<plugins>
+			<plugin>
+				<groupId>io.xspec.maven</groupId>
+				<artifactId>xspec-maven-plugin</artifactId>
+				<version>1.5.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>net.sf.saxon</groupId>
+						<artifactId>Saxon-HE</artifactId>
+						<version>9.8.0-7</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<testDir>../formats</testDir>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>test</phase>
+						<goals>
+							<goal>run-xspec</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
