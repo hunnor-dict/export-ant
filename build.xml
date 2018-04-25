@@ -120,13 +120,13 @@
 	</target>
 
 	<target name="export.kindle.compiler" depends="export.kindle.compiler.check" unless="export.kindle.compiler.available">
-		<get src="http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz" dest="." skipexisting="true"/>
 		<dirname file="${env.HUNNOR_ANT_KINDLE_COMPILER}" property="kindle.dir"/>
-		<gunzip src="kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
-		<delete file="kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
 		<mkdir dir="${kindle.dir}"/>
-		<untar src="kindlegen_linux_2.6_i386_v2_9.tar" dest="${kindle.dir}"/>
-		<delete file="kindlegen_linux_2.6_i386_v2_9.tar"/>
+		<get src="http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz" dest="${kindle.dir}" skipexisting="true"/>
+		<gunzip src="${kindle.dir}/kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
+		<delete file="${kindle.dir}/kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
+		<untar src="${kindle.dir}/kindlegen_linux_2.6_i386_v2_9.tar" dest="${kindle.dir}"/>
+		<delete file="${kindle.dir}/kindlegen_linux_2.6_i386_v2_9.tar"/>
 		<chmod file="${env.HUNNOR_ANT_KINDLE_COMPILER}" perm="755"/>
 	</target>
 
@@ -134,7 +134,7 @@
 
 	<target name="export.pdf.hu">
 		<exec executable="fop">
-			<arg line="-q -c fonts/fonts.xml -xml ${env.HUNNOR_ANT_DUMP_HU} -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
+			<arg line="-q -cache ${build.dir}/fop-fonts.cache -c fonts/fonts.xml -xml ${env.HUNNOR_ANT_DUMP_HU} -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
 			<env key="JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
 		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
@@ -142,7 +142,7 @@
 
 	<target name="export.pdf.nb">
 		<exec executable="fop">
-			<arg line="-q -c fonts/fonts.xml -xml ${env.HUNNOR_ANT_DUMP_NB} -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-NH.pdf"/>
+			<arg line="-q -cache ${build.dir}/fop-fonts.cache -c fonts/fonts.xml -xml ${env.HUNNOR_ANT_DUMP_NB} -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-NH.pdf"/>
 			<env key="JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
 		<move file="${build.dir}/HunNor-PDF-NH.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
