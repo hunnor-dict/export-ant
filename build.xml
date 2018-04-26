@@ -228,7 +228,7 @@
 	
 	<target name="export.stardict.deploy.hu" depends="export.stardict.compile.hu">
 		<zip destfile="${build.dir}/HunNor-ST-HN.zip" level="9">
-			<filelist dir="." files="${build.dir}/HunNor-ST-HN.dict.dz,${build.dir}/HunNor-ST-HN.ifo,${build.dir}/HunNor-ST-HN.idx,${build.dir}/HunNor-ST-HN.syn"/>
+			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-HN.dict.dz,${build.dir}/HunNor-ST-HN.ifo,${build.dir}/HunNor-ST-HN.idx,${build.dir}/HunNor-ST-HN.syn"/>
 		</zip>
 		<delete file="${build.dir}/HunNor-ST-HN.dict.dz"/>
 		<delete file="${build.dir}/HunNor-ST-HN.ifo"/>
@@ -239,7 +239,7 @@
 
 	<target name="export.stardict.deploy.nb" depends="export.stardict.compile.nb">
 		<zip destfile="${build.dir}/HunNor-ST-NH.zip" level="9">
-			<filelist dir="." files="${build.dir}/HunNor-ST-NH.dict.dz,${build.dir}/HunNor-ST-NH.ifo,${build.dir}/HunNor-ST-NH.idx,${build.dir}/HunNor-ST-NH.syn"/>
+			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-NH.dict.dz,${build.dir}/HunNor-ST-NH.ifo,${build.dir}/HunNor-ST-NH.idx,${build.dir}/HunNor-ST-NH.syn"/>
 		</zip>
 		<delete file="${build.dir}/HunNor-ST-NH.dict.dz"/>
 		<delete file="${build.dir}/HunNor-ST-NH.ifo"/>
@@ -286,7 +286,7 @@
 
 	<target name="export.stardict.nosym.num.deploy.hu" depends="export.stardict.nosym.num.compile.hu">
 		<zip destfile="${build.dir}/HunNor-ST-NoSym-Number-HN.zip" level="9">
-			<filelist dir="." files="${build.dir}/HunNor-ST-NoSym-Number-HN.dict.dz,${build.dir}/HunNor-ST-NoSym-Number-HN.ifo,${build.dir}/HunNor-ST-NoSym-Number-HN.idx,${build.dir}/HunNor-ST-NoSym-Number-HN.syn"/>
+			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-NoSym-Number-HN.dict.dz,${build.dir}/HunNor-ST-NoSym-Number-HN.ifo,${build.dir}/HunNor-ST-NoSym-Number-HN.idx,${build.dir}/HunNor-ST-NoSym-Number-HN.syn"/>
 		</zip>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.dict.dz"/>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
@@ -297,7 +297,7 @@
 
 	<target name="export.stardict.nosym.num.deploy.nb" depends="export.stardict.nosym.num.compile.nb">
 		<zip destfile="${build.dir}/HunNor-ST-NoSym-Number-NH.zip" level="9">
-			<filelist dir="." files="${build.dir}/HunNor-ST-NoSym-Number-NH.dict.dz,${build.dir}/HunNor-ST-NoSym-Number-NH.ifo,${build.dir}/HunNor-ST-NoSym-Number-NH.idx,${build.dir}/HunNor-ST-NoSym-Number-NH.syn"/>
+			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-NoSym-Number-NH.dict.dz,${build.dir}/HunNor-ST-NoSym-Number-NH.ifo,${build.dir}/HunNor-ST-NoSym-Number-NH.idx,${build.dir}/HunNor-ST-NoSym-Number-NH.syn"/>
 		</zip>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.dict.dz"/>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
