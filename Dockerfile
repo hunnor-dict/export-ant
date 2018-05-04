@@ -12,7 +12,7 @@ ENV HUNNOR_ANT_SAXON_JAR /opt/saxon-9-he/saxon9he.jar
 ENV HUNNOR_ANT_STARDICT_COMPILER /usr/lib/stardict-tools/stardict-text2bin
 RUN mkdir -p /opt/saxon-9-he && \
     cd /opt/saxon-9-he && \
-    wget https://downloads.sourceforge.net/project/saxon/Saxon-HE/9.8/SaxonHE9-8-0-5J.zip && \
+    wget -q https://downloads.sourceforge.net/project/saxon/Saxon-HE/9.8/SaxonHE9-8-0-5J.zip && \
     unzip SaxonHE9-8-0-5J.zip && \
     rm -rf SaxonHE9-8-0-5J.zip doc notices saxon9-test.jar saxon9-xqj.jar
 COPY . /opt/export-ant
