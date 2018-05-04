@@ -101,9 +101,13 @@
 	</target>
 
 	<target name="export.kindle.compile.nb" depends="export.kindle.convert.nb,export.kindle.compiler">
+		<copy todir="${build.dir}/images">
+			<fileset dir="images"/>
+		</copy>
 		<exec dir="${build.dir}" executable="${env.HUNNOR_ANT_KINDLE_COMPILER}">
 			<arg line="HunNor-Kindle-NH.opf"/>
 		</exec>
+		<delete dir="${build.dir}/images"/>
 	</target>
 
 	<target name="export.kindle.deploy.nb" depends="export.kindle.compile.nb">
