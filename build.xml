@@ -16,6 +16,7 @@
 	<property name="env.HUNNOR_ANT_SQLITE_JAR" location="../export-sqlite/target/export-sqlite-1.0.0.jar"/>
 
 	<property name="env.HUNNOR_ANT_DEPLOY_DIR" location="/opt/hunnor-dict/Dropbox"/>
+	<property name="env.HUNNOR_ANT_DEPLOY_BACKUP_DIR" location="${env.HUNNOR_ANT_DEPLOY_DIR}/Backup"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_PUB_DIR" location="${env.HUNNOR_ANT_DEPLOY_DIR}/Public"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR" location="${env.HUNNOR_ANT_DEPLOY_PUB_DIR}/Databases"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR" location="${env.HUNNOR_ANT_DEPLOY_PUB_DIR}/Exports"/>
