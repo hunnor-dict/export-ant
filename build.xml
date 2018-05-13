@@ -467,8 +467,8 @@
 	<target name="backup" depends="week.of.year">
 		<gzip src="${build.dir}/hunnor.sql" destfile="${build.dir}/hunnor.MySQL.${week}.sql.gz"/>
 		<delete file="${build.dir}/hunnor.sql"/>
-		<copy file="hunnor.MySQL.${week}.sql.gz" tofile="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}/HunNor-MySQL.sql.gz"/>
-		<move file="hunnor.MySQL.${week}.sql.gz" todir="${env.HUNNOR_ANT_DEPLOY_BACKUP_DIR}"/>
+		<copy file="${build.dir}/hunnor.MySQL.${week}.sql.gz" tofile="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}/HunNor-MySQL.sql.gz"/>
+		<move file="${build.dir}/hunnor.MySQL.${week}.sql.gz" todir="${env.HUNNOR_ANT_DEPLOY_BACKUP_DIR}"/>
 	</target>
 
 </project>
