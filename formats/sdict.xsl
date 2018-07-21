@@ -5,7 +5,7 @@
 
 	<xsl:param name="direction"/>
 
-	<xsl:strip-space elements="dictionary"/>
+	<xsl:strip-space elements="dictionary forms-html translations-html span"/>
 
 	<xsl:template match="dictionary">
 		<xsl:text># HunNor közösségi szótár&#xA;</xsl:text>

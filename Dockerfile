@@ -15,6 +15,11 @@ RUN mkdir -p /opt/saxon-9-he && \
     wget -q https://downloads.sourceforge.net/project/saxon/Saxon-HE/9.8/SaxonHE9-8-0-5J.zip && \
     unzip SaxonHE9-8-0-5J.zip && \
     rm -rf SaxonHE9-8-0-5J.zip doc notices saxon9-test.jar saxon9-xqj.jar
+RUN mkdir -p /opt/sdict && \
+    cd /opt/sdict && \
+    wget -q http://swaj.net/sdict/ptksdict-1.2.4.tar.gz && \
+    tar -xzf ptksdict-1.2.4.tar.gz && \
+    rm ptksdict-1.2.4.tar.gz
 COPY . /opt/export-ant
 WORKDIR /opt/export-ant
 ENTRYPOINT ["ant"]

@@ -10,6 +10,7 @@
 	<property name="env.HUNNOR_ANT_JAVA_HOME" location="/usr/lib/jvm/java-8-openjdk-amd64/jre"/>
 	<property name="env.HUNNOR_ANT_KINDLE_COMPILER" location="/opt/kindlegen-2.9-amazon/kindlegen"/>
 	<property name="env.HUNNOR_ANT_SAXON_JAR" location="/opt/saxon-9-he/saxon9he.jar"/>
+	<property name="env.HUNNOR_ANT_SDICT_COMPILER" location="/opt/sdict/bin/sdict-tools.plx"/>
 	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
 	<property name="env.HUNNOR_ANT_LUCENE_JAR" location="../export-lucene/target/export-lucene-1.0.0.jar"/>
@@ -171,22 +172,36 @@
 		</xslt>
 	</target>
 
-	<target name="export.sdict.deploy.hu" depends="export.sdict.convert.hu">
+	<target name="export.sdict.compile.hu" depends="export.sdict.convert.hu">
+		<exec executable="${env.HUNNOR_ANT_SDICT_COMPILER}">
+			<arg line="--compile --input-file=${build.dir}/HunNor-SD-HN.sdct --output-file=${build.dir}/HunNor-SD-HN.dct"/>
+		</exec>
+	</target>
+
+	<target name="export.sdict.compile.nb" depends="export.sdict.convert.nb">
+		<exec executable="${env.HUNNOR_ANT_SDICT_COMPILER}">
+			<arg line="--compile --input-file=${build.dir}/HunNor-SD-NH.sdct --output-file=${build.dir}/HunNor-SD-NH.dct"/>
+		</exec>
+	</target>
+
+	<target name="export.sdict.deploy.hu" depends="export.sdict.compile.hu">
+		<move file="${build.dir}/HunNor-SD-HN.dct" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+	</target>
+
+	<target name="export.sdict.deploy.nb" depends="export.sdict.compile.nb">
+		<move file="${build.dir}/HunNor-SD-NH.dct" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+	</target>
+
+	<target name="export.sdict.hu" depends="export.sdict.deploy.hu">
 		<gzip src="${build.dir}/HunNor-SD-HN.sdct" destfile="${build.dir}/HunNor-SD-HN.sdct.gz"/>
 		<delete file="${build.dir}/HunNor-SD-HN.sdct"/>
 		<move file="${build.dir}/HunNor-SD-HN.sdct.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
-	<target name="export.sdict.deploy.nb" depends="export.sdict.convert.nb">
+	<target name="export.sdict.nb" depends="export.sdict.deploy.nb">
 		<gzip src="${build.dir}/HunNor-SD-NH.sdct" destfile="${build.dir}/HunNor-SD-NH.sdct.gz"/>
 		<delete file="${build.dir}/HunNor-SD-NH.sdct"/>
 		<move file="${build.dir}/HunNor-SD-NH.sdct.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-	</target>
-
-	<target name="export.sdict.hu" depends="export.sdict.deploy.hu">
-	</target>
-
-	<target name="export.sdict.nb" depends="export.sdict.deploy.nb">
 	</target>
 
 	<!-- StarDict -->
