@@ -1,27 +1,33 @@
 [![Build Status](https://travis-ci.org/hunnor-dict/export-ant.svg?branch=master)](https://travis-ci.org/hunnor-dict/export-ant)
 
-The `export-ant` repository contains scripts and stylesheets for converting the XML dump files to various XML-based dictionary formats.
+Scripts and stylesheets for converting the XML dump files to various XML-based dictionary formats.
 
 # Usage
 
-To run all conversions with Docker:
+The fastest way to get started is to run the conversions with Docker.
 
-Prepare directories:
+Create the following directories:
 
-- `mkdir $HOME/hunnor`  
-- `mkdir $HOME/hunnor/build`  
-- `mkdir $HOME/hunnor/data`  
-- `mkdir $HOME/hunnor/deploy`  
-- `mkdir $HOME/hunnor/tools`  
+- `$HOME/hunnor`  
+- `$HOME/hunnor/build`  
+- `$HOME/hunnor/data`  
+- `$HOME/hunnor/deploy`  
+- `$HOME/hunnor/tools`  
 
 Download XML dump files from Dropbox:
 
 - Go to https://dict.hunnor.net/about
-- Click on the link to the Dropbox folder for database exports (look for Adatbázisok or Dropbox)
+- Click on the link to the Dropbox folder with the database exports (look for Adatbázisok or Dropbox)
 - Download and extract `HunNor-XML-HN.xml.gz` and `HunNor-XML-NH.xml.gz`
 - Move the extracted XML files to the `data` directory
 
-To be able to run all conversions, copy the JARs from the `export-lucene` and `export-sqlite` projects to the tools directory.
+Some conversions require tools that are not included in the Docker image:
+
+| Target                   | Tool                            | Installation                                                                                |
+|--------------------------|---------------------------------|---------------------------------------------------------------------------------------------|
+| export.android           | export-lucene-indexer-1.0.0.jar | Package the [`export-lucene`](https://github.com/hunnor-dict/export-lucene) repo with Maven |
+| export.kindle.compile.nb | kindlegen                       | Downloaded automatically by `ant`                                                           |
+| export.sqlite.generate   | export-sqlite-1.0.0.jar         | Package the [`export-sqlite`](https://github.com/hunnor-dict/export-sqlite) repo with Maven |
 
 Start the Docker container:
 
