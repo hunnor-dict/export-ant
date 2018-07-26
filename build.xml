@@ -418,7 +418,7 @@
 		<delete dir="${build.dir}/hunnor-lucene-spelling"/>
 	</target>
 
-	<target name="export.sqlite.generate" depends="export.simple-html.hu,export.simple-html.nb">
+	<target name="export.sqlite.convert" depends="export.simple-html.hu,export.simple-html.nb">
 		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-SQLite-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
@@ -427,6 +427,9 @@
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
+	</target>
+
+	<target name="export.sqlite.generate" depends="export.sqlite.convert">
 		<delete file="${build.dir}/HunNor-SQLite.sqlite3"/>
 		<exec executable="java">
 			<arg line="-jar ${env.HUNNOR_ANT_SQLITE_JAR} -l hu -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SQLite-HN.xml"/>
