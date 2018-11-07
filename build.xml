@@ -45,6 +45,50 @@
 		</xslt>
 	</target>
 
+	<!-- Apple -->
+
+	<target name="export.apple.convert.hu" depends="export.simple-html.hu">
+		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="hn"/>
+		</xslt>
+		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN-PList.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="hn"/>
+		</xslt>
+	</target>
+
+	<target name="export.apple.convert.nb" depends="export.simple-html.nb">
+		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="nh"/>
+		</xslt>
+		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH-PList.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="nh"/>
+		</xslt>
+	</target>
+
+	<target name="export.apple.deploy.hu" depends="export.apple.convert.hu">
+		<move file="${build.dir}/HunNor-Apple-HN.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<move file="${build.dir}/HunNor-Apple-HN-PList.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.apple.deploy.nb" depends="export.apple.convert.nb">
+		<move file="${build.dir}/HunNor-Apple-NH.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<move file="${build.dir}/HunNor-Apple-NH-PList.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.apple.hu" depends="export.apple.deploy.hu">
+	</target>
+
+	<target name="export.apple.nb" depends="export.apple.deploy.nb">
+	</target>
+
 	<!-- Babylon: A text file format with a proprietary syntax, for use with the Glossary Builder of the Babylon dictionary. -->
 
 	<target name="export.babylon.convert.hu" depends="export.simple-html.hu">
@@ -245,7 +289,7 @@
 		<delete file="${build.dir}/HunNor-ST-NH.ifo"/>
 		<move file="${build.dir}/HunNor-ST-NH.tmp" tofile="${build.dir}/HunNor-ST-NH.ifo"/>
 	</target>
-	
+
 	<target name="export.stardict.deploy.hu" depends="export.stardict.compile.hu">
 		<zip destfile="${build.dir}/HunNor-ST-HN.zip" level="9">
 			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-HN.dict.dz,${build.dir}/HunNor-ST-HN.ifo,${build.dir}/HunNor-ST-HN.idx,${build.dir}/HunNor-ST-HN.syn"/>
@@ -342,49 +386,6 @@
 		<gzip src="${build.dir}/HunNor-ST-NoSym-Number-NH.xml" destfile="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz"/>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml"/>
 		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-	</target>
-
-
-	<target name="export.apple.convert.hu" depends="export.simple-html.hu">
-		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN.xml" force="true">
-			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
-			<param name="direction" expression="hn"/>
-		</xslt>
-		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN-PList.xml" force="true">
-			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
-			<param name="direction" expression="hn"/>
-		</xslt>
-	</target>
-
-	<target name="export.apple.convert.nb" depends="export.simple-html.nb">
-		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH.xml" force="true">
-			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
-			<param name="direction" expression="nh"/>
-		</xslt>
-		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH-PList.xml" force="true">
-			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
-			<param name="direction" expression="nh"/>
-		</xslt>
-	</target>
-
-	<target name="export.apple.deploy.hu" depends="export.apple.convert.hu">
-		<move file="${build.dir}/HunNor-Apple-HN.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<move file="${build.dir}/HunNor-Apple-HN-PList.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-	</target>
-
-	<target name="export.apple.deploy.nb" depends="export.apple.convert.nb">
-		<move file="${build.dir}/HunNor-Apple-NH.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<move file="${build.dir}/HunNor-Apple-NH-PList.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-	</target>
-
-	<target name="export.apple.hu" depends="export.apple.deploy.hu">
-	</target>
-
-	<target name="export.apple.nb" depends="export.apple.deploy.nb">
 	</target>
 
 	<!-- Top-level export targets -->
