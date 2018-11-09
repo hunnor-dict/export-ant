@@ -24,6 +24,26 @@
 		<defaultGoal>test</defaultGoal>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.0.0-M2</version>
+				<executions>
+					<execution>
+						<id>enforce-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>3.3.9</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>io.xspec.maven</groupId>
 				<artifactId>xspec-maven-plugin</artifactId>
 				<version>1.5.0</version>
@@ -31,7 +51,7 @@
 					<dependency>
 						<groupId>net.sf.saxon</groupId>
 						<artifactId>Saxon-HE</artifactId>
-						<version>9.8.0-7</version>
+						<version>9.7.0-21</version>
 					</dependency>
 				</dependencies>
 				<configuration>
