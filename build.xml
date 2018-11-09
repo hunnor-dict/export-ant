@@ -388,12 +388,48 @@
 		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
-	<!-- Top-level export targets -->
+	<!-- XDXF -->
 
-	<target name="export.hu" depends="export.apple.hu,export.babylon.hu,export.kindle.hu,export.pdf.hu,export.sdict.hu,export.stardict.hu">
+	<target name="export.xdxf.convert.hu" depends="export.simple-html.hu">
+		<xslt style="formats/xdxf-lousy.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-XDXF-L-HN.xdxf" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="hn"/>
+		</xslt>
 	</target>
 
-	<target name="export.nb" depends="export.apple.nb,export.babylon.nb,export.kindle.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb">
+	<target name="export.xdxf.convert.nb" depends="export.simple-html.nb">
+		<xslt style="formats/xdxf-lousy.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-XDXF-L-NH.xdxf" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="nh"/>
+		</xslt>
+	</target>
+
+	<target name="export.xdxf.deploy.hu" depends="export.xdxf.convert.hu">
+		<gzip src="${build.dir}/HunNor-XDXF-L-HN.xdxf" destfile="${build.dir}/HunNor-XDXF-L-HN.xdxf.gz"/>
+		<delete file="${build.dir}/HunNor-XDXF-L-HN.xdxf"/>
+		<move file="${build.dir}/HunNor-XDXF-L-HN.xdxf.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.xdxf.deploy.nb" depends="export.xdxf.convert.nb">
+		<gzip src="${build.dir}/HunNor-XDXF-L-NH.xdxf" destfile="${build.dir}/HunNor-XDXF-L-NH.xdxf.gz"/>
+		<delete file="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>
+		<move file="${build.dir}/HunNor-XDXF-NH.xdxf.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.xdxf.hu" depends="export.xdxf.deploy.hu">
+	</target>
+
+	<target name="export.xdxf.nb" depends="export.xdxf.deploy.nb">
+	</target>
+
+	<!-- Top-level export targets -->
+
+	<target name="export.hu" depends="export.apple.hu,export.babylon.hu,export.kindle.hu,export.pdf.hu,export.sdict.hu,export.stardict.hu,export.xdxf.hu">
+	</target>
+
+	<target name="export.nb" depends="export.apple.nb,export.babylon.nb,export.kindle.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb,export.xdxf.nb">
 	</target>
 
 	<target name="export.android">

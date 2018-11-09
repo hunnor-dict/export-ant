@@ -1,0 +1,17 @@
+﻿%1=aeiouyæøå
+%2=bcdfghjklmnpqrstvwxz
+
+^?s=.
+^?en=./.e
+^?er=./.e
+^?ene=./.e
+^?et=./.e
+^?a=.e/.
+
+^?te=.e
+^?dd=.
+^?dde=.
+
+^?ere=.
+^?est=.
+^?este=.
