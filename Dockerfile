@@ -1,10 +1,10 @@
-FROM maven:3.5-jdk-8 as maven
+FROM maven:3.6-jdk-11 as maven
 COPY tester /opt/hunnor-dict/export-ant/tester
 COPY formats /opt/hunnor-dict/export-ant/formats
 WORKDIR /opt/hunnor-dict/export-ant/tester
 RUN mvn
 
-FROM openjdk:8-jdk
+FROM openjdk:11-jdk
 RUN mkdir /opt/export-ant
 RUN apt-get update && apt-get install --assume-yes --allow-unauthenticated ant fop stardict-tools && apt-get clean
 ENV HUNNOR_ANT_JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
