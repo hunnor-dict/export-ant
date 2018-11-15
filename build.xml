@@ -132,11 +132,11 @@
 	</target>
 
 	<target name="export.kindle.convert.nb">
-		<xslt style="formats/kindle.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Kindle-NH.html">
+		<xslt style="formats/kindle.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Kindle-NH.html" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
-		<xslt style="formats/kindle-opf.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Kindle-NH.opf">
+		<xslt style="formats/kindle-opf.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Kindle-NH.opf" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="contentFile" expression="HunNor-Kindle-NH.html"/>
@@ -182,17 +182,31 @@
 
 	<!-- PDF -->
 
-	<target name="export.pdf.hu">
+	<target name="export.pdf.convert.hu">
+		<xslt style="formats/pdf.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${build.dir}/HunNor-FO-HN.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+		</xslt>
+	</target>
+
+	<target name="export.pdf.hu" depends="export.pdf.convert.hu">
 		<exec executable="fop">
-			<arg line="-q -cache ${build.dir}/fop-fonts.cache -c fonts/fonts.xml -xml ${env.HUNNOR_ANT_DUMP_HU} -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
+			<arg line="-q -cache ${build.dir}/fop-fonts.cache -c fonts/fonts.xml -fo ${build.dir}/HunNor-FO-HN.xml -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
 			<env key="JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
 		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
-	<target name="export.pdf.nb">
+	<target name="export.pdf.convert.nb">
+		<xslt style="formats/pdf.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-FO-NH.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+		</xslt>
+	</target>
+
+	<target name="export.pdf.nb" depends="export.pdf.convert.nb">
 		<exec executable="fop">
-			<arg line="-q -cache ${build.dir}/fop-fonts.cache -c fonts/fonts.xml -xml ${env.HUNNOR_ANT_DUMP_NB} -xsl formats/pdf.xsl -pdf ${build.dir}/HunNor-PDF-NH.pdf"/>
+			<arg line="-q -cache ${build.dir}/fop-fonts.cache -c fonts/fonts.xml -fo ${build.dir}/HunNor-FO-NH.xml -pdf ${build.dir}/HunNor-PDF-NH.pdf"/>
 			<env key="JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
 		<move file="${build.dir}/HunNor-PDF-NH.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
@@ -313,13 +327,13 @@
 	</target>
 
 	<target name="export.stardict.nosym.num.convert.hu" depends="export.stardict.convert.hu">
-		<xslt style="formats/stardict-nosym-number.xsl" in="${build.dir}/HunNor-ST-HN.xml" out="${build.dir}/HunNor-ST-NoSym-Number-HN.xml">
+		<xslt style="formats/stardict-nosym-number.xsl" in="${build.dir}/HunNor-ST-HN.xml" out="${build.dir}/HunNor-ST-NoSym-Number-HN.xml" force="true">
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
 	<target name="export.stardict.nosym.num.convert.nb" depends="export.stardict.convert.nb">
-		<xslt style="formats/stardict-nosym-number.xsl" in="${build.dir}/HunNor-ST-NH.xml" out="${build.dir}/HunNor-ST-NoSym-Number-NH.xml">
+		<xslt style="formats/stardict-nosym-number.xsl" in="${build.dir}/HunNor-ST-NH.xml" out="${build.dir}/HunNor-ST-NoSym-Number-NH.xml" force="true">
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
