@@ -1,4 +1,4 @@
-project.properties
 build
+formats/*-result.html
+project.properties
 target
-
