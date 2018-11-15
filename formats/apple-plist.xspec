@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="apple-plist.xsl">
-	
+
 	<x:param name="direction" select="'dir'"/>
-	
-	<x:scenario label="When the dictionary element is present">
-		<x:context>
-			<dictionary updated="YYYY-MM-DD"/>
-		</x:context>
-		<x:expect label="Then the Apple Dictionary property list file is generated">
+
+	<x:scenario label="When the dictionary is empty">
+		<x:context href="context/dictionary.xml"/>
+		<x:expect label="Then the PList file has the metadata elements">
 			<plist version="1.0">
 				<dict>
 					<key>CFBundleDevelopmentRegion</key>
@@ -26,4 +24,5 @@
 			</plist>
 		</x:expect>
 	</x:scenario>
+
 </x:description>

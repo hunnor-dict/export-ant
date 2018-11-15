@@ -3,115 +3,63 @@
 
 	<x:param name="direction" select="'DIR'"/>
 
-	<x:scenario label="When an entry is present">
-		<x:context>
-			<dictionary updated="YYYY-MM-DD">
-				<entry id="1">
-				</entry>
-			</dictionary>
-		</x:context>
-		<x:expect label="Then the entry is present with an ID that includes the language">
-			<d:dictionary xmlns="http://www.w3.org/1999/xhtml">
-				<d:entry id="DIR_1">
-				</d:entry>
-			</d:dictionary>
-		</x:expect>
+	<x:scenario label="Dictionary">
+
+		<x:scenario label="When the dictionary is empty">
+			<x:context href="context/dictionary.xml"/>
+			<x:expect label="Then the dictionary is empty">
+				<d:dictionary xmlns="http://www.w3.org/1999/xhtml"/>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When the dictionary has entries">
+			<x:context href="context/dictionary-entries.xml"/>
+			<x:expect label="Then the dictionary has all entries">
+				<d:dictionary xmlns="http://www.w3.org/1999/xhtml">
+					<d:entry id="DIR_1"/>
+					<d:entry id="DIR_2"/>
+				</d:dictionary>
+			</x:expect>
+		</x:scenario>
+
 	</x:scenario>
 
-	<x:scenario label="When an entry has forms">
-		<x:context>
-			<dictionary updated="YYYY-MM-DD">
-				<entry id="1">
-					<forms>
-						<form>f1</form>
-						<form>f2</form>
-					</forms>
-				</entry>
-			</dictionary>
-		</x:context>
-		<x:expect label="Then the forms are present in separate index element">
-			<d:dictionary xmlns="http://www.w3.org/1999/xhtml">
-				<d:entry id="DIR_1" d:title="f1/f2">
-					<d:index d:value="f1"/>
-					<d:index d:value="f2"/>
-				</d:entry>
-			</d:dictionary>
-		</x:expect>
-	</x:scenario>
+	<x:scenario label="Entries">
 
-	<x:scenario label="When an entry has inflected forms">
-		<x:context>
-			<dictionary updated="YYYY-MM-DD">
-				<entry id="1">
-					<forms>
-						<form>f1</form>
-					</forms>
-					<inflections>
-						<inflection>i1</inflection>
-						<inflection>i2</inflection>
-					</inflections>
-				</entry>
-			</dictionary>
-		</x:context>
-		<x:expect label="Then the inflected forms are present with reference to the root form">
-			<d:dictionary xmlns="http://www.w3.org/1999/xhtml">
-				<d:entry id="DIR_1" d:title="f1">
-					<d:index d:value="f1"/>
-					<d:index d:value="i1" d:title="i1 (f1)"/>
-					<d:index d:value="i2" d:title="i2 (f1)"/>
+		<x:scenario label="When the entry contains a list of dictionary forms and inflected forms">
+			<x:context href="context/entry-forms-inflections.xml"/>
+			<x:expect label="Then dictionary forms are added as title and index terms, inflected forms are added as index terms with reference to dictionary forms">
+				<d:entry xmlns="http://www.w3.org/1999/xhtml" id="DIR_1" d:title="w1/w2">
+					<d:index d:value="w1"/>
+					<d:index d:value="w2"/>
+					<d:index d:value="w2" d:title="w2 (w1/w2)"/>
+					<d:index d:value="w3" d:title="w3 (w1/w2)"/>
 				</d:entry>
-			</d:dictionary>
-		</x:expect>
-	</x:scenario>
+			</x:expect>
+		</x:scenario>
 
-	<x:scenario label="When an entry has several root and inflected forms">
-		<x:context>
-			<dictionary updated="YYYY-MM-DD">
-				<entry id="1">
-					<forms>
-						<form>f1</form>
-						<form>f2</form>
-					</forms>
-					<inflections>
-						<inflection>i1</inflection>
-						<inflection>i2</inflection>
-					</inflections>
-				</entry>
-			</dictionary>
-		</x:context>
-		<x:expect label="Then the inflected forms are present with reference to all root forms">
-			<d:dictionary xmlns="http://www.w3.org/1999/xhtml">
-				<d:entry id="DIR_1" d:title="f1/f2">
-					<d:index d:value="f1"/>
-					<d:index d:value="f2"/>
-					<d:index d:value="i1" d:title="i1 (f1/f2)"/>
-					<d:index d:value="i2" d:title="i2 (f1/f2)"/>
+		<x:scenario label="When the entry contains HTML for forms and translations">
+			<x:context href="context/entry-forms-translations.xml"/>
+			<x:expect label="Then forms and translations are separate elements">
+				<d:entry xmlns="http://www.w3.org/1999/xhtml" id="DIR_1" d:title="w1">
+					<d:index d:value="w1"/>
+					<span>forms-html1</span>
+					<span>translations-html1</span>
 				</d:entry>
-			</d:dictionary>
-		</x:expect>
-	</x:scenario>
+			</x:expect>
+		</x:scenario>
 
-	<x:scenario label="When an entry has HTML content">
-		<x:context>
-			<dictionary updated="YYYY-MM-DD">
-				<entry id="1">
-					<forms>
-						<form>f1</form>
-					</forms>
-					<forms-html><span>forms-html1 <b>html</b> content</span></forms-html>
-					<translations-html><span>translations-html1 html <i class="c1">content</i></span></translations-html>
-				</entry>
-			</dictionary>
-		</x:context>
-		<x:expect label="Then the HTML content is present">
-			<d:dictionary xmlns="http://www.w3.org/1999/xhtml">
-				<d:entry id="DIR_1" d:title="f1">
-					<d:index d:value="f1"/>
-					<span>forms-html1 <b>html</b> content</span>
-					<span>translations-html1 html <i class="c1">content</i></span>
+		<x:scenario label="When the HTML contains spans and attributes">
+			<x:context href="context/entry-forms-translations-html.xml"/>
+			<x:expect label="Then elements and attributes are preserved">
+				<d:entry xmlns="http://www.w3.org/1999/xhtml" id="DIR_1" d:title="w1">
+					<d:index d:value="w1"/>
+					<span><span class="form">f1 <i class="pos">f2</i> f3</span></span>
+					<span><span>t1</span> t2 <b class="b">t3</b></span>
 				</d:entry>
-			</d:dictionary>
-		</x:expect>
+			</x:expect>
+		</x:scenario>
+
 	</x:scenario>
 
 </x:description>

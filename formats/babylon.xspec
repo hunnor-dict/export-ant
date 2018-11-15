@@ -3,14 +3,26 @@
 
 	<x:param name="direction" select="'dir'"/>
 
-	<x:scenario label="Header">
+	<x:scenario label="Dictionary">
 
-		<x:scenario label="When the dictionary element is present">
-			<x:context>
-				<dictionary/>
-			</x:context>
-			<x:expect label="Then the Babylon file header is generated">
+		<x:scenario label="When the dictionary is empty">
+			<x:context href="context/dictionary.xml"/>
+			<x:expect label="Then the dictionary begins with the Babylon metadata block">
 #bookname=HunNor közösségi szótár DIR
+
+</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When the dictionary has entries">
+			<x:context href="context/dictionary-entries.xml"/>
+			<x:expect label="Then the dictionary has all entries">
+#bookname=HunNor közösségi szótár DIR
+
+
+ 
+
+
+ 
 
 </x:expect>
 		</x:scenario>
@@ -20,18 +32,7 @@
 	<x:scenario label="Entries">
 
 		<x:scenario label="When the entry contains a list of dictionary forms and inflected forms">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-						<form>w2</form>
-					</forms>
-					<inflections>
-						<inflection>w2</inflection>
-						<inflection>w3</inflection>
-					</inflections>
-				</entry>
-			</x:context>
+			<x:context href="context/entry-forms-inflections.xml"/>
 			<x:expect label="Then unique forms are listed, separated by the pipe character">w1|w2|w3
  
 
@@ -39,58 +40,17 @@
 		</x:scenario>
 
 		<x:scenario label="When the entry contains HTML for forms and translations">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-					</forms>
-					<forms-html>forms-html1</forms-html>
-					<translations-html>translations-html1</translations-html>
-				</entry>
-			</x:context>
+			<x:context href="context/entry-forms-translations.xml"/>
 			<x:expect label="Then forms and translations are separated by a space">w1
 forms-html1 translations-html1
 
 </x:expect>
 		</x:scenario>
 
-		<x:scenario label="When the dictionary contains several entries">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-					</forms>
-					<forms-html>forms-html1</forms-html>
-					<translations-html>translations-html1</translations-html>
-				</entry>
-				<entry>
-					<forms>
-						<form>w2</form>
-					</forms>
-					<forms-html>forms-html2</forms-html>
-					<translations-html>translations-html2</translations-html>
-				</entry>
-			</x:context>
-			<x:expect label="Then all entries begin on a new line">w1
-forms-html1 translations-html1
-
-w2
-forms-html2 translations-html2
-
-</x:expect>
-		</x:scenario>
-
 		<x:scenario label="When the HTML contains spans and attributes">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-					</forms>
-					<forms-html><span class="form">f1 <i class="pos">f2</i> f3</span></forms-html>
-					<translations-html><span>t1</span> t2 <b class="b">t3</b></translations-html>
-				</entry>
+			<x:context href="context/entry-forms-translations-html.xml">
 			</x:context>
-			<x:expect label="Then spans and attributes are removed; i[@class='pos'] is removed">w1
+			<x:expect label="Then span elements and all attributes are removed">w1
 f1 f2 f3 t1 t2 &lt;b&gt;t3&lt;/b&gt;
 
 </x:expect>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="stardict-nosym-number.xsl">
+
 	<x:scenario label="When the same key appears in several articles">
 		<x:context>
 			<dictionary>
@@ -34,4 +35,5 @@
 			</dictionary>
 		</x:expect>
 	</x:scenario>
+
 </x:description>

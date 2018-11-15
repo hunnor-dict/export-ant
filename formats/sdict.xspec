@@ -3,14 +3,13 @@
 
 	<x:param name="direction" select="'dir'"/>
 
-	<x:scenario label="Header">
+	<x:scenario label="Dictionary">
 
-		<x:scenario label="When the dictionary element is present">
-			<x:context>
-			<x:param name="direction" select="'hn'"/>
-			<dictionary updated="YYYY-MM-DD"/>
-		</x:context>
-		<x:expect label="Then the SDictionary file header is generated"># HunNor közösségi szótár
+		<x:scenario label="When the dictionary is empty">
+			<x:context href="context/dictionary.xml">
+				<x:param name="direction" select="'hn'"/>
+			</x:context>
+			<x:expect label="Then the dictionary begins with the SDictionary metadata block"># HunNor közösségi szótár
 # SDictionary formátum
 &lt;header&gt;
 title = HunNor közösségi szótár DIR
@@ -22,76 +21,45 @@ a_lang = no
 </x:expect>
 		</x:scenario>
 
+		<x:scenario label="When the dictionary has entries">
+			<x:context href="context/dictionary-entries.xml">
+				<x:param name="direction" select="'hn'"/>
+			</x:context>
+			<x:expect label="Then the dictionary has all entries"># HunNor közösségi szótár
+# SDictionary formátum
+&lt;header&gt;
+title = HunNor közösségi szótár DIR
+copyright = GNU Általános Nyilvános Licenc
+version = YYYY-MM-DD
+w_lang = hu
+a_lang = no
+&lt;/header&gt;
+___&lt;br/&gt;
+___&lt;br/&gt;
+</x:expect>
+		</x:scenario>
+
 	</x:scenario>
 
 	<x:scenario label="Entries">
 
 		<x:scenario label="When the entry contains a list of dictionary forms and inflected forms">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-						<form>w2</form>
-					</forms>
-					<inflections>
-						<inflection>w2</inflection>
-						<inflection>w3</inflection>
-					</inflections>
-				</entry>
-			</x:context>
-			<x:expect label="Then subsequent forms appear as references to the first form">w1___&lt;br/&gt;
+			<x:context href="context/entry-forms-inflections.xml"/>
+			<x:expect label="Then the first form is used as key, and unique subsequent forms are references to the first form">w1___&lt;br/&gt;
 w2___ld. &lt;r&gt;w1&lt;/r&gt;
 w3___ld. &lt;r&gt;w1&lt;/r&gt;
 </x:expect>
 		</x:scenario>
 
 		<x:scenario label="When the entry contains HTML for forms and translations">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-					</forms>
-					<forms-html>forms-html1</forms-html>
-					<translations-html>translations-html1</translations-html>
-				</entry>
-			</x:context>
-			<x:expect label="Then forms and translations are separated by a br element">w1___forms-html1&lt;br/&gt;translations-html1
-</x:expect>
-		</x:scenario>
-
-		<x:scenario label="When the dictionary contains several entries">
-			<x:context>
-				<entry>
-					<forms>
-					<form>w1</form>
-					</forms>
-					<forms-html>forms-html1</forms-html>
-					<translations-html>translations-html1</translations-html>
-				</entry>
-				<entry>
-					<forms>
-						<form>w2</form>
-					</forms>
-					<forms-html>forms-html2</forms-html>
-					<translations-html>translations-html2</translations-html>
-				</entry>
-			</x:context>
-			<x:expect label="Then all entries begin on a new line">w1___forms-html1&lt;br/&gt;translations-html1
-w2___forms-html2&lt;br/&gt;translations-html2
+			<x:context href="context/entry-forms-translations.xml"/>
+			<x:expect label="Then forms and translations are separated by a &lt;br/&gt; element">w1___forms-html1&lt;br/&gt;translations-html1
 </x:expect>
 		</x:scenario>
 
 		<x:scenario label="When the HTML contains spans and attributes">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-					</forms>
-					<forms-html><span class="form">f1 <i class="pos">f2</i> f3</span></forms-html>
-					<translations-html><span>t1</span> t2 <b class="b">t3</b></translations-html>
-				</entry>
-			</x:context>
-			<x:expect label="Then spans and attributes are removed; i[@class='pos'] is removed">w1___f1 f2 f3&lt;br/&gt;t1 t2 &lt;b&gt;t3&lt;/b&gt;
+			<x:context href="context/entry-forms-translations-html.xml"/>
+			<x:expect label="Then span elements and all attributes are removed">w1___f1 f2 f3&lt;br/&gt;t1 t2 &lt;b&gt;t3&lt;/b&gt;
 </x:expect>
 		</x:scenario>
 

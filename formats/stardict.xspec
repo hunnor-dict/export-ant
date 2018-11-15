@@ -3,13 +3,11 @@
 
 	<x:param name="direction" select="'dir'"/>
 
-	<x:scenario label="Header">
+	<x:scenario label="Dictionary">
 
-		<x:scenario label="When the dictionary element is present">
-			<x:context>
-				<dictionary/>
-			</x:context>
-			<x:expect label="Then the StarDict file header is generated">
+		<x:scenario label="When the dictionary is empty">
+			<x:context href="context/dictionary.xml"/>
+			<x:expect label="Then the dictionary has the StarDict metadata elements">
 				<stardict>
 					<info>
 						<version>3.0.0</version>
@@ -22,24 +20,37 @@
 			</x:expect>
 		</x:scenario>
 
+		<x:scenario label="When the dictionary has entries">
+			<x:context href="context/dictionary-entries.xml"/>
+			<x:expect label="Then the dictionary has all entries">
+				<stardict>
+					<info>
+						<version>3.0.0</version>
+						<bookname>HunNor közösségi szótár DIR</bookname>
+						<author>Ádám Z. Kövér</author>
+						<website>http://dict.hunnor.net/</website>
+					</info>
+					<contents type="h">
+						<article>
+							<key/>
+							<definition><![CDATA[<![CDATA[]]> <![CDATA[]]]]><![CDATA[>]]></definition>
+						</article>
+						<article>
+							<key/>
+							<definition><![CDATA[<![CDATA[]]> <![CDATA[]]]]><![CDATA[>]]></definition>
+						</article>
+					</contents>
+				</stardict>
+			</x:expect>
+		</x:scenario>
+
 	</x:scenario>
 
 	<x:scenario label="Entries">
 
 		<x:scenario label="When the entry contains a list of dictionary forms and inflected forms">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-						<form>w2</form>
-					</forms>
-					<inflections>
-						<inflection>w2</inflection>
-						<inflection>w3</inflection>
-					</inflections>
-				</entry>
-			</x:context>
-			<x:expect label="Then the first form is in the key element, and unique subsequent forms are in synonym elements">
+			<x:context href="context/entry-forms-inflections.xml"/>
+			<x:expect label="Then the first form is used as key, and unique subsequent forms are synonyms for the first form">
 				<article>
 					<key>w1</key>
 					<synonym>w2</synonym>
@@ -50,15 +61,7 @@
 		</x:scenario>
 
 		<x:scenario label="When the entry contains HTML for forms and translations">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-					</forms>
-					<forms-html>forms-html1</forms-html>
-					<translations-html>translations-html1</translations-html>
-				</entry>
-			</x:context>
+			<x:context href="context/entry-forms-translations.xml"/>
 			<x:expect label="Then forms and translations are separated by a space">
 				<article>
 					<key>w1</key>
@@ -67,46 +70,9 @@
 			</x:expect>
 		</x:scenario>
 
-		<x:scenario label="When the dictionary contains several entries">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-					</forms>
-					<forms-html>forms-html1</forms-html>
-					<translations-html>translations-html1</translations-html>
-				</entry>
-				<entry>
-					<forms>
-						<form>w2</form>
-					</forms>
-					<forms-html>forms-html2</forms-html>
-					<translations-html>translations-html2</translations-html>
-				</entry>
-			</x:context>
-			<x:expect label="Then all entries are separate article elements">
-				<article>
-					<key>w1</key>
-					<definition><![CDATA[<![CDATA[]]>forms-html1 translations-html1<![CDATA[]]]]><![CDATA[>]]></definition>
-				</article>
-				<article>
-					<key>w2</key>
-					<definition><![CDATA[<![CDATA[]]>forms-html2 translations-html2<![CDATA[]]]]><![CDATA[>]]></definition>
-				</article>
-			</x:expect>
-		</x:scenario>
-
 		<x:scenario label="When the HTML contains spans and attributes">
-			<x:context>
-				<entry>
-					<forms>
-						<form>w1</form>
-					</forms>
-					<forms-html><span class="form">f1 <i class="pos">f2</i> f3</span></forms-html>
-					<translations-html><span>t1</span> t2 <b class="b">t3</b></translations-html>
-				</entry>
-			</x:context>
-			<x:expect label="Then spans and attributes are removed; i[@class='pos'] is removed">
+			<x:context href="context/entry-forms-translations-html.xml"/>
+			<x:expect label="Then span elements and all attributes are removed">
 				<article>
 					<key>w1</key>
 					<definition><![CDATA[<![CDATA[]]>f1 f2 f3 t1 t2 <b>t3</b><![CDATA[]]]]><![CDATA[>]]></definition>

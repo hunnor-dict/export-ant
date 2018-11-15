@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry id="1">
+	<forms>
+		<form>w1</form>
+	</forms>
+	<forms-html><span>forms-html1</span></forms-html>
+	<translations-html><span>translations-html1</span></translations-html>
+</entry>
