@@ -429,7 +429,7 @@
 	<target name="export.xdxf.deploy.nb" depends="export.xdxf.convert.nb">
 		<gzip src="${build.dir}/HunNor-XDXF-L-NH.xdxf" destfile="${build.dir}/HunNor-XDXF-L-NH.xdxf.gz"/>
 		<delete file="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>
-		<move file="${build.dir}/HunNor-XDXF-NH.xdxf.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<move file="${build.dir}/HunNor-XDXF-L-NH.xdxf.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.xdxf.hu" depends="export.xdxf.deploy.hu">
