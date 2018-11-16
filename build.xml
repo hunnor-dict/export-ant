@@ -7,7 +7,6 @@
 
 	<property environment="env"/>
 
-	<property name="env.HUNNOR_ANT_JAVA_HOME" location="/usr/lib/jvm/java-8-openjdk-amd64/jre"/>
 	<property name="env.HUNNOR_ANT_KINDLE_COMPILER" location="/opt/kindlegen-2.9-amazon/kindlegen"/>
 	<property name="env.HUNNOR_ANT_SAXON_JAR" location="/opt/saxon-9-he/saxon9he.jar"/>
 	<property name="env.HUNNOR_ANT_SDICT_COMPILER" location="/opt/sdict/bin/sdict-tools.plx"/>
