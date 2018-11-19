@@ -88,3 +88,9 @@ Source files and compiled dictionaries in [StarDict format](https://github.com/h
 
 Source files: `HunNor-ST-[HN|NH].xml.gz`, `HunNor-ST-[HN|NH]-NoSym-Number.xml.gz`  
 Compiled files: `HunNor-ST-[HN|NH].zip`, `HunNor-ST-[HN|NH]-NoSym-Number.zip`
+
+## XDXF
+
+Source files in the [XML Dictionary Exchange Format](https://github.com/soshial/xdxf_makedict/tree/master/format_standard). The conversion uses a legacy version of the format, to be compatible with the [PocketBook dictionary compiler](http://support.pocketbook-int.com/dictionaries/u/DictionaryConverter.zip). The DTD and support files for compilation are in the `pocketbook` directory.
+
+Source files: `HunNor-XDXF-L-[HN|NH].xml.gz`
