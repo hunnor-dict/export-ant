@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:dict="http://dict.hunnor.net" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:saxon="http://saxon.sf.net/" exclude-result-prefixes="saxon dict">
+<xsl:stylesheet version="3.0" xmlns:dict="http://dict.hunnor.net" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="dict">
 
-	<xsl:output indent="yes" saxon:suppress-indentation="forms-html translations-html"/>
+	<xsl:output indent="yes" suppress-indentation="forms-html translations-html"/>
 
 	<xsl:strip-space elements="*"/>
 

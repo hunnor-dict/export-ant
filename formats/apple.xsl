@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:d="http://www.apple.com/DTDs/DictionaryService-1.0.rng" xmlns:saxon="http://saxon.sf.net/" exclude-result-prefixes="saxon">
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:d="http://www.apple.com/DTDs/DictionaryService-1.0.rng">
 
 	<xsl:param name="direction"/>
 
-	<xsl:output indent="yes" saxon:suppress-indentation="span"/>
+	<xsl:output indent="yes" suppress-indentation="span"/>
 
 	<xsl:strip-space elements="*"/>
 

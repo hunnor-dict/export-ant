@@ -1,8 +1,9 @@
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:saxon="http://saxon.sf.net/" exclude-result-prefixes="saxon">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:param name="direction"/>
 
-	<xsl:output doctype-system="xdxf_lousy.dtd" method="xml" indent="yes" saxon:suppress-indentation="def"/>
+	<xsl:output doctype-system="xdxf_lousy.dtd" method="xml" indent="yes" suppress-indentation="def"/>
 
 	<xsl:strip-space elements="*"/>
 
