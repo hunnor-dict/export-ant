@@ -80,23 +80,10 @@
 	</xsl:template>
 
 	<xsl:template match="dict:entryGrp">
-		<xsl:if test="@head='A'">
-		<fo:page-sequence master-reference="hn-page-body" initial-page-number="1">
-			<fo:static-content flow-name="xsl-region-before">
-				<fo:block text-align="center" font-family="LiberationSerif" font-size="8pt" border-after-width="0.1mm" border-after-style="solid" border-after-color="black">
-					<fo:page-number/>
-				</fo:block>
-			</fo:static-content>
-			<fo:flow flow-name="xsl-region-body">
-				<fo:block text-align="center" font-family="LiberationSerif" font-size="48pt" font-weight="bold">
-					<xsl:value-of select="@head"/>
-				</fo:block>
-				<xsl:apply-templates/>
-			</fo:flow>
-		</fo:page-sequence>
-		</xsl:if>
-		<xsl:if test="@head!='A'">
 		<fo:page-sequence master-reference="hn-page-body">
+			<xsl:if test="@head='A'">
+				<xsl:attribute name="initial-page-number">1</xsl:attribute>
+			</xsl:if>
 			<fo:static-content flow-name="xsl-region-before">
 				<fo:block text-align="center" font-family="LiberationSerif" font-size="8pt" border-after-width="0.1mm" border-after-style="solid" border-after-color="black">
 					<fo:page-number/>
@@ -109,7 +96,6 @@
 				<xsl:apply-templates/>
 			</fo:flow>
 		</fo:page-sequence>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="dict:entry">
