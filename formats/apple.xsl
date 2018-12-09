@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:d="http://www.apple.com/DTDs/DictionaryService-1.0.rng">
 
-	<xsl:param name="direction"/>
-
 	<xsl:output indent="yes" suppress-indentation="span"/>
 
 	<xsl:strip-space elements="*"/>
+
+	<xsl:param name="direction"/>
 
 	<xsl:template match="dictionary">
 		<d:dictionary>
 			<xsl:apply-templates/>
 		</d:dictionary>
+	</xsl:template>
+
+	<xsl:template match="letter">
+		<xsl:apply-templates/>
 	</xsl:template>
 
 	<xsl:template match="entry">
@@ -77,14 +81,31 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="element()">
-		<xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
-			<xsl:apply-templates select="@*|node()"/>
-		</xsl:element>
+	<xsl:template match="span">
+		<xsl:choose>
+			<xsl:when test="@class = 'orth' or @class = 'q' or @class = 'senseGrp-nr' or @class = 'sense-nr'">
+				<xsl:call-template name="formatting">
+					<xsl:with-param name="element" select="'b'"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="@class = 'infl' or @class = 'lbl' or @class = 'pos'">
+				<xsl:call-template name="formatting">
+					<xsl:with-param name="element" select="'i'"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
+					<xsl:apply-templates/>
+				</xsl:element>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="@*">
-		<xsl:copy/>
+	<xsl:template name="formatting">
+		<xsl:param name="element"/>
+		<xsl:element name="{$element}" namespace="http://www.w3.org/1999/xhtml">
+			<xsl:apply-templates/>
+		</xsl:element>
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:dict="http://dict.hunnor.net" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 
-	<xsl:output method="xml" indent="yes"/>
+	<xsl:output method="xml" indent="yes" suppress-indentation="fo:block"/>
 
-	<xsl:strip-space elements="*"/>
+	<xsl:strip-space elements="entry"/>
 
-	<xsl:template match="dict:hnDict">
+	<xsl:template match="dictionary">
 		<fo:root>
 			<fo:layout-master-set>
 				<fo:simple-page-master master-name="hn-page-head" page-height="9in" page-width="6in" margin="0.5in">
@@ -58,14 +58,14 @@
 				<fo:flow flow-name="xsl-region-body">
 					<fo:block text-align="center" font-family="LiberationSerif" font-size="12pt" margin-top="5in">
 						<fo:block margin-top="0.25in">
-							<fo:block>Frissítve: <xsl:value-of select="/dict:hnDict/@updated"/></fo:block>
-							<fo:block>Szócikkek száma: <xsl:value-of select="count(//dict:entry)"/></fo:block>
+							<fo:block>Frissítve: <xsl:value-of select="@updated"/></fo:block>
+							<fo:block>Szócikkek száma: <xsl:value-of select="count(/dictionary/letter/entry)"/></fo:block>
 							<fo:block>Forrás: http://dict.hunnor.net/</fo:block>
 							<fo:block>A szótárra a GNU Általános Nyilvános Licenc vonatkozik.</fo:block>
 						</fo:block>
 						<fo:block margin-top="0.25in">
-							<fo:block>Oppdatert: <xsl:value-of select="/dict:hnDict/@updated"/></fo:block>
-							<fo:block>Antall artikler: <xsl:value-of select="count(//dict:entry)"/></fo:block>
+							<fo:block>Oppdatert: <xsl:value-of select="@updated"/></fo:block>
+							<fo:block>Antall artikler: <xsl:value-of select="count(/dictionary/letter/entry)"/></fo:block>
 							<fo:block>Kilde: http://dict.hunnor.net/</fo:block>
 							<fo:block>Ordboka er lisensiert under GNU General Public License.</fo:block>
 						</fo:block>
@@ -79,9 +79,9 @@
 		</fo:root>
 	</xsl:template>
 
-	<xsl:template match="dict:entryGrp">
+	<xsl:template match="letter">
 		<fo:page-sequence master-reference="hn-page-body">
-			<xsl:if test="@head='A'">
+			<xsl:if test="@label = 'A'">
 				<xsl:attribute name="initial-page-number">1</xsl:attribute>
 			</xsl:if>
 			<fo:static-content flow-name="xsl-region-before">
@@ -91,129 +91,76 @@
 			</fo:static-content>
 			<fo:flow flow-name="xsl-region-body">
 				<fo:block text-align="center" font-family="LiberationSerif" font-size="48pt" font-weight="bold">
-					<xsl:value-of select="@head"/>
+					<xsl:value-of select="@label"/>
 				</fo:block>
 				<xsl:apply-templates/>
 			</fo:flow>
 		</fo:page-sequence>
 	</xsl:template>
 
-	<xsl:template match="dict:entry">
+	<xsl:template match="entry">
 		<fo:block font-family="LiberationSerif" font-size="8pt">
 			<xsl:apply-templates/>
 		</fo:block>
 	</xsl:template>
 
-	<xsl:template match="dict:orth">
-		<xsl:if test="count(parent::dict:form/preceding-sibling::dict:form) > 0">
-			<xsl:text> </xsl:text>
-		</xsl:if>
-		<fo:inline font-weight="bold">
-			<xsl:apply-templates/>
-		</fo:inline>
-		<xsl:if test="@n > 0">
-			<fo:inline baseline-shift="sub" font-size="6pt">
-				<xsl:value-of select="@n"/>
-			</fo:inline>
-		</xsl:if>
+	<xsl:template match="forms | inflections"/>
+
+	<xsl:template match="forms-html">
+		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="dict:pos">
-		<fo:inline font-style="italic">
+	<xsl:template match="translations-html">
+		<xsl:if test="preceding-sibling::forms-html">
 			<xsl:text> </xsl:text>
-			<xsl:choose>
-				<xsl:when test="self::node()[text()='adj']"><xsl:text>mn</xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='adv']"><xsl:text>htsz</xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='art']"><xsl:text>nvel</xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='fork']"><xsl:text>rv</xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='inf']"><xsl:text></xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='interj']"><xsl:text>ind</xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='konj']"><xsl:text>ktsz</xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='prep']"><xsl:text>elj</xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='pron']"><xsl:text>nvms</xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='subst']"><xsl:text>fn</xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='tall']"><xsl:text>szmn</xsl:text></xsl:when>
-				<xsl:when test="self::node()[text()='verb']"><xsl:text>ige</xsl:text></xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="self"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</fo:inline>
-	</xsl:template>
-
-	<xsl:template match="dict:inflCode">
-		<xsl:if test="@type = 'suff'">
-			<xsl:text> </xsl:text>
-			<xsl:apply-templates/>
 		</xsl:if>
+		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="dict:inflPar">
-		<xsl:if test="not(preceding-sibling::dict:inflCode)">
-			<fo:inline font-style="italic">
-				<xsl:if test="not(preceding-sibling::dict:inflPar)">
-					<xsl:text> (</xsl:text>
-				</xsl:if>
-				<xsl:if test="preceding-sibling::dict:inflPar">
-					<xsl:text>; </xsl:text>
-				</xsl:if>
+	<xsl:template match="span">
+		<xsl:choose>
+			<xsl:when test="@class = 'orth' or @class = 'senseGrp-nr' or @class = 'sense-nr'">
+				<fo:inline font-weight="bold">
+					<xsl:apply-templates/>
+				</fo:inline>
+			</xsl:when>
+			<xsl:when test="@class = 'infl' or @class = 'lbl' or @class = 'q'">
+				<fo:inline font-style="italic">
+					<xsl:apply-templates/>
+				</fo:inline>
+			</xsl:when>
+			<xsl:when test="@class = 'pos'">
+				<fo:inline font-style="italic">
+					<xsl:call-template name="pos">
+						<xsl:with-param name="original" select="."/>
+					</xsl:call-template>
+				</fo:inline>
+			</xsl:when>
+			<xsl:otherwise>
 				<xsl:apply-templates/>
-				<xsl:if test="not(following-sibling::dict:inflPar)">
-					<xsl:text>)</xsl:text>
-				</xsl:if>
-			</fo:inline>
-		</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="dict:inflSeq">
-		<xsl:if test="position() > 1">
-			<xsl:text>, </xsl:text>
-		</xsl:if>
-		<xsl:apply-templates/>
-	</xsl:template>
-
-	<xsl:template match="dict:senseGrp">
-		<xsl:if test="count(../dict:senseGrp) > 1">
-			<fo:inline font-weight="bold">
-				<xsl:text> </xsl:text>
-				<xsl:number value="position()-1" format="I"/>
-			</fo:inline>
-		</xsl:if>
-		<xsl:apply-templates/>
-	</xsl:template>
-
-	<xsl:template match="dict:sense">
-		<xsl:if test="count(../dict:sense) > 1">
-			<fo:inline font-weight="bold">
-				<xsl:text> </xsl:text>
-				<xsl:number value="position()"/>
-			</fo:inline>
-		</xsl:if>
-		<xsl:apply-templates/>
-	</xsl:template>
-
-	<xsl:template match="dict:lbl"/>
-
-	<xsl:template match="dict:trans">
-		<xsl:if test="preceding-sibling::dict:trans">
-			<xsl:text>,</xsl:text>
-		</xsl:if>
-		<xsl:text> </xsl:text>
-		<xsl:apply-templates/>
-	</xsl:template>
-
-	<xsl:template match="dict:eg">
-		<xsl:if test="position() > 1">
-			<xsl:text>;</xsl:text>
-		</xsl:if>
-		<xsl:text> </xsl:text>
-		<xsl:apply-templates/>
-	</xsl:template>
-
-	<xsl:template match="dict:q">
-		<fo:inline font-style="italic">
-			<xsl:apply-templates/>
-		</fo:inline>
+	<xsl:template name="pos">
+		<xsl:param name="original"/>
+		<xsl:choose>
+			<xsl:when test="$original = 'adj'"><xsl:text>mn</xsl:text></xsl:when>
+			<xsl:when test="$original = 'adv'"><xsl:text>htsz</xsl:text></xsl:when>
+			<xsl:when test="$original = 'art'"><xsl:text>nvel</xsl:text></xsl:when>
+			<xsl:when test="$original = 'fork'"><xsl:text>rv</xsl:text></xsl:when>
+			<xsl:when test="$original = 'inf'"><xsl:text></xsl:text></xsl:when>
+			<xsl:when test="$original = 'interj'"><xsl:text>ind</xsl:text></xsl:when>
+			<xsl:when test="$original = 'konj'"><xsl:text>ktsz</xsl:text></xsl:when>
+			<xsl:when test="$original = 'prep'"><xsl:text>elj</xsl:text></xsl:when>
+			<xsl:when test="$original = 'pron'"><xsl:text>nvms</xsl:text></xsl:when>
+			<xsl:when test="$original = 'subst'"><xsl:text>fn</xsl:text></xsl:when>
+			<xsl:when test="$original = 'tall'"><xsl:text>szmn</xsl:text></xsl:when>
+			<xsl:when test="$original = 'verb'"><xsl:text>ige</xsl:text></xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$original"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 </xsl:stylesheet>

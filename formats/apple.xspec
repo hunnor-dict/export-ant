@@ -51,11 +51,11 @@
 
 		<x:scenario label="When the HTML contains spans and attributes">
 			<x:context href="context/entry-forms-translations-html.xml"/>
-			<x:expect label="Then elements and attributes are preserved">
+			<x:expect label="Then elements and attributes are converted to formatting">
 				<d:entry xmlns="http://www.w3.org/1999/xhtml" id="DIR_1" d:title="w1">
 					<d:index d:value="w1"/>
-					<span><span class="form">f1 <i class="pos">f2</i> f3</span></span>
-					<span><span>t1</span> t2 <b class="b">t3</b></span>
+					<span><span>f1 <i>f2</i> f3</span></span>
+					<span><span>t1</span> t2 <b>t3</b></span>
 				</d:entry>
 			</x:expect>
 		</x:scenario>

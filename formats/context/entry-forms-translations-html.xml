@@ -3,6 +3,6 @@
 	<forms>
 		<form>w1</form>
 	</forms>
-	<forms-html><span><span class="form">f1 <i class="pos">f2</i> f3</span></span></forms-html>
-	<translations-html><span><span>t1</span> t2 <b class="b">t3</b></span></translations-html>
+	<forms-html><span><span class="form">f1 <span class="pos">f2</span> f3</span></span></forms-html>
+	<translations-html><span><span>t1</span> t2 <span class="sense-nr">t3</span></span></translations-html>
 </entry>

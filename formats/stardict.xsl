@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<xsl:param name="direction"/>
-
 	<xsl:output method="xml" indent="yes" encoding="us-ascii" suppress-indentation="definition"/>
+
+	<xsl:param name="direction"/>
 
 	<xsl:template match="dictionary">
 		<stardict>
@@ -54,14 +54,29 @@
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template match="i[@class='pos']">
-		<xsl:apply-templates/>
+	<xsl:template match="span">
+		<xsl:choose>
+			<xsl:when test="@class = 'orth' or @class = 'q' or @class = 'senseGrp-nr' or @class = 'sense-nr'">
+				<xsl:call-template name="formatting">
+					<xsl:with-param name="element" select="'b'"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="@class = 'infl' or @class = 'lbl'">
+				<xsl:call-template name="formatting">
+					<xsl:with-param name="element" select="'i'"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
-	<xsl:template match="b|i">
-		<xsl:copy>
+	<xsl:template name="formatting">
+		<xsl:param name="element"/>
+		<xsl:element name="{$element}">
 			<xsl:apply-templates/>
-		</xsl:copy>
+		</xsl:element>
 	</xsl:template>
 
 </xsl:stylesheet>

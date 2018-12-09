@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dictionary updated="YYYY-MM-DD">
-	<entry id="1"/>
-	<entry id="2"/>
+	<letter label="A">
+		<entry id="1"/>
+		<entry id="2"/>
+	</letter>
 </dictionary>

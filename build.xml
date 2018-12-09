@@ -181,8 +181,8 @@
 
 	<!-- PDF -->
 
-	<target name="export.pdf.convert.hu">
-		<xslt style="formats/pdf.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${build.dir}/HunNor-FO-HN.xml" force="true">
+	<target name="export.pdf.convert.hu" depends="export.simple-html.hu">
+		<xslt style="formats/pdf.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-FO-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
@@ -197,8 +197,8 @@
 		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
-	<target name="export.pdf.convert.nb">
-		<xslt style="formats/pdf.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-FO-NH.xml" force="true">
+	<target name="export.pdf.convert.nb" depends="export.simple-html.nb">
+		<xslt style="formats/pdf.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-FO-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>

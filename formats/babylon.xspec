@@ -50,7 +50,7 @@ forms-html1 translations-html1
 		<x:scenario label="When the HTML contains spans and attributes">
 			<x:context href="context/entry-forms-translations-html.xml">
 			</x:context>
-			<x:expect label="Then span elements and all attributes are removed">w1
+			<x:expect label="Then span elements and all attributes are removed or converted to formatting">w1
 f1 f2 f3 t1 t2 &lt;b&gt;t3&lt;/b&gt;
 
 </x:expect>

@@ -32,12 +32,12 @@
 		<x:scenario label="When form span includes inflections">
 			<x:context>
 				<entry>
-					<forms-html><span class="form">a <i class="pos">pos</i> <i>-suff</i> <i class="infl">b</i></span></forms-html>
+					<forms-html><span class="form">a <span class="pos">pos</span> -suff <span class="infl">b</span></span></forms-html>
 				</entry>
 			</x:context>
 			<x:expect label="Then the inflections are extracted to inflections elements">
 				<entry>
-					<forms-html><![CDATA[<![CDATA[]]><base>a <i>pos</i> <i>-suff</i> </base><inflections>b</inflections><![CDATA[]]]]><![CDATA[>]]></forms-html>
+					<forms-html><![CDATA[<![CDATA[]]><base>a <i>pos</i> -suff </base><inflections>b</inflections><![CDATA[]]]]><![CDATA[>]]></forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -62,7 +62,7 @@
 		<x:scenario label="When translations-html contains senses">
 			<x:context>
 				<entry>
-					<translations-html><span class="senseGrp"><span class="sense numbered"><b>1</b> a</span><span class="sense numbered"><span class="senseGlue"> </span><b>2</b> b</span></span></translations-html>
+					<translations-html><span class="senseGrp"><span class="sense numbered"><span class="sense-nr">1</span> a</span><span class="sense numbered"><span class="senseGlue"> </span><span class="sense-nr">2</span> b</span></span></translations-html>
 				</entry>
 			</x:context>
 			<x:expect label="Then senses are copied to translation elements">
@@ -75,7 +75,7 @@
 		<x:scenario label="When translations-html contains numbered senseGrp spans">
 			<x:context>
 				<entry>
-					<translations-html><span class="senseGrp numbered"><b>I</b> <span class="sense numbered"><b>1</b> a</span><span class="sense numbered"><span class="senseGlue"> </span><b>2</b> b</span></span></translations-html>
+					<translations-html><span class="senseGrp numbered"><span class="senseGrp-nr">I</span> <span class="sense numbered"><span class="sense-nr">1</span> a</span><span class="sense numbered"><span class="senseGlue"> </span><span class="sense-nr">2</span> b</span></span></translations-html>
 				</entry>
 			</x:context>
 			<x:expect label="Then the roman numeral is merged with the sense sequence number">

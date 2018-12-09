@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="3.0" xmlns:dict="http://dict.hunnor.net" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="dict">
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:dict="http://dict.hunnor.net" exclude-result-prefixes="dict">
 
 	<xsl:output indent="yes" suppress-indentation="forms-html translations-html"/>
 
@@ -7,15 +7,18 @@
 
 	<xsl:template match="dict:hnDict">
 		<dictionary>
-			<xsl:if test="@updated">
-				<xsl:attribute name="updated" select="@updated"/>
-			</xsl:if>
+			<xsl:copy-of select="@updated"/>
 			<xsl:apply-templates/>
 		</dictionary>
 	</xsl:template>
 
 	<xsl:template match="dict:entryGrp">
-		<xsl:apply-templates/>
+		<letter>
+			<xsl:attribute name="label">
+				<xsl:value-of select="@head"/>
+			</xsl:attribute>
+			<xsl:apply-templates/>
+		</letter>
 	</xsl:template>
 
 	<xsl:template match="dict:entry">
@@ -69,19 +72,24 @@
 
 	<xsl:template match="dict:orth">
 		<xsl:if test="preceding-sibling::dict:orth">
-			<b>, </b>
+			<span class="orth">, </span>
 		</xsl:if>
-		<b>
+		<span class="orth">
+			<xsl:if test="@n > 0">
+				<xsl:attribute name="data-n">
+					<xsl:value-of select="@n"/>
+				</xsl:attribute>
+			</xsl:if>
 			<xsl:apply-templates/>
-		</b>
+		</span>
 	</xsl:template>
 
 	<xsl:template match="dict:pos">
 		<xsl:if test="ancestor::dict:form[@primary = 'yes']">
 			<xsl:text> </xsl:text>
-			<i class="pos">
+			<span class="pos">
 				<xsl:apply-templates/>
-			</i>
+			</span>
 		</xsl:if>
 	</xsl:template>
 
@@ -94,14 +102,11 @@
 
 	<xsl:template match="dict:inflPar[1]">
 		<xsl:text> </xsl:text>
-		<i class="infl">
+		<span class="infl">
 			<xsl:text>(</xsl:text>
 			<xsl:apply-templates select="../dict:inflPar" mode="inflPar"/>
 			<xsl:text>)</xsl:text>
-		</i>
-	</xsl:template>
-
-	<xsl:template match="dict:inflPar">
+		</span>
 	</xsl:template>
 
 	<xsl:template match="dict:inflPar" mode="inflPar">
@@ -125,9 +130,9 @@
 				<xsl:if test="position() > 1">
 					<xsl:text> </xsl:text>
 				</xsl:if>
-				<b>
+				<span class="senseGrp-nr">
 					<xsl:number value="position()" format="I"/>
-				</b>
+				</span>
 				<xsl:text> </xsl:text>
 			</xsl:if>
 			<xsl:apply-templates/>
@@ -143,9 +148,9 @@
 						<xsl:text> </xsl:text>
 					</span>
 				</xsl:if>
-				<b>
+				<span class="sense-nr">
 					<xsl:number value="count(preceding-sibling::dict:sense) + 1"/>
-				</b>
+				</span>
 				<xsl:text> </xsl:text>
 			</xsl:if>
 			<xsl:apply-templates/>
@@ -157,7 +162,7 @@
 			<xsl:variable name="previousTag" select="local-name(preceding-sibling::dict:*[1])"/>
 			<xsl:choose>
 				<xsl:when test="$previousTag = 'lbl'">
-					<xsl:text>, </xsl:text>
+					<span class="lbl">, </span>
 				</xsl:when>
 				<xsl:when test="$previousTag = 'trans'">
 					<xsl:text> </xsl:text>
@@ -167,9 +172,9 @@
 				</xsl:when>
 			</xsl:choose>
 		</xsl:if>
-		<i>
+		<span class="lbl">
 			<xsl:apply-templates/>
-		</i>
+		</span>
 		<xsl:if test="parent::dict:senseGrp">
 			<xsl:text> </xsl:text>
 		</xsl:if>
@@ -219,13 +224,13 @@
 					<xsl:text> </xsl:text>
 				</xsl:when>
 				<xsl:when test="$previousTag = 'q'">
-					<b>, </b>
+					<span class="q">, </span>
 				</xsl:when>
 			</xsl:choose>
 		</xsl:if>
-		<b>
+		<span class="q">
 			<xsl:apply-templates/>
-		</b>
+		</span>
 	</xsl:template>
 
 	<xsl:template match="*"/>

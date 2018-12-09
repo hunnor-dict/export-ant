@@ -59,7 +59,7 @@ w3___ld. &lt;r&gt;w1&lt;/r&gt;
 
 		<x:scenario label="When the HTML contains spans and attributes">
 			<x:context href="context/entry-forms-translations-html.xml"/>
-			<x:expect label="Then span elements and all attributes are removed">w1___f1 f2 f3&lt;br/&gt;t1 t2 &lt;b&gt;t3&lt;/b&gt;
+			<x:expect label="Then span elements and all attributes are removed or converted to formatting">w1___f1 f2 f3&lt;br/&gt;t1 t2 &lt;b&gt;t3&lt;/b&gt;
 </x:expect>
 		</x:scenario>
 

@@ -1,4 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="pdf.xsl">
-	<x:pending/>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="pdf.xsl" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+
+	<x:scenario label="Dictionary">
+
+		<x:scenario label="When the dictionary is empty">
+			<x:context href="context/dictionary.xml"/>
+			<x:expect label="Then the dictionary has the FO metadata elements">
+				<fo:root>
+					<fo:layout-master-set>
+						<fo:simple-page-master master-name="hn-page-head" page-height="9in" page-width="6in" margin="0.5in">
+							<fo:region-body/>
+						</fo:simple-page-master>
+						<fo:simple-page-master master-name="hn-page-body" page-height="9in" page-width="6in" margin="0.5in">
+							<fo:region-body column-count="2" margin-top="0.25in"/>
+							<fo:region-before extent="1cm"/>
+						</fo:simple-page-master>
+					</fo:layout-master-set>
+					<fo:declarations>
+						<xm:xmpmeta xmlns:xm="adobe:ns:meta/">
+							<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+								<rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/">
+									<dc:title>HunNor közösségi szótár</dc:title>
+									<dc:creator>HunNor szerk.</dc:creator>
+									<dc:description>norvég-magyar/magyar-norvég közösségi szótár</dc:description>
+								</rdf:Description>
+								<rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/">
+									<xmp:CreatorTool>Apache FOP</xmp:CreatorTool>
+								</rdf:Description>
+							</rdf:RDF>
+						</xm:xmpmeta>
+					</fo:declarations>
+					<fo:page-sequence master-reference="hn-page-head">
+						<fo:flow flow-name="xsl-region-body">
+							<fo:block text-align="center" font-family="LiberationSerif" font-weight="bold">
+								<fo:block margin-top="0.75in">
+									<fo:block font-size="28pt">
+										<fo:inline>NORVÉG-MAGYAR</fo:inline>
+									</fo:block>
+									<fo:block font-size="24pt">
+										<fo:inline>KÖZÖSSÉGI SZÓTÁR</fo:inline>
+									</fo:block>
+								</fo:block>
+								<fo:block margin-top="0.75in">
+									<fo:block font-size="28pt">
+										<fo:inline>NORSK-UNGARSK</fo:inline>
+									</fo:block>
+									<fo:block font-size="24pt">
+										<fo:inline>NETTORDBOK</fo:inline>
+									</fo:block>
+								</fo:block>
+							</fo:block>
+						</fo:flow>
+					</fo:page-sequence>
+					<fo:page-sequence master-reference="hn-page-head">
+						<fo:flow flow-name="xsl-region-body">
+							<fo:block text-align="center" font-family="LiberationSerif" font-size="12pt" margin-top="5in">
+								<fo:block margin-top="0.25in">
+									<fo:block>Frissítve: YYYY-MM-DD</fo:block>
+									<fo:block>Szócikkek száma: 0</fo:block>
+									<fo:block>Forrás: http://dict.hunnor.net/</fo:block>
+									<fo:block>A szótárra a GNU Általános Nyilvános Licenc vonatkozik.</fo:block>
+								</fo:block>
+								<fo:block margin-top="0.25in">
+									<fo:block>Oppdatert: YYYY-MM-DD</fo:block>
+									<fo:block>Antall artikler: 0</fo:block>
+									<fo:block>Kilde: http://dict.hunnor.net/</fo:block>
+									<fo:block>Ordboka er lisensiert under GNU General Public License.</fo:block>
+								</fo:block>
+								<fo:block margin-top="0.25in">
+									<fo:external-graphic src="url('images/logo-gold.png')"/>
+								</fo:block>
+							</fo:block>
+						</fo:flow>
+					</fo:page-sequence>
+				</fo:root>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When the dictionary has entries">
+			<x:context href="context/dictionary-entries.xml"/>
+			<x:expect label="Then the dictionary has all entries">
+				<fo:root>
+					<fo:layout-master-set>...</fo:layout-master-set>
+					<fo:declarations>...</fo:declarations>
+					<fo:page-sequence master-reference="hn-page-head">...</fo:page-sequence>
+					<fo:page-sequence master-reference="hn-page-head">...</fo:page-sequence>
+					<fo:page-sequence master-reference="hn-page-body" initial-page-number="1">
+						<fo:static-content flow-name="xsl-region-before">
+							<fo:block text-align="center" font-family="LiberationSerif" font-size="8pt" border-after-width="0.1mm" border-after-style="solid" border-after-color="black">
+								<fo:page-number/>
+							</fo:block>
+						</fo:static-content>
+						<fo:flow flow-name="xsl-region-body">
+							<fo:block text-align="center" font-family="LiberationSerif" font-size="48pt" font-weight="bold">A</fo:block>
+							<fo:block font-family="LiberationSerif" font-size="8pt"></fo:block>
+							<fo:block font-family="LiberationSerif" font-size="8pt"></fo:block>
+						</fo:flow>
+					</fo:page-sequence>
+				</fo:root>
+			</x:expect>
+		</x:scenario>
+
+	</x:scenario>
+
+	<x:scenario label="Entries">
+
+		<x:scenario label="When the entry contains a list of dictionary forms and inflected forms">
+			<x:context href="context/entry-forms-inflections.xml"/>
+			<x:expect label="Then both dictionary forms andinflected forms are ignored">
+				<fo:block font-family="LiberationSerif" font-size="8pt"></fo:block>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When the entry contains HTML for forms and translations">
+			<x:context href="context/entry-forms-translations.xml"/>
+			<x:expect label="Then forms and translations are separated by a space">
+				<fo:block font-family="LiberationSerif" font-size="8pt">forms-html1 translations-html1</fo:block>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When the HTML contains spans and attributes">
+			<x:context href="context/entry-forms-translations-html.xml"/>
+			<x:expect label="Then span elements and HTML formatting is converted to FO formatting">
+				<fo:block font-family="LiberationSerif" font-size="8pt">f1 <fo:inline font-style="italic">f2</fo:inline> f3 t1 t2 <fo:inline font-weight="bold">t3</fo:inline></fo:block>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When a part-of-speech is in Hungarian">
+			<x:context>
+				<span class="pos">fn</span>
+			</x:context>
+			<x:expect label="Then the part-of-speech is preserved">
+				<fo:inline xmlns:fo="http://www.w3.org/1999/XSL/Format" font-style="italic">fn</fo:inline>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When a part-of-speech is in Norwegian">
+			<x:context>
+				<span class="pos">subst</span>
+			</x:context>
+			<x:expect label="Then the part-of-speech is translated to Hungarian">
+				<fo:inline xmlns:fo="http://www.w3.org/1999/XSL/Format" font-style="italic">fn</fo:inline>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When a bold section is an example">
+			<x:context>
+				<span class="q">q1</span>
+			</x:context>
+			<x:expect label="Then the secrtion is formatted as italic">
+				<fo:inline xmlns:fo="http://www.w3.org/1999/XSL/Format" font-style="italic">q1</fo:inline>
+			</x:expect>
+		</x:scenario>
+
+	</x:scenario>
+
 </x:description>

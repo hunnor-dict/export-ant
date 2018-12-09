@@ -72,7 +72,7 @@
 
 		<x:scenario label="When the HTML contains spans and attributes">
 			<x:context href="context/entry-forms-translations-html.xml"/>
-			<x:expect label="Then span elements and all attributes are removed">
+			<x:expect label="Then span elements and all attributes are removed or converted to formatting">
 				<article>
 					<key>w1</key>
 					<definition><![CDATA[<![CDATA[]]>f1 f2 f3 t1 t2 <b>t3</b><![CDATA[]]]]><![CDATA[>]]></definition>

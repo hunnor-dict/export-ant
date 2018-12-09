@@ -12,18 +12,39 @@
 		</x:scenario>
 	</x:scenario>
 
-	<x:scenario label="Entry">
-		<x:scenario label="The ID attribute is set">
+	<x:scenario label="EntryGrp">
+		<x:scenario label="The head attribute is set">
 			<x:context>
 				<hnDict xmlns="http://dict.hunnor.net">
-					<entryGrp>
+					<entryGrp head="A">
 						<entry id="1"></entry>
 					</entryGrp>
 				</hnDict>
 			</x:context>
 			<x:expect label="The attribute value is present in the export.">
 				<dictionary>
-					<entry id="1"/>
+					<letter label="A">
+						<entry id="1"/>
+					</letter>
+				</dictionary>
+			</x:expect>
+		</x:scenario>
+	</x:scenario>
+
+	<x:scenario label="Entry">
+		<x:scenario label="The ID attribute is set">
+			<x:context>
+				<hnDict xmlns="http://dict.hunnor.net">
+					<entryGrp head="A">
+						<entry id="1"></entry>
+					</entryGrp>
+				</hnDict>
+			</x:context>
+			<x:expect label="The attribute value is present in the export.">
+				<dictionary>
+					<letter label="A">
+						<entry id="1"/>
+					</letter>
 				</dictionary>
 			</x:expect>
 		</x:scenario>
@@ -71,14 +92,14 @@
 					</formGrp>
 				</entry>
 			</x:context>
-			<x:expect label="The form is in bold.">
+			<x:expect label="The form is marked.">
 				<entry>
 					<forms>
 						<form>orth</form>
 					</forms>
 					<forms-html>
 						<span class="form">
-							<b>orth</b>
+							<span class="orth">orth</span>
 						</span>
 					</forms-html>
 				</entry>
@@ -95,7 +116,7 @@
 					</formGrp>
 				</entry>
 			</x:context>
-			<x:expect label="The forms are in bold, separated by a comma and a space in bold.">
+			<x:expect label="The forms are marked, separated by a marked comma and a space.">
 				<entry>
 					<forms>
 						<form>orth1</form>
@@ -103,7 +124,32 @@
 					</forms>
 					<forms-html>
 						<span class="form">
-							<b>orth1</b><b>, </b><b>orth2</b>
+							<span class="orth">orth1</span><span class="orth">, </span><span class="orth">orth2</span>
+						</span>
+					</forms-html>
+				</entry>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="N attribute values">
+			<x:context>
+				<entry xmlns="http://dict.hunnor.net">
+					<formGrp>
+						<form>
+							<orth n="0">orth1</orth>
+							<orth n="1">orth2</orth>
+						</form>
+					</formGrp>
+				</entry>
+			</x:context>
+			<x:expect label="Values > 0 are preserved">
+				<entry>
+					<forms>
+						<form>orth1</form>
+						<form>orth2</form>
+					</forms>
+					<forms-html>
+						<span class="form">
+							<span class="orth">orth1</span><span class="orth">, </span><span class="orth" data-n="1">orth2</span>
 						</span>
 					</forms-html>
 				</entry>
@@ -132,11 +178,11 @@
 					</forms>
 					<forms-html>
 						<span class="form">
-							<b>orth1</b> <i class="pos">pos1</i>
+							<span class="orth">orth1</span> <span class="pos">pos1</span>
 						</span>
 						 
 						<span class="form">
-							<b>orth2</b>
+							<span class="orth">orth2</span>
 						</span>
 					</forms-html>
 				</entry>
@@ -163,7 +209,7 @@
 					<forms>
 						<form>orth</form>
 					</forms>
-					<forms-html><span class="form"><b>orth</b> <i class="pos">pos</i> -suff</span></forms-html>
+					<forms-html><span class="form"><span class="orth">orth</span> <span class="pos">pos</span> -suff</span></forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -197,7 +243,7 @@
 					</inflections>
 					<forms-html>
 						<span class="form">
-							<b>orth</b> <i class="pos">pos</i> -suff <i class="infl">(form0-0, form0-1, form0-2)</i>
+							<span class="orth">orth</span> <span class="pos">pos</span> -suff <span class="infl">(form0-0, form0-1, form0-2)</span>
 						</span>
 					</forms-html>
 				</entry>
@@ -240,7 +286,7 @@
 					</inflections>
 					<forms-html>
 						<span class="form">
-							<b>orth</b> <i class="pos">pos</i> -suff <i class="infl">(form0-0, formX, form0-2; form1-0, formX, form1-2)</i>
+							<span class="orth">orth</span> <span class="pos">pos</span> -suff <span class="infl">(form0-0, formX, form0-2; form1-0, formX, form1-2)</span>
 						</span>
 					</forms-html>
 				</entry>
@@ -270,7 +316,7 @@
 			</x:context>
 			<x:expect label="The result is a sequence of spans with the sequence number in Roman numerals in bold. The spans are separated by a single space. The numbers are followed by a single space.">
 				<entry>
-					<translations-html><span class="senseGrp numbered"><b>I</b> </span> <span class="senseGrp numbered"><b>II</b> </span></translations-html>
+					<translations-html><span class="senseGrp numbered"><span class="senseGrp-nr">I</span> </span> <span class="senseGrp numbered"><span class="senseGrp-nr">II</span> </span></translations-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -302,7 +348,7 @@
 			</x:context>
 			<x:expect label="The result is a sequence of spans with the sequence number in bold. The spans are separated by a single space. The numbers are followed by a single space.">
 				<entry>
-					<translations-html><span class="senseGrp"><span class="sense numbered"><b>1</b> </span><span class="sense numbered"><span class="senseGlue"> </span><b>2</b> </span></span></translations-html>
+					<translations-html><span class="senseGrp"><span class="sense numbered"><span class="sense-nr">1</span> </span><span class="sense numbered"><span class="senseGlue"> </span><span class="sense-nr">2</span> </span></span></translations-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -321,7 +367,7 @@
 			</x:context>
 			<x:expect label="Sequence numbers are separated from each other correctly.">
 				<entry>
-					<translations-html><span class="senseGrp numbered"><b>I</b> <span class="sense numbered"><b>1</b> </span> <span class="sense numbered"><span class="senseGlue"> </span><b>2</b> </span></span> <span class="senseGrp numbered"><b>II</b> <span class="sense numbered"><b>1</b> </span> <span class="sense numbered"><span class="senseGlue"> </span><b>2</b> </span></span></translations-html>
+					<translations-html><span class="senseGrp numbered"><span class="senseGrp-nr">I</span> <span class="sense numbered"><span class="sense-nr">1</span> </span> <span class="sense numbered"><span class="senseGlue"> </span><span class="sense-nr">2</span> </span></span> <span class="senseGrp numbered"><span class="senseGrp-nr">II</span> <span class="sense numbered"><span class="sense-nr">1</span> </span> <span class="sense numbered"><span class="senseGlue"> </span><span class="sense-nr">2</span> </span></span></translations-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -341,7 +387,7 @@
 			</x:context>
 			<x:expect label="The label is displayed before the translation.">
 				<entry>
-					<translations-html><span class="senseGrp"><i>lbl</i> <span class="sense">trans</span></span></translations-html>
+					<translations-html><span class="senseGrp"><span class="lbl">lbl</span> <span class="sense">trans</span></span></translations-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -361,7 +407,7 @@
 			</x:context>
 			<x:expect label="The label is displayed before the sequence number.">
 				<entry>
-					<translations-html><span class="senseGrp"><i>lbl</i> <span class="sense numbered"><b>1</b> trans1</span> <span class="sense numbered"><span class="senseGlue"> </span><b>2</b> trans2</span></span></translations-html>
+					<translations-html><span class="senseGrp"><span class="lbl">lbl</span> <span class="sense numbered"><span class="sense-nr">1</span> trans1</span> <span class="sense numbered"><span class="senseGlue"> </span><span class="sense-nr">2</span> trans2</span></span></translations-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -380,7 +426,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space.">
 			<entry>
-				<translations-html><span class="senseGrp"><span class="sense"><i>lbl1</i>, <i>lbl2</i></span></span></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense"><span class="lbl">lbl1</span><span class="lbl">, </span><span class="lbl">lbl2</span></span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -398,7 +444,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><span class="senseGrp"><span class="sense">trans <i>lbl</i></span></span></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense">trans <span class="lbl">lbl</span></span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -416,7 +462,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><span class="senseGrp"><span class="sense"><i>lbl</i> trans</span></span></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense"><span class="lbl">lbl</span> trans</span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -452,7 +498,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space.">
 			<entry>
-				<translations-html><span class="senseGrp"><span class="sense"><i>lbl</i> </span></span></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense"><span class="lbl">lbl</span> </span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -508,7 +554,7 @@
 		</x:context>
 		<x:expect label="The glue string is a comma and a single space, formatted bold. Usage examples are bold. A single eg doesn't add space.">
 			<entry>
-				<translations-html><span class="senseGrp"><span class="sense"><b>q1</b><b>, </b><b>q2</b></span></span></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense"><span class="q">q1</span><span class="q">, </span><span class="q">q2</span></span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
@@ -528,7 +574,7 @@
 		</x:context>
 		<x:expect label="The glue string is a single space. Usage examples are bold. A single eg doesn't add space.">
 			<entry>
-				<translations-html><span class="senseGrp"><span class="sense"><b>q</b> trans</span></span></translations-html>
+				<translations-html><span class="senseGrp"><span class="sense"><span class="q">q</span> trans</span></span></translations-html>
 			</entry>
 		</x:expect>
 	</x:scenario>
