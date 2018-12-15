@@ -7,9 +7,7 @@
 	<x:param name="outLanguage" select="'OUT'"/>
 
 	<x:scenario label="When the dictionary element is present">
-		<x:context>
-			<hnDict xmlns="http://dict.hunnor.net" updated="YYYY-MM-DD"/>
-		</x:context>
+		<x:context href="context/dictionary.xml"/>
 		<x:expect label="Then the Kindle manifest file is generated">
 			<package unique-identifier="uid">
 				<metadata>

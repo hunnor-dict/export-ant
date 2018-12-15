@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xsl:stylesheet [
-<!ENTITY nbsp "&#x00A0;">
-]>
-<!--
-	TODO:
-	- inflections are redunant
--->
-<xsl:stylesheet version="2.0"
-	            xmlns:d="http://dict.hunnor.net"
-	            xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	            xmlns:mbp="http://www.mobipocket.com/mbp"
-	            xmlns:idx="http://www.mobipocket.com/idx"
-	            exclude-result-prefixes="d">
-	
-	<xsl:output method="xml" indent="yes"/>
-	<xsl:strip-space elements="*"/>
-	
-	<!-- document root -->
-	<xsl:template match="d:hnDict">
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:idx="http://www.mobipocket.com/idx" xmlns:mbp="http://www.mobipocket.com/mbp">
+
+	<xsl:output method="xml" indent="yes" suppress-indentation="span"/>
+
+	<xsl:template match="dictionary">
 		<html>
 			<head>
 				<meta charset="UTF-8"/>
@@ -28,137 +14,71 @@
 				<h2>Norvég - Magyar</h2>
 				<h2>http://dict.hunnor.net/</h2>
 				<mbp:pagebreak/>
-				
 				<xsl:apply-templates/>
-			</body>	
+			</body>
 		</html>
-		<xsl:text>&#xA;</xsl:text>
 	</xsl:template>
 
-	<!-- grouping by 1st letter -->
-	<xsl:template match="d:entryGrp">
+	<xsl:template match="letter">
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<!-- entry -->
-	<xsl:template match="d:entry[d:formGrp/d:form[@primary='yes']/d:orth/@n='0' or d:formGrp/d:form[@primary='yes']/d:orth/@n='1']">
-		<xsl:variable name="headWord" select="d:formGrp/d:form[@primary='yes']/d:orth"/>
+	<xsl:template match="entry">
 		<idx:entry name="word" scriptable="yes">
-			<idx:orth value="{$headWord}">
-				<xsl:if test="d:formGrp/d:form[@primary='no']/d:orth
-					or d:formGrp/d:form/d:inflPar/d:inflSeq
-					or (d:formGrp/d:form/d:orth/@n='1' and following-sibling::d:entry[d:formGrp/d:form[@primary='yes']/d:orth=$headWord and (d:formGrp/d:form[@primary='no']/d:orth or d:formGrp/d:form/d:inflPar/d:inflSeq)])">
-					<idx:infl>
-
-						<!-- inflections on the 1st orth -->
-						<xsl:apply-templates select="d:formGrp/d:form[@primary='no']/d:orth"/>
-						<xsl:apply-templates select="d:formGrp/d:form/d:inflPar/d:inflSeq"/>
-
-						<!-- inflections on the other numbered orths if exist -->
-						<xsl:if test="d:formGrp/d:form/d:orth/@n='1'">
-							<xsl:for-each select="following-sibling::d:entry[d:formGrp/d:form[@primary='yes']/d:orth=$headWord]">
-								<xsl:apply-templates select="d:formGrp/d:form[@primary='no']/d:orth"/>
-								<xsl:apply-templates select="d:formGrp/d:form/d:inflPar/d:inflSeq"/>
+			<xsl:if test="forms/form">
+				<idx:orth>
+					<xsl:attribute name="value" select="forms/form[1]"/>
+					<xsl:if test="count(distinct-values(forms/form[position() > 1] | inflections/inflection)) > 0">
+						<idx:infl>
+							<xsl:for-each select="distinct-values(forms/form[position() > 1] | inflections/inflection)">
+								<idx:iform>
+									<xsl:attribute name="value">
+										<xsl:value-of select="."/>
+									</xsl:attribute>
+								</idx:iform>
 							</xsl:for-each>
-						</xsl:if>
-
-					</idx:infl>
-				</xsl:if>
-			</idx:orth>
-			
-			<!-- 1st orth -->
-			<xsl:apply-templates select="d:formGrp/d:form[@primary='yes']/d:orth" mode="html"/>
-			<xsl:apply-templates select="d:senseGrp"/>
-			
-			<!-- the other numbered orths if exist -->
-			<xsl:if test="d:formGrp/d:form/d:orth/@n='1'">
-				<xsl:for-each select="following-sibling::d:entry[d:formGrp/d:form[@primary='yes']/d:orth=$headWord]">
-					<xsl:apply-templates select="d:formGrp/d:form[@primary='yes']/d:orth" mode="html"/>
-					<xsl:apply-templates select="d:senseGrp"/>
-				</xsl:for-each>
+						</idx:infl>
+					</xsl:if>
+				</idx:orth>
 			</xsl:if>
+			<xsl:apply-templates/>
 		</idx:entry>
 	</xsl:template>
 
-	<!-- orth - display the name optionally with n attribute  -->
-	<xsl:template match="d:orth" mode="html">
-		<br/><br/>
-		<b><xsl:value-of select="."/></b>
-		<xsl:if test="@n!='0'">
-			<sub>(<xsl:value-of select="@n"/>)</sub>
-		</xsl:if>
-		<xsl:apply-templates select="following-sibling::d:pos" mode="html"/>:
+	<xsl:template match="forms-html">
+		<span>
+			<xsl:apply-templates/>
+		</span>
 	</xsl:template>
 
-	<!-- pos   -->
-	<xsl:template match="d:pos" mode="html">
-		<i><xsl:value-of select="."/></i>
+	<xsl:template match="translations-html">
+		<xsl:if test="preceding-sibling::forms-html">
+			<br/>
+		</xsl:if>
+		<span>
+			<xsl:apply-templates/>
+		</span>
 	</xsl:template>
 
-	<!-- inflections + secondary forms registered as inflections -->
-	<xsl:template match="d:inflSeq | d:formGrp/d:form[@primary='no']/d:orth">
-		<idx:iform>
-			<xsl:attribute name="value">
-				<xsl:value-of select="."/>
-			</xsl:attribute>
-		</idx:iform>
-	</xsl:template>
-
-	<!-- sense group -->
-	<xsl:template match="d:senseGrp">
-		<xsl:if test="position() > 1">
-			<xsl:text> </xsl:text>
-		</xsl:if>
-		<xsl:if test="count(../d:senseGrp) > 1">
-			<br/><xsl:text>&nbsp;&nbsp;</xsl:text>
-			<xsl:number value="position()" format="I"/>.
-		</xsl:if>
-		<xsl:apply-templates/>
-	</xsl:template>
-	
-	<!-- sense -->
-	<xsl:template match="d:sense">
-		<xsl:text>&nbsp;</xsl:text>
-		<xsl:if test="count(../d:sense) > 1">
-			<br/><xsl:text>&nbsp;&nbsp;&nbsp;&nbsp;</xsl:text>
-			<b><xsl:number value="position()"/>.</b>
-			<xsl:text>&nbsp;</xsl:text>
-		</xsl:if>
-		<xsl:apply-templates/>
-	</xsl:template>
-
-	<!-- trans -->
-	<xsl:template match="d:sense/d:trans">
+	<xsl:template match="span">
 		<xsl:choose>
-			<xsl:when test="preceding-sibling::d:lbl">
-				<xsl:text> </xsl:text>
+			<xsl:when test="@class = 'infl'"/>
+			<xsl:when test="@class = 'orth' or @class = 'q' or @class = 'senseGrp-nr' or @class = 'sense-nr'">
+				<b>
+					<xsl:apply-templates/>
+				</b>
 			</xsl:when>
-			<xsl:when test="preceding-sibling::d:trans">
-				<xsl:text>, </xsl:text>
+			<xsl:when test="@class='pos'">
+				<i>
+					<xsl:apply-templates/>
+				</i>
 			</xsl:when>
-			<xsl:when test="preceding-sibling::d:q">
-				<xsl:text> </xsl:text>
-			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates/>
+			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:apply-templates/>
 	</xsl:template>
 
-	<!-- eg - examples -->
-	<xsl:template match="d:eg">
-		<br/>
-		<xsl:apply-templates/>
-	</xsl:template>
+	<xsl:template match="*"/>
 
-	<xsl:template match="d:eg/d:q">
-		<xsl:text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;</xsl:text><i><xsl:value-of select="."/> - </i> 
-	</xsl:template>
-
-	<xsl:template match="d:eg/d:trans">
-		<xsl:value-of select="."/>
-	</xsl:template>
-
-	<!-- ignore these for now -->
-	<xsl:template match="d:lbl | d:entry"/>
-	
 </xsl:stylesheet>
-

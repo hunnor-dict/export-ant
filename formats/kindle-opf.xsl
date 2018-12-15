@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:d="http://dict.hunnor.net">
+<xsl:stylesheet version="3.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 	<xsl:param name="contentFile"/>
 	<xsl:param name="logoFile"/>
@@ -8,7 +8,7 @@
 
 	<xsl:output indent="yes"/>
 
-	<xsl:template match="d:hnDict">
+	<xsl:template match="dictionary">
 		<package unique-identifier="uid">
 			<metadata>
 				<dc-metadata xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">

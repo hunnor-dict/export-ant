@@ -126,16 +126,16 @@
 
 	<!-- Kindle -->
 
-	<target name="export.kindle.hu">
+	<target name="export.kindle.hu" depends="export.simple-html.hu">
 		<!-- Intentionally left blank -->
 	</target>
 
-	<target name="export.kindle.convert.nb">
-		<xslt style="formats/kindle.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Kindle-NH.html" force="true">
+	<target name="export.kindle.convert.nb" depends="export.simple-html.nb">
+		<xslt style="formats/kindle.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.html" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
-		<xslt style="formats/kindle-opf.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Kindle-NH.opf" force="true">
+		<xslt style="formats/kindle-opf.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.opf" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="contentFile" expression="HunNor-Kindle-NH.html"/>
