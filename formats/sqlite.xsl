@@ -25,6 +25,11 @@
 			</xsl:when>
 			<xsl:when test="@class = 'infl' or @class = 'senseGrp-nr'">
 			</xsl:when>
+			<xsl:when test="@class = 'orth'">
+				<b>
+					<xsl:apply-templates/>
+				</b>
+			</xsl:when>
 			<xsl:when test="@class = 'pos'">
 				<i>
 					<xsl:apply-templates/>
@@ -56,6 +61,9 @@
 					<xsl:apply-templates/>
 				</xsl:if>
 			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates/>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
