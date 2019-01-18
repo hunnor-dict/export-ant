@@ -13,7 +13,7 @@
 	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
 	<property name="env.HUNNOR_ANT_LUCENE_JAR" location="../export-lucene/target/export-lucene-1.0.0.jar"/>
-	<property name="env.HUNNOR_ANT_SQLITE_JAR" location="../export-sqlite/target/export-sqlite-1.0.0.jar"/>
+	<property name="env.HUNNOR_ANT_SQLITE_JDBC_JAR" location="../../workspace/tools/sqlite-jdbc-3.23.1.jar"/>
 
 	<property name="env.HUNNOR_ANT_DEPLOY_DIR" location="/opt/hunnor-dict/Dropbox"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_BACKUP_DIR" location="${env.HUNNOR_ANT_DEPLOY_DIR}/Backup"/>
@@ -471,24 +471,26 @@
 	</target>
 
 	<target name="export.sqlite.convert" depends="export.simple-html.hu,export.simple-html.nb">
-		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-SQLite-HN.xml" force="true">
+		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-SQLite-HN.sql" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="hu"/>
 		</xslt>
-		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-SQLite-NH.xml" force="true">
+		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-SQLite-NH.sql" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+			<param name="direction" expression="nb"/>
 		</xslt>
 	</target>
 
-	<target name="export.sqlite.generate" depends="export.sqlite.convert">
+	<target name="export.sqlite.jdbc.jar">
+		<get dest="${env.HUNNOR_ANT_SQLITE_JDBC_JAR}" skipexisting="true" src="https://bitbucket.org/xerial/sqlite-jdbc/downloads/sqlite-jdbc-3.23.1.jar"/>
+	</target>
+
+	<target name="export.sqlite.generate" depends="export.sqlite.convert,export.sqlite.jdbc.jar">
 		<delete file="${build.dir}/HunNor-SQLite.sqlite3"/>
-		<exec executable="java">
-			<arg line="-jar ${env.HUNNOR_ANT_SQLITE_JAR} -l hu -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SQLite-HN.xml"/>
-		</exec>
-		<exec executable="java">
-			<arg line="-jar ${env.HUNNOR_ANT_SQLITE_JAR} -l nb -s ${build.dir}/HunNor-SQLite.sqlite3 -x ${build.dir}/HunNor-SQLite-NH.xml"/>
-		</exec>
+		<sql classpath="${env.HUNNOR_ANT_SQLITE_JDBC_JAR}" driver="org.sqlite.JDBC" escapeprocessing="false" password="hunnor" src="${build.dir}/HunNor-SQLite-HN.sql" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor"/>
+		<sql classpath="${env.HUNNOR_ANT_SQLITE_JDBC_JAR}" driver="org.sqlite.JDBC" escapeprocessing="false" password="hunnor" src="${build.dir}/HunNor-SQLite-NH.sql" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor"/>
 		<checksum file="${build.dir}/HunNor-SQLite.sqlite3" algorithm="MD5" fileext=".md5"/>
 	</target>
 
