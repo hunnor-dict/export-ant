@@ -10,10 +10,8 @@
 	<property name="env.HUNNOR_ANT_KINDLE_COMPILER" location="/opt/kindlegen-2.9-amazon/kindlegen"/>
 	<property name="env.HUNNOR_ANT_SAXON_JAR" location="/opt/saxon-9-he/saxon9he.jar"/>
 	<property name="env.HUNNOR_ANT_SDICT_COMPILER" location="/opt/sdict/bin/sdict-tools.plx"/>
-	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
-
-	<property name="env.HUNNOR_ANT_LUCENE_JAR" location="../export-lucene/target/export-lucene-1.0.0.jar"/>
 	<property name="env.HUNNOR_ANT_SQLITE_JDBC_JAR" location="../../workspace/tools/sqlite-jdbc-3.23.1.jar"/>
+	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
 	<property name="env.HUNNOR_ANT_DEPLOY_DIR" location="/opt/hunnor-dict/Dropbox"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_BACKUP_DIR" location="${env.HUNNOR_ANT_DEPLOY_DIR}/Backup"/>
@@ -447,27 +445,26 @@
 	<target name="export.nb" depends="export.apple.nb,export.babylon.nb,export.kindle.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb,export.xdxf.nb">
 	</target>
 
-	<target name="export.android">
-		<!-- Delete to ensure that the data set is empty -->
+	<target name="export.android.generate">
+		<taskdef name="lucene" classname="net.hunnor.dict.lucene.AntTask"/>
 		<delete dir="${build.dir}/hunnor-lucene-index"/>
 		<delete dir="${build.dir}/hunnor-lucene-spelling"/>
 		<delete file="${build.dir}/HunNor-Lucene.zip"/>
-		<!-- Index -->
-		<exec executable="java">
-			<arg line="-jar ${env.HUNNOR_ANT_LUCENE_JAR} -l hu -x ${env.HUNNOR_ANT_DUMP_HU} -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
-		</exec>
-		<exec executable="java">
-			<arg line="-jar ${env.HUNNOR_ANT_LUCENE_JAR} -l no -x ${env.HUNNOR_ANT_DUMP_NB} -d ${build.dir}/hunnor-lucene-index -s ${build.dir}/hunnor-lucene-spelling"/>
-		</exec>
-		<!-- Archive Lucene index -->
+		<lucene language="HU" main="${build.dir}/hunnor-lucene-index" source="${env.HUNNOR_ANT_DUMP_HU}" spelling="${build.dir}/hunnor-lucene-spelling"/>
+		<lucene language="NO" main="${build.dir}/hunnor-lucene-index" source="${env.HUNNOR_ANT_DUMP_NB}" spelling="${build.dir}/hunnor-lucene-spelling"/>
+	</target>
+
+	<target name="export.android.deploy" depends="export.android.generate">
 		<zip destfile="${build.dir}/HunNor-Lucene.zip" level="9" filesonly="yes">
 			<zipfileset dir="${build.dir}/hunnor-lucene-index" prefix="hunnor-lucene-index"/>
 			<zipfileset dir="${build.dir}/hunnor-lucene-spelling" prefix="hunnor-lucene-spelling"/>
 		</zip>
 		<move file="${build.dir}/HunNor-Lucene.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<!-- Delete again to clean up obsolete files -->
 		<delete dir="${build.dir}/hunnor-lucene-index"/>
 		<delete dir="${build.dir}/hunnor-lucene-spelling"/>
+	</target>
+
+	<target name="export.android" depends="export.android.deploy">
 	</target>
 
 	<target name="export.sqlite.convert" depends="export.simple-html.hu,export.simple-html.nb">
