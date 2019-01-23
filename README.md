@@ -25,13 +25,13 @@ Some conversions require tools that are not included in the Docker image:
 
 | Target                   | Tool                            | Installation                                                                                |
 |--------------------------|---------------------------------|---------------------------------------------------------------------------------------------|
-| export.android           | export-lucene-indexer-1.0.0.jar | Package the [`export-lucene`](https://github.com/hunnor-dict/export-lucene) repo with Maven |
+| export.android.generate  | export-lucene-indexer-1.0.0.jar | Package the [`export-lucene`](https://github.com/hunnor-dict/export-lucene) repo with Maven |
 | export.kindle.compile.nb | kindlegen                       | Downloaded automatically by `ant`                                                           |
-| export.sqlite.generate   | export-sqlite-1.0.0.jar         | Package the [`export-sqlite`](https://github.com/hunnor-dict/export-sqlite) repo with Maven |
+| export.sqlite.generate   | sqlite-jdbc-3.23.1.jar          | Downloaded automatically by `ant`                                                           |
 
 Start the Docker container:
 
-`docker run --env HUNNOR_ANT_DEPLOY_DIR=/deploy --env HUNNOR_ANT_DUMP_HU=/data/HunNor-XML-HN.xml --env HUNNOR_ANT_DUMP_NB=/data/HunNor-XML-NH.xml --env HUNNOR_ANT_LUCENE_JAR=/tools/export-lucene-indexer-1.0.0.jar --env HUNNOR_ANT_SQLITE_JAR=/tools/export-sqlite-1.0.0.jar --name export-ant --volume $HOME/hunnor/build:/build --volume $HOME/hunnor/data:/data --volume $HOME/hunnor/deploy:/deploy  --volume $HOME/hunnor/tools:/tools hunnordict/export-ant -Dbuild.dir=/build export`
+`docker run --env HUNNOR_ANT_DEPLOY_DIR=/deploy --env HUNNOR_ANT_DUMP_HU=/data/HunNor-XML-HN.xml --env HUNNOR_ANT_DUMP_NB=/data/HunNor-XML-NH.xml --env HUNNOR_ANT_LUCENE_JAR=/tools/export-lucene-indexer-1.0.0.jar --env HUNNOR_ANT_SQLITE_JDBC_JAR=/tools/sqlite-jdbc-3.23.1.jar --name export-ant --volume $HOME/hunnor/build:/build --volume $HOME/hunnor/data:/data --volume $HOME/hunnor/deploy:/deploy  --volume $HOME/hunnor/tools:/tools hunnordict/export-ant -Dbuild.dir=/build export`
 
 You can replace 'export' with the target you want to run.
 
