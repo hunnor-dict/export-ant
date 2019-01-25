@@ -263,6 +263,12 @@
 
 	<!-- StarDict -->
 
+	<target name="export.stardict.compiler">
+		<condition property="stardict.compiler">
+			<available file="${env.HUNNOR_ANT_STARDICT_COMPILER}"></available>
+		</condition>
+	</target>
+
 	<target name="export.stardict.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-ST-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
@@ -279,7 +285,7 @@
 		</xslt>
 	</target>
 
-	<target name="export.stardict.compile.hu" depends="export.stardict.convert.hu">
+	<target name="export.stardict.compile.hu" depends="export.stardict.convert.hu,export.stardict.compiler" if="${stardict.compiler}">
 		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
 			<arg line="${build.dir}/HunNor-ST-HN.xml ${build.dir}/HunNor-ST-HN.ifo"/>
 		</exec>
@@ -291,7 +297,7 @@
 		<move file="${build.dir}/HunNor-ST-HN.tmp" tofile="${build.dir}/HunNor-ST-HN.ifo"/>
 	</target>
 
-	<target name="export.stardict.compile.nb" depends="export.stardict.convert.nb">
+	<target name="export.stardict.compile.nb" depends="export.stardict.convert.nb,export.stardict.compiler" if="${stardict.compiler}">
 		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
 			<arg line="${build.dir}/HunNor-ST-NH.xml ${build.dir}/HunNor-ST-NH.ifo"/>
 		</exec>
@@ -303,7 +309,7 @@
 		<move file="${build.dir}/HunNor-ST-NH.tmp" tofile="${build.dir}/HunNor-ST-NH.ifo"/>
 	</target>
 
-	<target name="export.stardict.deploy.hu" depends="export.stardict.compile.hu">
+	<target name="export.stardict.deploy.hu" depends="export.stardict.compile.hu" if="${stardict.compiler}">
 		<zip destfile="${build.dir}/HunNor-ST-HN.zip" level="9">
 			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-HN.dict.dz,${build.dir}/HunNor-ST-HN.ifo,${build.dir}/HunNor-ST-HN.idx,${build.dir}/HunNor-ST-HN.syn"/>
 		</zip>
@@ -314,7 +320,7 @@
 		<move file="${build.dir}/HunNor-ST-HN.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
-	<target name="export.stardict.deploy.nb" depends="export.stardict.compile.nb">
+	<target name="export.stardict.deploy.nb" depends="export.stardict.compile.nb" if="${stardict.compiler}">
 		<zip destfile="${build.dir}/HunNor-ST-NH.zip" level="9">
 			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-NH.dict.dz,${build.dir}/HunNor-ST-NH.ifo,${build.dir}/HunNor-ST-NH.idx,${build.dir}/HunNor-ST-NH.syn"/>
 		</zip>
@@ -337,7 +343,7 @@
 		</xslt>
 	</target>
 
-	<target name="export.stardict.nosym.num.compile.hu" depends="export.stardict.nosym.num.convert.hu">
+	<target name="export.stardict.nosym.num.compile.hu" depends="export.stardict.nosym.num.convert.hu,export.stardict.compiler" if="${stardict.compiler}">
 		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
 			<arg line="${build.dir}/HunNor-ST-NoSym-Number-HN.xml ${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
 		</exec>
@@ -349,7 +355,7 @@
 		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.tmp" tofile="${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
 	</target>
 
-	<target name="export.stardict.nosym.num.compile.nb" depends="export.stardict.nosym.num.convert.nb">
+	<target name="export.stardict.nosym.num.compile.nb" depends="export.stardict.nosym.num.convert.nb,export.stardict.compiler" if="${stardict.compiler}">
 		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
 			<arg line="${build.dir}/HunNor-ST-NoSym-Number-NH.xml ${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
 		</exec>
@@ -361,7 +367,7 @@
 		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.tmp" tofile="${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
 	</target>
 
-	<target name="export.stardict.nosym.num.deploy.hu" depends="export.stardict.nosym.num.compile.hu">
+	<target name="export.stardict.nosym.num.deploy.hu" depends="export.stardict.nosym.num.compile.hu" if="${stardict.compiler}">
 		<zip destfile="${build.dir}/HunNor-ST-NoSym-Number-HN.zip" level="9">
 			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-NoSym-Number-HN.dict.dz,${build.dir}/HunNor-ST-NoSym-Number-HN.ifo,${build.dir}/HunNor-ST-NoSym-Number-HN.idx,${build.dir}/HunNor-ST-NoSym-Number-HN.syn"/>
 		</zip>
@@ -372,7 +378,7 @@
 		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
-	<target name="export.stardict.nosym.num.deploy.nb" depends="export.stardict.nosym.num.compile.nb">
+	<target name="export.stardict.nosym.num.deploy.nb" depends="export.stardict.nosym.num.compile.nb" if="${stardict.compiler}">
 		<zip destfile="${build.dir}/HunNor-ST-NoSym-Number-NH.zip" level="9">
 			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-NoSym-Number-NH.dict.dz,${build.dir}/HunNor-ST-NoSym-Number-NH.ifo,${build.dir}/HunNor-ST-NoSym-Number-NH.idx,${build.dir}/HunNor-ST-NoSym-Number-NH.syn"/>
 		</zip>
