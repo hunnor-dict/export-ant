@@ -13,7 +13,7 @@
 	<property name="env.HUNNOR_ANT_SQLITE_JDBC_JAR" location="/tools/sqlite-jdbc-3.23.1.jar"/>
 	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
-	<property name="env.HUNNOR_ANT_DEPLOY_DIR" location="/opt/hunnor-dict/Dropbox"/>
+	<property name="env.HUNNOR_ANT_DEPLOY_DIR" location="/deploy"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_BACKUP_DIR" location="${env.HUNNOR_ANT_DEPLOY_DIR}/Backup"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_PUB_DIR" location="${env.HUNNOR_ANT_DEPLOY_DIR}/Public"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR" location="${env.HUNNOR_ANT_DEPLOY_PUB_DIR}/Databases"/>

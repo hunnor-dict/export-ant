@@ -31,7 +31,16 @@ Some conversions require tools that are not included in the Docker image:
 
 Start the Docker container:
 
-`docker run --env HUNNOR_ANT_DEPLOY_DIR=/deploy --env HUNNOR_ANT_DUMP_HU=/data/HunNor-XML-HN.xml --env HUNNOR_ANT_DUMP_NB=/data/HunNor-XML-NH.xml --env HUNNOR_ANT_LUCENE_JAR=/tools/export-lucene-indexer-1.0.0.jar --env HUNNOR_ANT_SQLITE_JDBC_JAR=/tools/sqlite-jdbc-3.23.1.jar --name export-ant --volume $HOME/hunnor/build:/build --volume $HOME/hunnor/data:/data --volume $HOME/hunnor/deploy:/deploy  --volume $HOME/hunnor/tools:/tools hunnordict/export-ant -Dbuild.dir=/build export`
+`docker run\
+  --env HUNNOR_ANT_SQLITE_JDBC_JAR=/tools/sqlite-jdbc-3.23.1.jar\
+  --name export-ant\
+  --volume $HOME/hunnor/data:/data\
+  --volume $HOME/hunnor/deploy:/deploy\
+  --volume $HOME/hunnor/tools:/tools\
+  hunnordict/export-ant\
+  -Dbuild.dir=/data\
+  -lib /tools/export-lucene-indexer-1.0.0.jar\
+  export`
 
 You can replace 'export' with the target you want to run.
 
