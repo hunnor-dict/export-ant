@@ -7,10 +7,10 @@
 
 	<property environment="env"/>
 
-	<property name="env.HUNNOR_ANT_KINDLE_COMPILER" location="/opt/kindlegen-2.9-amazon/kindlegen"/>
+	<property name="env.HUNNOR_ANT_KINDLE_COMPILER" location="/tools/kindlegen-2.9-amazon/kindlegen"/>
 	<property name="env.HUNNOR_ANT_SAXON_JAR" location="/opt/saxon-9-he/saxon9he.jar"/>
 	<property name="env.HUNNOR_ANT_SDICT_COMPILER" location="/opt/sdict/bin/sdict-tools.plx"/>
-	<property name="env.HUNNOR_ANT_SQLITE_JDBC_JAR" location="../../workspace/tools/sqlite-jdbc-3.23.1.jar"/>
+	<property name="env.HUNNOR_ANT_SQLITE_JDBC_JAR" location="/tools/sqlite-jdbc-3.23.1.jar"/>
 	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
 	<property name="env.HUNNOR_ANT_DEPLOY_DIR" location="/opt/hunnor-dict/Dropbox"/>
