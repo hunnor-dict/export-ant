@@ -501,8 +501,8 @@
 		<mkdir dir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 		<move file="${build.dir}/HunNor-SQLite.sqlite3" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 		<move file="${build.dir}/HunNor-SQLite.sqlite3.md5" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<delete file="${build.dir}/HunNor-SQLite-HN.xml"/>
-		<delete file="${build.dir}/HunNor-SQLite-NH.xml"/>
+		<delete file="${build.dir}/HunNor-SQLite-HN.sql"/>
+		<delete file="${build.dir}/HunNor-SQLite-NH.sql"/>
 	</target>
 
 	<target name="export.sqlite" depends="export.sqlite.deploy">
