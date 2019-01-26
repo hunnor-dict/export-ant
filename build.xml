@@ -71,13 +71,25 @@
 	</target>
 
 	<target name="export.apple.deploy.hu" depends="export.apple.convert.hu">
-		<move file="${build.dir}/HunNor-Apple-HN.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<move file="${build.dir}/HunNor-Apple-HN-PList.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<tar destfile="${build.dir}/HunNor-Apple-HN.tar">
+			<filelist dir="${build.dir}" files="${build.dir}/HunNor-Apple-HN.xml,${build.dir}/HunNor-Apple-HN-PList.xml"/>
+		</tar>
+		<gzip destfile="${build.dir}/HunNor-Apple-HN.tar.gz" src="${build.dir}/HunNor-Apple-HN.tar"/>
+		<delete file="${build.dir}/HunNor-Apple-HN.tar"/>
+		<move file="${build.dir}/HunNor-Apple-HN.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<delete file="${build.dir}/HunNor-Apple-HN.xml"/>
+		<delete file="${build.dir}/HunNor-Apple-HN-PList.xml"/>
 	</target>
 
 	<target name="export.apple.deploy.nb" depends="export.apple.convert.nb">
-		<move file="${build.dir}/HunNor-Apple-NH.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<move file="${build.dir}/HunNor-Apple-NH-PList.xml" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<tar destfile="${build.dir}/HunNor-Apple-NH.tar">
+			<filelist dir="${build.dir}" files="${build.dir}/HunNor-Apple-NH.xml,${build.dir}/HunNor-Apple-NH-PList.xml"/>
+		</tar>
+		<gzip destfile="${build.dir}/HunNor-Apple-NH.tar.gz" src="${build.dir}/HunNor-Apple-NH.tar"/>
+		<delete file="${build.dir}/HunNor-Apple-NH.tar"/>
+		<move file="${build.dir}/HunNor-Apple-NH.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<delete file="${build.dir}/HunNor-Apple-NH.xml"/>
+		<delete file="${build.dir}/HunNor-Apple-NH-PList.xml"/>
 	</target>
 
 	<target name="export.apple.hu" depends="export.apple.deploy.hu">
