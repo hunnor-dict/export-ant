@@ -230,7 +230,7 @@
 	</target>
 
 	<target name="export.pdf.hu" depends="export.pdf.convert.hu">
-		<exec executable="fop">
+		<exec executable="fop" failonerror="yes">
 			<arg line="-q -cache ${build.dir}/fop-fonts.cache -c fonts/fonts.xml -fo ${build.dir}/HunNor-FO-HN.xml -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
 			<env key="JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
@@ -246,7 +246,7 @@
 	</target>
 
 	<target name="export.pdf.nb" depends="export.pdf.convert.nb">
-		<exec executable="fop">
+		<exec executable="fop" failonerror="yes">
 			<arg line="-q -cache ${build.dir}/fop-fonts.cache -c fonts/fonts.xml -fo ${build.dir}/HunNor-FO-NH.xml -pdf ${build.dir}/HunNor-PDF-NH.pdf"/>
 			<env key="JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
 		</exec>
@@ -273,13 +273,13 @@
 	</target>
 
 	<target name="export.sdict.compile.hu" depends="export.sdict.convert.hu">
-		<exec executable="${env.HUNNOR_ANT_SDICT_COMPILER}">
+		<exec executable="${env.HUNNOR_ANT_SDICT_COMPILER}" failonerror="yes">
 			<arg line="--compile --input-file=${build.dir}/HunNor-SD-HN.sdct --output-file=${build.dir}/HunNor-SD-HN.dct"/>
 		</exec>
 	</target>
 
 	<target name="export.sdict.compile.nb" depends="export.sdict.convert.nb">
-		<exec executable="${env.HUNNOR_ANT_SDICT_COMPILER}">
+		<exec executable="${env.HUNNOR_ANT_SDICT_COMPILER}" failonerror="yes">
 			<arg line="--compile --input-file=${build.dir}/HunNor-SD-NH.sdct --output-file=${build.dir}/HunNor-SD-NH.dct"/>
 		</exec>
 	</target>
@@ -329,11 +329,11 @@
 	</target>
 
 	<target name="export.stardict.compile.hu" depends="export.stardict.convert.hu,export.stardict.compiler" if="${stardict.compiler}">
-		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
+		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}" failonerror="yes">
 			<arg line="${build.dir}/HunNor-ST-HN.xml ${build.dir}/HunNor-ST-HN.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="${build.dir}/HunNor-ST-HN.tmp">
+		<exec executable="tail" output="${build.dir}/HunNor-ST-HN.tmp" failonerror="yes">
 			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-HN.ifo"/>
 		</exec>
 		<delete file="${build.dir}/HunNor-ST-HN.ifo"/>
@@ -341,11 +341,11 @@
 	</target>
 
 	<target name="export.stardict.compile.nb" depends="export.stardict.convert.nb,export.stardict.compiler" if="${stardict.compiler}">
-		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
+		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}" failonerror="yes">
 			<arg line="${build.dir}/HunNor-ST-NH.xml ${build.dir}/HunNor-ST-NH.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="${build.dir}/HunNor-ST-NH.tmp">
+		<exec executable="tail" output="${build.dir}/HunNor-ST-NH.tmp" failonerror="yes">
 			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-NH.ifo"/>
 		</exec>
 		<delete file="${build.dir}/HunNor-ST-NH.ifo"/>
@@ -387,11 +387,11 @@
 	</target>
 
 	<target name="export.stardict.nosym.num.compile.hu" depends="export.stardict.nosym.num.convert.hu,export.stardict.compiler" if="${stardict.compiler}">
-		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
+		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}" failonerror="yes">
 			<arg line="${build.dir}/HunNor-ST-NoSym-Number-HN.xml ${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="${build.dir}/HunNor-ST-NoSym-Number-HN.tmp">
+		<exec executable="tail" output="${build.dir}/HunNor-ST-NoSym-Number-HN.tmp" failonerror="yes">
 			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
 		</exec>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
@@ -399,11 +399,11 @@
 	</target>
 
 	<target name="export.stardict.nosym.num.compile.nb" depends="export.stardict.nosym.num.convert.nb,export.stardict.compiler" if="${stardict.compiler}">
-		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}">
+		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}" failonerror="yes">
 			<arg line="${build.dir}/HunNor-ST-NoSym-Number-NH.xml ${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="${build.dir}/HunNor-ST-NoSym-Number-NH.tmp">
+		<exec executable="tail" output="${build.dir}/HunNor-ST-NoSym-Number-NH.tmp" failonerror="yes">
 			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
 		</exec>
 		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
