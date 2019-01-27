@@ -180,7 +180,7 @@
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="contentFile" expression="HunNor-Kindle-NH.html"/>
-			<param name="logoFile" expression="../images/logo-colors.png"/>
+			<param name="logoFile" expression="${build.dir}/images/logo-colors.png"/>
 			<param name="inLanguage" expression="pt"/>
 			<param name="outLanguage" expression="hu"/>
 		</xslt>
