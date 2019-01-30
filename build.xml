@@ -190,7 +190,11 @@
 		<copy todir="${build.dir}/images">
 			<fileset dir="images"/>
 		</copy>
-		<exec dir="${build.dir}" executable="${env.HUNNOR_ANT_KINDLE_COMPILER}">
+		<!--
+			Warning: W26001: Index not supported for enhanced mobi.
+			Meaning: KF8 version of content is not created, see https://wiki.mobileread.com/wiki/KF8#The_Format
+		-->
+		<exec dir="${build.dir}" executable="${env.HUNNOR_ANT_KINDLE_COMPILER}" failonerror="yes">
 			<arg line="HunNor-Kindle-NH.opf"/>
 		</exec>
 		<delete dir="${build.dir}/images"/>
