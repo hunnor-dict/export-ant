@@ -81,24 +81,24 @@
 		<exec dir="mac" executable="${env.HUNNOR_ANT_APPLE_DDK_DIR}/bin/build_dict.sh" failonerror="yes">
 			<arg line="HunNor-HN ${build.dir}/HunNor-Apple-HN.xml apple.css ${build.dir}/HunNor-Apple-HN-PList.xml"/>
 			<env key="DICT_BUILD_TOOL_DIR" value="${env.HUNNOR_ANT_APPLE_DDK_DIR}"/>
-			<env key="DICT_DEV_KIT_OBJ_DIR" file="${build.dir}/apple"/>
+			<env key="DICT_DEV_KIT_OBJ_DIR" file="${build.dir}/apple-hu"/>
 		</exec>
 		<exec dir="mac" executable="ditto" failonerror="yes">
-			<arg line="--noextattr --norsrc ${build.dir}/apple/HunNor-HN.dictionary ${build.dir}/HunNor-HN.dictionary"/>
+			<arg line="--noextattr --norsrc ${build.dir}/apple-hu/HunNor-HN.dictionary ${build.dir}/HunNor-HN.dictionary"/>
 		</exec>
-		<delete dir="${build.dir}/apple"/>
+		<delete dir="${build.dir}/apple-hu"/>
 	</target>
 
 	<target name="export.apple.compile.nb" depends="export.apple.convert.nb,export.apple.ddk" if="${apple.ddk}">
 		<exec dir="mac" executable="${env.HUNNOR_ANT_APPLE_DDK_DIR}/bin/build_dict.sh" failonerror="yes">
 			<arg line="HunNor-NH ${build.dir}/HunNor-Apple-NH.xml apple.css ${build.dir}/HunNor-Apple-NH-PList.xml"/>
 			<env key="DICT_BUILD_TOOL_DIR" value="${env.HUNNOR_ANT_APPLE_DDK_DIR}"/>
-			<env key="DICT_DEV_KIT_OBJ_DIR" file="${build.dir}/apple"/>
+			<env key="DICT_DEV_KIT_OBJ_DIR" file="${build.dir}/apple-nb"/>
 		</exec>
 		<exec dir="mac" executable="ditto" failonerror="yes">
-			<arg line="--noextattr --norsrc ${build.dir}/apple/HunNor-NH.dictionary ${build.dir}/HunNor-NH.dictionary"/>
+			<arg line="--noextattr --norsrc ${build.dir}/apple-nb/HunNor-NH.dictionary ${build.dir}/HunNor-NH.dictionary"/>
 		</exec>
-		<delete dir="${build.dir}/apple"/>
+		<delete dir="${build.dir}/apple-nb"/>
 	</target>
 
 	<target name="export.apple.deploy.hu" depends="export.apple.convert.hu,export.apple.compile.hu">
