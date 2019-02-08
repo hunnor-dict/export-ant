@@ -3,8 +3,6 @@
 
 	<xsl:output indent="yes" suppress-indentation="span"/>
 
-	<xsl:strip-space elements="*"/>
-
 	<xsl:param name="direction"/>
 
 	<xsl:template match="dictionary">
