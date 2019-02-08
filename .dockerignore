@@ -1,2 +1,2 @@
 build
-formats/*-result.html
+tester/specs/*-result.html

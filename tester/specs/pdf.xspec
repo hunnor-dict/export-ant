@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="pdf.xsl" xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../../formats/pdf.xsl" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 
 	<x:scenario label="Dictionary">
 
 		<x:scenario label="When the dictionary is empty">
-			<x:context href="context/dictionary.xml"/>
+			<x:context href="../context/dictionary.xml"/>
 			<x:expect label="Then the dictionary has the FO metadata elements">
 				<fo:root>
 					<fo:layout-master-set>
@@ -78,7 +78,7 @@
 		</x:scenario>
 
 		<x:scenario label="When the dictionary has entries">
-			<x:context href="context/dictionary-entries.xml"/>
+			<x:context href="../context/dictionary-entries.xml"/>
 			<x:expect label="Then the dictionary has all entries">
 				<fo:root>
 					<fo:layout-master-set>...</fo:layout-master-set>
@@ -106,21 +106,21 @@
 	<x:scenario label="Entries">
 
 		<x:scenario label="When the entry contains a list of dictionary forms and inflected forms">
-			<x:context href="context/entry-forms-inflections.xml"/>
+			<x:context href="../context/entry-forms-inflections.xml"/>
 			<x:expect label="Then both dictionary forms andinflected forms are ignored">
 				<fo:block font-family="LiberationSerif" font-size="8pt"></fo:block>
 			</x:expect>
 		</x:scenario>
 
 		<x:scenario label="When the entry contains HTML for forms and translations">
-			<x:context href="context/entry-forms-translations.xml"/>
+			<x:context href="../context/entry-forms-translations.xml"/>
 			<x:expect label="Then forms and translations are separated by a space">
 				<fo:block font-family="LiberationSerif" font-size="8pt">forms-html1 translations-html1</fo:block>
 			</x:expect>
 		</x:scenario>
 
 		<x:scenario label="When the HTML contains spans and attributes">
-			<x:context href="context/entry-forms-translations-html.xml"/>
+			<x:context href="../context/entry-forms-translations-html.xml"/>
 			<x:expect label="Then span elements and HTML formatting is converted to FO formatting">
 				<fo:block font-family="LiberationSerif" font-size="8pt">f1 <fo:inline font-style="italic">f2</fo:inline> f3 t1 t2 <fo:inline font-weight="bold">t3</fo:inline></fo:block>
 			</x:expect>

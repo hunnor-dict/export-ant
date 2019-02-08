@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="apple.xsl" xmlns:d="http://www.apple.com/DTDs/DictionaryService-1.0.rng">
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../../formats/apple.xsl" xmlns:d="http://www.apple.com/DTDs/DictionaryService-1.0.rng">
 
 	<x:param name="direction" select="'DIR'"/>
 
 	<x:scenario label="Dictionary">
 
 		<x:scenario label="When the dictionary is empty">
-			<x:context href="context/dictionary.xml"/>
+			<x:context href="../context/dictionary.xml"/>
 			<x:expect label="Then the dictionary is empty">
 				<d:dictionary xmlns="http://www.w3.org/1999/xhtml"/>
 			</x:expect>
 		</x:scenario>
 
 		<x:scenario label="When the dictionary has entries">
-			<x:context href="context/dictionary-entries.xml"/>
+			<x:context href="../context/dictionary-entries.xml"/>
 			<x:expect label="Then the dictionary has all entries">
 				<d:dictionary xmlns="http://www.w3.org/1999/xhtml">
 					<d:entry id="DIR_1"/>
@@ -27,7 +27,7 @@
 	<x:scenario label="Entries">
 
 		<x:scenario label="When the entry contains a list of dictionary forms and inflected forms">
-			<x:context href="context/entry-forms-inflections.xml"/>
+			<x:context href="../context/entry-forms-inflections.xml"/>
 			<x:expect label="Then dictionary forms are added as title and index terms, inflected forms are added as index terms with reference to dictionary forms">
 				<d:entry xmlns="http://www.w3.org/1999/xhtml" id="DIR_1" d:title="w1/w2">
 					<d:index d:value="w1"/>
@@ -39,7 +39,7 @@
 		</x:scenario>
 
 		<x:scenario label="When the entry contains HTML for forms and translations">
-			<x:context href="context/entry-forms-translations.xml"/>
+			<x:context href="../context/entry-forms-translations.xml"/>
 			<x:expect label="Then forms and translations are separate elements">
 				<d:entry xmlns="http://www.w3.org/1999/xhtml" id="DIR_1" d:title="w1">
 					<d:index d:value="w1"/>
@@ -50,7 +50,7 @@
 		</x:scenario>
 
 		<x:scenario label="When the HTML contains spans and attributes">
-			<x:context href="context/entry-forms-translations-html.xml"/>
+			<x:context href="../context/entry-forms-translations-html.xml"/>
 			<x:expect label="Then elements and attributes are converted to formatting">
 				<d:entry xmlns="http://www.w3.org/1999/xhtml" id="DIR_1" d:title="w1">
 					<d:index d:value="w1"/>

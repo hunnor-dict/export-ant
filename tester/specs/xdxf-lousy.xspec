@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="xdxf-lousy.xsl">
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../../formats/xdxf-lousy.xsl">
 
 	<x:param name="direction" select="'dir'"/>
 
 	<x:scenario label="Dictionary">
 
 		<x:scenario label="When the dictionary is empty">
-			<x:context href="context/dictionary.xml"/>
+			<x:context href="../context/dictionary.xml"/>
 			<x:expect label="Then the dictionary has the XDXF metadata elements">
 				<xdxf>
 					<full_name>HunNor DIR</full_name>
@@ -16,7 +16,7 @@
 		</x:scenario>
 
 		<x:scenario label="When the dictionary has entries">
-			<x:context href="context/dictionary-entries.xml"/>
+			<x:context href="../context/dictionary-entries.xml"/>
 			<x:expect label="Then the dictionary has all entries">
 				<xdxf>
 					<full_name>HunNor DIR</full_name>
@@ -32,7 +32,7 @@
 	<x:scenario label="Entries">
 
 		<x:scenario label="When the entry contains a list of dictionary forms and inflected forms">
-			<x:context href="context/entry-forms-inflections.xml"/>
+			<x:context href="../context/entry-forms-inflections.xml"/>
 			<x:expect label="Then dictionary forms are used as keys, and subsequent forms are ignored">
 				<ar>
 					<k>w1</k>
@@ -42,7 +42,7 @@
 		</x:scenario>
 
 		<x:scenario label="When the entry contains HTML for forms and translations">
-			<x:context href="context/entry-forms-translations.xml"/>
+			<x:context href="../context/entry-forms-translations.xml"/>
 			<x:expect label="Then forms and translations are separated by a space">
 				<ar>
 					<k>w1</k>
@@ -52,7 +52,7 @@
 		</x:scenario>
 
 		<x:scenario label="When the HTML contains spans and attributes">
-			<x:context href="context/entry-forms-translations-html.xml"/>
+			<x:context href="../context/entry-forms-translations-html.xml"/>
 			<x:expect label="Then span elements and all attributes are removed or converted to formatting">
 				<ar>
 					<k>w1</k>

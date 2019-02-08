@@ -55,7 +55,7 @@
 					</dependency>
 				</dependencies>
 				<configuration>
-					<testDir>../formats</testDir>
+					<testDir>specs</testDir>
 				</configuration>
 				<executions>
 					<execution>

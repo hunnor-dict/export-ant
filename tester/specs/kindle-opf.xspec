@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="kindle-opf.xsl">
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../../formats/kindle-opf.xsl">
 
 	<x:param name="contentFile" select="'kindle-content.html'"/>
 	<x:param name="logoFile" select="'images/logo.png'"/>
@@ -7,7 +7,7 @@
 	<x:param name="outLanguage" select="'OUT'"/>
 
 	<x:scenario label="When the dictionary element is present">
-		<x:context href="context/dictionary.xml"/>
+		<x:context href="../context/dictionary.xml"/>
 		<x:expect label="Then the Kindle manifest file is generated">
 			<package unique-identifier="uid">
 				<metadata>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="apple-plist.xsl">
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../../formats/apple-plist.xsl">
 
 	<x:param name="direction" select="'dir'"/>
 
 	<x:scenario label="When the dictionary is empty">
-		<x:context href="context/dictionary.xml"/>
+		<x:context href="../context/dictionary.xml"/>
 		<x:expect label="Then the PList file has the metadata elements">
 			<plist version="1.0">
 				<dict>
