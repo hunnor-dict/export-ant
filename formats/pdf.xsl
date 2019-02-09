@@ -56,8 +56,11 @@
 			</fo:page-sequence>
 			<fo:page-sequence master-reference="hn-page-head">
 				<fo:flow flow-name="xsl-region-body">
-					<fo:block text-align="center" font-family="LiberationSerif" font-size="12pt" margin-top="5in">
-						<fo:block margin-top="0.25in">
+					<fo:block text-align="center" font-family="LiberationSerif" font-size="12pt">
+						<fo:block margin-top="0.75in">
+							<fo:external-graphic src="url('images/logo-bristolillustrator.png')" content-width="2in"/>
+						</fo:block>
+						<fo:block margin-top="0.75in">
 							<fo:block>Frissítve: <xsl:value-of select="@updated"/></fo:block>
 							<fo:block>Szócikkek száma: <xsl:value-of select="count(/dictionary/letter/entry)"/></fo:block>
 							<fo:block>Forrás: http://dict.hunnor.net/</fo:block>
@@ -68,9 +71,6 @@
 							<fo:block>Antall artikler: <xsl:value-of select="count(/dictionary/letter/entry)"/></fo:block>
 							<fo:block>Kilde: http://dict.hunnor.net/</fo:block>
 							<fo:block>Ordboka er lisensiert under GNU General Public License.</fo:block>
-						</fo:block>
-						<fo:block margin-top="0.25in">
-							<fo:external-graphic src="url('images/logo-gold.png')"/>
 						</fo:block>
 					</fo:block>
 				</fo:flow>
