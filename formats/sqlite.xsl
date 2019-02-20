@@ -139,6 +139,11 @@
 			</xsl:when>
 			<xsl:when test="@class = 'infl' or @class = 'senseGrp-nr'">
 			</xsl:when>
+			<xsl:when test="@class = 'lbl'">
+				<xsl:call-template name="element">
+					<xsl:with-param name="name" select="'i'"/>
+				</xsl:call-template>
+			</xsl:when>
 			<xsl:when test="@class = 'orth'">
 				<xsl:call-template name="element">
 					<xsl:with-param name="name" select="'b'"/>
@@ -147,6 +152,11 @@
 			<xsl:when test="@class = 'pos'">
 				<xsl:call-template name="element">
 					<xsl:with-param name="name" select="'i'"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="@class = 'q'">
+				<xsl:call-template name="element">
+					<xsl:with-param name="name" select="'b'"/>
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="@class = 'sense-nr'">
