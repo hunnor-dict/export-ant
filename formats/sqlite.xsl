@@ -185,7 +185,7 @@
 				</xsl:if>
 				<xsl:apply-templates select="node()"/>
 				<xsl:text>&lt;</xsl:text>
-				<xsl:text>translation</xsl:text>
+				<xsl:text>/translation</xsl:text>
 				<xsl:text>&gt;</xsl:text>
 			</xsl:when>
 			<xsl:when test="@class = 'senseGlue'">
