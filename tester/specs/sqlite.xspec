@@ -116,7 +116,7 @@ INSERT INTO entries (lang, id, content) VALUES('dir', 1, ' ');
 					<translations-html><span class="senseGrp"><span class="sense numbered"><span class="sense-nr">1</span> sense1</span><span class="sense numbered"><span class="senseGlue"> </span><span class="sense-nr">2</span> sense2</span></span></translations-html>
 				</entry>
 			</x:context>
-			<x:expect label="Then senses are in separate translation elements">INSERT INTO entries (lang, id, content) VALUES('dir', 1, ' &lt;translation&gt;&lt;b&gt;1&lt;/b&gt; sense1&lt;translation&gt;&lt;translation&gt;&lt;b&gt;2&lt;/b&gt; sense2&lt;translation&gt;');
+			<x:expect label="Then senses are in separate translation elements">INSERT INTO entries (lang, id, content) VALUES('dir', 1, ' &lt;translation&gt;&lt;b&gt;1&lt;/b&gt; sense1&lt;/translation&gt;&lt;translation&gt;&lt;b&gt;2&lt;/b&gt; sense2&lt;/translation&gt;');
 
 </x:expect>
 		</x:scenario>
