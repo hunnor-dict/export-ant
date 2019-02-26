@@ -52,11 +52,16 @@
 	</target>
 
 	<target name="export.apple.convert.hu" depends="export.simple-html.hu">
-		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN.xml" force="true">
+		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN-Original.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
+		<xslt style="formats/apple-patch.xsl" in="${build.dir}/HunNor-Apple-HN-Original.xml" out="${build.dir}/HunNor-Apple-HN.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+		</xslt>
+		<delete file="${build.dir}/HunNor-Apple-HN-Original.xml"/>
 		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN-PList.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
@@ -65,11 +70,16 @@
 	</target>
 
 	<target name="export.apple.convert.nb" depends="export.simple-html.nb">
-		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH.xml" force="true">
+		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH-Original.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
+		<xslt style="formats/apple-patch.xsl" in="${build.dir}/HunNor-Apple-NH-Original.xml" out="${build.dir}/HunNor-Apple-NH.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
+		</xslt>
+		<delete file="${build.dir}/HunNor-Apple-NH-Original.xml"/>
 		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH-PList.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
