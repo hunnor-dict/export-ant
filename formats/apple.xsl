@@ -75,8 +75,17 @@
 		</d:index>
 	</xsl:template>
 
-	<xsl:template match="forms-html | translations-html">
-		<xsl:apply-templates/>
+	<xsl:template match="forms-html">
+		<span>
+			<xsl:apply-templates/>
+			<xsl:text> </xsl:text>
+		</span>
+	</xsl:template>
+
+	<xsl:template match="translations-html">
+		<span>
+			<xsl:apply-templates/>
+		</span>
 	</xsl:template>
 
 	<xsl:template match="span">
@@ -92,9 +101,7 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:element name="{local-name()}" namespace="http://www.w3.org/1999/xhtml">
-					<xsl:apply-templates/>
-				</xsl:element>
+				<xsl:apply-templates/>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
