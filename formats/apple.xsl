@@ -86,6 +86,8 @@
 		<span>
 			<xsl:apply-templates/>
 		</span>
+		<br/>
+		<br/>
 	</xsl:template>
 
 	<xsl:template match="span">
