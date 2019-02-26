@@ -43,8 +43,10 @@
 			<x:expect label="Then forms and translations are separate elements">
 				<d:entry xmlns="http://www.w3.org/1999/xhtml" id="DIR_1" d:title="w1">
 					<d:index d:value="w1"/>
-					<span>forms-html1</span>
+					<span>forms-html1 </span>
 					<span>translations-html1</span>
+					<br/>
+					<br/>
 				</d:entry>
 			</x:expect>
 		</x:scenario>
@@ -54,8 +56,10 @@
 			<x:expect label="Then elements and attributes are converted to formatting">
 				<d:entry xmlns="http://www.w3.org/1999/xhtml" id="DIR_1" d:title="w1">
 					<d:index d:value="w1"/>
-					<span><span>f1 <i>f2</i> f3</span></span>
-					<span><span>t1</span> t2 <b>t3</b></span>
+					<span>f1 <i>f2</i> f3 </span>
+					<span>t1 t2 <b>t3</b></span>
+					<br/>
+					<br/>
 				</d:entry>
 			</x:expect>
 		</x:scenario>
