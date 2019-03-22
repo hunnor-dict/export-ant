@@ -11,7 +11,7 @@ ENV HUNNOR_ANT_JAVA_HOME /docker-java-home
 ENV HUNNOR_ANT_SAXON_JAR /opt/saxon-9-he/saxon9he.jar
 ENV HUNNOR_ANT_STARDICT_COMPILER /usr/lib/stardict-tools/stardict-text2bin
 RUN echo "LOGLEVEL=-Dorg.apache.commons.logging.simplelog.defaultlog=WARN" > /etc/fop.conf.d/logging.conf
-COPY --from=maven /root/.m2/repository/net/sf/saxon/Saxon-HE/9.9.1-1/Saxon-HE-9.9.1-1.jar /opt/saxon-9-he/saxon9he.jar
+COPY --from=maven /root/.m2/repository/net/sf/saxon/Saxon-HE/9.9.1-2/Saxon-HE-9.9.1-2.jar /opt/saxon-9-he/saxon9he.jar
 RUN mkdir -p /opt/sdict && \
     cd /opt/sdict && \
     wget -q http://swaj.net/sdict/ptksdict-1.2.4.tar.gz && \
