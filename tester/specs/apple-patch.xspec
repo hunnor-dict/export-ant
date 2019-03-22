@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../../formats/apple-patch.xsl" xmlns="http://www.w3.org/1999/xhtml">
+
+	<x:scenario pending="TODO" label="When there is a text node with a single space between elements">
+		<x:context><span><b>bold</b> <i>italic</i></span></x:context>
+		<x:expect label="Then the space is moved into the first element"><span><b>bold </b><i>italic</i></span></x:expect>
+	</x:scenario>
+
+	<x:scenario label="When there is text with more than space between elements">
+		<x:context><span><b>bold</b> normal <i>italic</i></span></x:context>
+		<x:expect label="Then the text is preserved"><span><b>bold</b> normal <i>italic</i></span></x:expect>
+	</x:scenario>
+	
+</x:description>
