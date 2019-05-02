@@ -9,9 +9,7 @@
 
 	<property name="env.HUNNOR_ANT_APPLE_DDK_DIR" location="/Volumes/Additional Tools/Utilities/Dictionary Development Kit"/>
 	<property name="env.HUNNOR_ANT_KINDLE_COMPILER" location="/tools/kindlegen-2.9-amazon/kindlegen"/>
-	<property name="env.HUNNOR_ANT_SAXON_JAR" location="/opt/saxon-9-he/saxon9he.jar"/>
 	<property name="env.HUNNOR_ANT_SDICT_COMPILER" location="/opt/sdict/bin/sdict-tools.plx"/>
-	<property name="env.HUNNOR_ANT_SQLITE_JDBC_JAR" location="/tools/sqlite-jdbc-3.23.1.jar"/>
 	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
 	<property name="env.HUNNOR_ANT_DEPLOY_DIR" location="/deploy"/>
@@ -32,14 +30,12 @@
 	<target name="export.simple-html.hu">
 		<xslt style="formats/simple-html.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${build.dir}/HunNor-SimpleHTML-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
 	<target name="export.simple-html.nb">
 		<xslt style="formats/simple-html.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-SimpleHTML-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
@@ -54,17 +50,14 @@
 	<target name="export.apple.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN-Original.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 		<xslt style="formats/apple-patch.xsl" in="${build.dir}/HunNor-Apple-HN-Original.xml" out="${build.dir}/HunNor-Apple-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 		<delete file="${build.dir}/HunNor-Apple-HN-Original.xml"/>
 		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN-PList.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
@@ -72,17 +65,14 @@
 	<target name="export.apple.convert.nb" depends="export.simple-html.nb">
 		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH-Original.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 		<xslt style="formats/apple-patch.xsl" in="${build.dir}/HunNor-Apple-NH-Original.xml" out="${build.dir}/HunNor-Apple-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 		<delete file="${build.dir}/HunNor-Apple-NH-Original.xml"/>
 		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH-PList.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 	</target>
@@ -144,7 +134,6 @@
 	<target name="export.babylon.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/babylon.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-BB-HN.gls" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
@@ -152,7 +141,6 @@
 	<target name="export.babylon.convert.nb" depends="export.simple-html.nb">
 		<xslt style="formats/babylon.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-BB-NH.gls" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 	</target>
@@ -184,11 +172,9 @@
 	<target name="export.kindle.convert.nb" depends="export.simple-html.nb">
 		<xslt style="formats/kindle.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.html" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 		<xslt style="formats/kindle-opf.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.opf" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="contentFile" expression="HunNor-Kindle-NH.html"/>
 			<param name="logoFile" expression="${build.dir}/images/logo-colors.png"/>
 			<param name="inLanguage" expression="no"/>
@@ -236,41 +222,37 @@
 
 	<!-- PDF -->
 
+	<target name="fop.task">
+		<taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop"/>
+	</target>
+
 	<target name="export.pdf.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/pdf.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-FO-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
 	<target name="export.pdf.convert.nb" depends="export.simple-html.nb">
 		<xslt style="formats/pdf.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-FO-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
-	<target name="export.pdf.hu" depends="export.pdf.convert.hu">
+	<target name="export.pdf.hu" depends="export.pdf.convert.hu,fop.task">
 		<copy todir="${build.dir}/images">
 			<fileset dir="images"/>
 		</copy>
-		<exec executable="fop" failonerror="yes">
-			<arg line="-q -cache ${build.dir}/fop-fonts.cache -c formats/pdf/fonts.xml -fo ${build.dir}/HunNor-FO-HN.xml -pdf ${build.dir}/HunNor-PDF-HN.pdf"/>
-			<env key="JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
-		</exec>
+		<fop fofile="${build.dir}/HunNor-FO-HN.xml" messagelevel="warn" outfile="${build.dir}/HunNor-PDF-HN.pdf" userconfig="formats/pdf/fonts.xml"/>
 		<delete file="${build.dir}/HunNor-FO-HN.xml"/>
 		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 		<delete dir="${build.dir}/images"/>
 	</target>
 
-	<target name="export.pdf.nb" depends="export.pdf.convert.nb">
+	<target name="export.pdf.nb" depends="export.pdf.convert.nb,fop.task">
 		<copy todir="${build.dir}/images">
 			<fileset dir="images"/>
 		</copy>
-		<exec executable="fop" failonerror="yes">
-			<arg line="-q -cache ${build.dir}/fop-fonts.cache -c formats/pdf/fonts.xml -fo ${build.dir}/HunNor-FO-NH.xml -pdf ${build.dir}/HunNor-PDF-NH.pdf"/>
-			<env key="JAVA_HOME" value="${env.HUNNOR_ANT_JAVA_HOME}"/>
-		</exec>
+		<fop fofile="${build.dir}/HunNor-FO-NH.xml" messagelevel="warn" outfile="${build.dir}/HunNor-PDF-NH.pdf" userconfig="formats/pdf/fonts.xml"/>
 		<delete file="${build.dir}/HunNor-FO-NH.xml"/>
 		<move file="${build.dir}/HunNor-PDF-NH.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 		<delete dir="${build.dir}/images"/>
@@ -281,7 +263,6 @@
 	<target name="export.sdict.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/sdict.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-SD-HN.sdct" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
@@ -289,7 +270,6 @@
 	<target name="export.sdict.convert.nb" depends="export.simple-html.nb">
 		<xslt style="formats/sdict.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-SD-NH.sdct" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 	</target>
@@ -337,7 +317,6 @@
 	<target name="export.stardict.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-ST-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
@@ -345,7 +324,6 @@
 	<target name="export.stardict.convert.nb" depends="export.simple-html.nb">
 		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-ST-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 	</target>
@@ -398,13 +376,11 @@
 
 	<target name="export.stardict.nosym.num.convert.hu" depends="export.stardict.convert.hu">
 		<xslt style="formats/stardict-nosym-number.xsl" in="${build.dir}/HunNor-ST-HN.xml" out="${build.dir}/HunNor-ST-NoSym-Number-HN.xml" force="true">
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
 	<target name="export.stardict.nosym.num.convert.nb" depends="export.stardict.convert.nb">
 		<xslt style="formats/stardict-nosym-number.xsl" in="${build.dir}/HunNor-ST-NH.xml" out="${build.dir}/HunNor-ST-NoSym-Number-NH.xml" force="true">
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 		</xslt>
 	</target>
 
@@ -477,7 +453,6 @@
 	<target name="export.xdxf.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/xdxf-lousy.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-XDXF-L-HN.xdxf" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
@@ -485,7 +460,6 @@
 	<target name="export.xdxf.convert.nb" depends="export.simple-html.nb">
 		<xslt style="formats/xdxf-lousy.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-XDXF-L-NH.xdxf" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 	</target>
@@ -541,24 +515,18 @@
 	<target name="export.sqlite.convert" depends="export.simple-html.hu,export.simple-html.nb">
 		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-SQLite-HN.sql" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="hu"/>
 		</xslt>
 		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-SQLite-NH.sql" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<classpath location="${env.HUNNOR_ANT_SAXON_JAR}"/>
 			<param name="direction" expression="nb"/>
 		</xslt>
 	</target>
 
-	<target name="export.sqlite.jdbc.jar">
-		<get dest="${env.HUNNOR_ANT_SQLITE_JDBC_JAR}" skipexisting="true" src="https://bitbucket.org/xerial/sqlite-jdbc/downloads/sqlite-jdbc-3.23.1.jar"/>
-	</target>
-
-	<target name="export.sqlite.generate" depends="export.sqlite.convert,export.sqlite.jdbc.jar">
+	<target name="export.sqlite.generate" depends="export.sqlite.convert">
 		<delete file="${build.dir}/HunNor-SQLite.sqlite3"/>
-		<sql classpath="${env.HUNNOR_ANT_SQLITE_JDBC_JAR}" driver="org.sqlite.JDBC" escapeprocessing="false" password="hunnor" src="${build.dir}/HunNor-SQLite-HN.sql" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor"/>
-		<sql classpath="${env.HUNNOR_ANT_SQLITE_JDBC_JAR}" driver="org.sqlite.JDBC" escapeprocessing="false" password="hunnor" src="${build.dir}/HunNor-SQLite-NH.sql" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor"/>
+		<sql driver="org.sqlite.JDBC" escapeprocessing="false" password="hunnor" src="${build.dir}/HunNor-SQLite-HN.sql" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor"/>
+		<sql driver="org.sqlite.JDBC" escapeprocessing="false" password="hunnor" src="${build.dir}/HunNor-SQLite-NH.sql" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor"/>
 		<checksum file="${build.dir}/HunNor-SQLite.sqlite3" algorithm="MD5" fileext=".md5"/>
 	</target>
 

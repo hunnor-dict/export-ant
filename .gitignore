@@ -1,4 +1,5 @@
 build
 tester/specs/*-result.html
+tester/jars
 project.properties
 target
