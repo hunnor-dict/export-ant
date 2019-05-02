@@ -18,4 +18,5 @@
 			</fonts>
 		</renderer>
 	</renderers>
+	<use-cache>false</use-cache>
 </fop>
