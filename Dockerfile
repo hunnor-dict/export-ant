@@ -15,7 +15,6 @@ RUN mvn verify
 FROM openjdk:11-jdk
 
 COPY --from=maven /opt/hunnor-dict/export-ant/tester/jars /opt/hunnor-dict/jars
-ENV JARS_DIR=/opt/hunnor-dict/jars
 
 RUN apt-get update && apt-get install --assume-yes --allow-unauthenticated ant stardict-tools && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /opt/sdict && \
