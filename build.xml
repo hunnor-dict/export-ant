@@ -41,10 +41,8 @@
 
 	<!-- Apple -->
 
-	<target name="export.apple.ddk">
-		<condition property="apple.ddk">
-			<available file="${env.HUNNOR_ANT_APPLE_DDK_DIR}"/>
-		</condition>
+	<target name="export.apple.ddk.check">
+		<available file="${env.HUNNOR_ANT_APPLE_DDK_DIR}" property="export.apple.ddk.available"/>
 	</target>
 
 	<target name="export.apple.convert.hu" depends="export.simple-html.hu">
@@ -77,7 +75,7 @@
 		</xslt>
 	</target>
 
-	<target name="export.apple.compile.hu" depends="export.apple.convert.hu,export.apple.ddk" if="${apple.ddk}">
+	<target name="export.apple.compile.hu" depends="export.apple.convert.hu,export.apple.ddk.check" if="${export.apple.ddk.available}">
 		<exec executable="${env.HUNNOR_ANT_APPLE_DDK_DIR}/bin/build_dict.sh" failonerror="yes">
 			<arg line="HunNor-HN ${build.dir}/HunNor-Apple-HN.xml formats/apple/apple.css ${build.dir}/HunNor-Apple-HN-PList.xml"/>
 			<env key="DICT_BUILD_TOOL_DIR" value="${env.HUNNOR_ANT_APPLE_DDK_DIR}"/>
@@ -89,7 +87,7 @@
 		<delete dir="${build.dir}/apple-hu"/>
 	</target>
 
-	<target name="export.apple.compile.nb" depends="export.apple.convert.nb,export.apple.ddk" if="${apple.ddk}">
+	<target name="export.apple.compile.nb" depends="export.apple.convert.nb,export.apple.ddk.check" if="${export.apple.ddk.available}">
 		<exec executable="${env.HUNNOR_ANT_APPLE_DDK_DIR}/bin/build_dict.sh" failonerror="yes">
 			<arg line="HunNor-NH ${build.dir}/HunNor-Apple-NH.xml formats/apple/apple.css ${build.dir}/HunNor-Apple-NH-PList.xml"/>
 			<env key="DICT_BUILD_TOOL_DIR" value="${env.HUNNOR_ANT_APPLE_DDK_DIR}"/>
@@ -101,26 +99,44 @@
 		<delete dir="${build.dir}/apple-nb"/>
 	</target>
 
-	<target name="export.apple.deploy.hu" depends="export.apple.convert.hu,export.apple.compile.hu">
-		<tar destfile="${build.dir}/HunNor-Apple-HN.tar">
+	<target name="export.apple.deploy.bin.hu" depends="export.apple.compile.hu" if="${export.apple.ddk.available}">
+		<tar compression="gzip" destfile="${build.dir}/HunNor-Apple-HN.tar.gz">
+			<fileset dir="${build.dir}" includes="HunNor-HN.dictionary/**"/>
+		</tar>
+		<delete dir="${build.dir}/HunNor-HN.dictionary"/>
+		<move file="${build.dir}/HunNor-Apple-HN.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+	</target>
+
+	<target name="export.apple.deploy.bin.nb" depends="export.apple.compile.nb" if="${export.apple.ddk.available}">
+		<tar compression="gzip" destfile="${build.dir}/HunNor-Apple-NH.tar.gz">
+			<fileset dir="${build.dir}" includes="HunNor-NH.dictionary/**"/>
+		</tar>
+		<delete dir="${build.dir}/HunNor-NH.dictionary"/>
+		<move file="${build.dir}/HunNor-Apple-NH.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+	</target>
+
+	<target name="export.apple.deploy.src.hu" depends="export.apple.convert.hu,export.apple.compile.hu">
+		<tar compression="gzip" destfile="${build.dir}/HunNor-Apple-HN.tar.gz">
 			<filelist dir="${build.dir}" files="${build.dir}/HunNor-Apple-HN.xml,${build.dir}/HunNor-Apple-HN-PList.xml"/>
 		</tar>
 		<delete file="${build.dir}/HunNor-Apple-HN.xml"/>
 		<delete file="${build.dir}/HunNor-Apple-HN-PList.xml"/>
-		<gzip destfile="${build.dir}/HunNor-Apple-HN.tar.gz" src="${build.dir}/HunNor-Apple-HN.tar"/>
-		<delete file="${build.dir}/HunNor-Apple-HN.tar"/>
 		<move file="${build.dir}/HunNor-Apple-HN.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
-	<target name="export.apple.deploy.nb" depends="export.apple.convert.nb,export.apple.compile.nb">
-		<tar destfile="${build.dir}/HunNor-Apple-NH.tar">
+	<target name="export.apple.deploy.src.nb" depends="export.apple.convert.nb,export.apple.compile.nb">
+		<tar compression="gzip" destfile="${build.dir}/HunNor-Apple-NH.tar.gz">
 			<filelist dir="${build.dir}" files="${build.dir}/HunNor-Apple-NH.xml,${build.dir}/HunNor-Apple-NH-PList.xml"/>
 		</tar>
 		<delete file="${build.dir}/HunNor-Apple-NH.xml"/>
 		<delete file="${build.dir}/HunNor-Apple-NH-PList.xml"/>
-		<gzip destfile="${build.dir}/HunNor-Apple-NH.tar.gz" src="${build.dir}/HunNor-Apple-NH.tar"/>
-		<delete file="${build.dir}/HunNor-Apple-NH.tar"/>
 		<move file="${build.dir}/HunNor-Apple-NH.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.apple.deploy.hu" depends="export.apple.deploy.bin.hu,export.apple.deploy.src.hu">
+	</target>
+
+	<target name="export.apple.deploy.nb" depends="export.apple.deploy.bin.nb,export.apple.deploy.src.nb">
 	</target>
 
 	<target name="export.apple.hu" depends="export.apple.deploy.hu">
@@ -205,7 +221,7 @@
 	<target name="export.kindle.nb" depends="export.kindle.deploy.nb">
 	</target>
 
-	<target name ="export.kindle.compiler.check">
+	<target name="export.kindle.compiler.check">
 		<available file="${env.HUNNOR_ANT_KINDLE_COMPILER}" property="export.kindle.compiler.available"/>
 	</target>
 
