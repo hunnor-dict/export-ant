@@ -239,10 +239,20 @@
 		<delete dir="${build.dir}/images"/>
 	</target>
 
-	<target name="export.kindle.deploy.nb" depends="export.kindle.compile.nb">
+	<target name="export.kindle.deploy.bin.nb" depends="export.kindle.compile.nb">
+		<move file="${build.dir}/HunNor-Kindle-NH.mobi" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+	</target>
+
+	<target name="export.kindle.deploy.src.nb" depends="export.kindle.compile.nb">
+		<tar compression="gzip" destfile="${build.dir}/HunNor-Kindle-HN.tar.gz">
+			<filelist dir="${build.dir}" files="${build.dir}/HunNor-Kindle-NH.html,${build.dir}/HunNor-Kindle-NH.opf"/>
+		</tar>
 		<delete file="${build.dir}/HunNor-Kindle-NH.html"/>
 		<delete file="${build.dir}/HunNor-Kindle-NH.opf"/>
-		<move file="${build.dir}/HunNor-Kindle-NH.mobi" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<move file="${build.dir}/HunNor-Kindle-HN.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.kindle.deploy.nb" depends="export.kindle.deploy.bin.nb,export.kindle.deploy.src.nb">
 	</target>
 
 	<target name="export.kindle.nb" depends="export.kindle.deploy.nb">
