@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="hunnor-ant" default="export">
+<project xmlns:if="ant:if" xmlns:unless="ant:unless" name="hunnor-ant" default="export">
 
 	<description>Convert the dictionary database to various XML based formats.</description>
 
@@ -9,6 +9,7 @@
 
 	<property name="env.HUNNOR_ANT_APPLE_DDK_DIR" location="/Volumes/Additional Tools/Utilities/Dictionary Development Kit"/>
 	<property name="env.HUNNOR_ANT_KINDLE_COMPILER" location="/tools/kindlegen-2.9-amazon/kindlegen"/>
+	<property name="env.HUNNOR_ANT_KINDLE_COMPILER_DOWNLOAD" value="http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
 	<property name="env.HUNNOR_ANT_SDICT_COMPILER" location="/opt/sdict/bin/sdict-tools.plx"/>
 	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
@@ -181,6 +182,32 @@
 
 	<!-- Kindle -->
 
+	<target name="export.kindle.compiler.check">
+		<available file="${env.HUNNOR_ANT_KINDLE_COMPILER}" property="export.kindle.compiler.available"/>
+	</target>
+
+	<target name="export.kindle.compiler" depends="export.kindle.compiler.check" unless="export.kindle.compiler.available">
+		<!-- Prepare directory -->
+		<dirname file="${env.HUNNOR_ANT_KINDLE_COMPILER}" property="kindle.dir"/>
+		<mkdir dir="${kindle.dir}"/>
+		<!-- Download compiler -->
+		<get src="${env.HUNNOR_ANT_KINDLE_COMPILER_DOWNLOAD}" dest="${kindle.dir}" skipexisting="true"/>
+		<!-- Decompress if .tar.gz -->
+		<condition property="export.kindle.compiler.tar.gz" else="false">
+			<matches string="${env.HUNNOR_ANT_KINDLE_COMPILER_DOWNLOAD}" pattern="\.tar\.gz$"/>
+		</condition>
+		<untar if:true="${export.kindle.compiler.tar.gz}" compression="gzip" src="${kindle.dir}/kindlegen_linux_2.6_i386_v2_9.tar.gz" dest="${kindle.dir}"/>
+		<delete if:true="${export.kindle.compiler.tar.gz}" file="${kindle.dir}/kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
+		<!-- Decompress if .zip -->
+		<condition property="export.kindle.compiler.zip" else="false">
+			<matches string="${env.HUNNOR_ANT_KINDLE_COMPILER_DOWNLOAD}" pattern="\.zip$"/>
+		</condition>
+		<unzip if:true="${export.kindle.compiler.zip}" src="${kindle.dir}/KindleGen_Mac_i386_v2_9.zip" dest="${kindle.dir}"/>
+		<delete if:true="${export.kindle.compiler.zip}" file="${kindle.dir}/KindleGen_Mac_i386_v2_9.zip"/>
+		<!-- Set permissions -->
+		<chmod file="${env.HUNNOR_ANT_KINDLE_COMPILER}" perm="755"/>
+	</target>
+
 	<target name="export.kindle.hu" depends="export.simple-html.hu">
 		<!-- Intentionally left blank -->
 	</target>
@@ -219,21 +246,6 @@
 	</target>
 
 	<target name="export.kindle.nb" depends="export.kindle.deploy.nb">
-	</target>
-
-	<target name="export.kindle.compiler.check">
-		<available file="${env.HUNNOR_ANT_KINDLE_COMPILER}" property="export.kindle.compiler.available"/>
-	</target>
-
-	<target name="export.kindle.compiler" depends="export.kindle.compiler.check" unless="export.kindle.compiler.available">
-		<dirname file="${env.HUNNOR_ANT_KINDLE_COMPILER}" property="kindle.dir"/>
-		<mkdir dir="${kindle.dir}"/>
-		<get src="http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz" dest="${kindle.dir}" skipexisting="true"/>
-		<gunzip src="${kindle.dir}/kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
-		<delete file="${kindle.dir}/kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
-		<untar src="${kindle.dir}/kindlegen_linux_2.6_i386_v2_9.tar" dest="${kindle.dir}"/>
-		<delete file="${kindle.dir}/kindlegen_linux_2.6_i386_v2_9.tar"/>
-		<chmod file="${env.HUNNOR_ANT_KINDLE_COMPILER}" perm="755"/>
 	</target>
 
 	<!-- PDF -->
