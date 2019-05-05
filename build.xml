@@ -260,7 +260,7 @@
 
 	<!-- PDF -->
 
-	<target name="fop.task">
+	<target name="export.pdf.fop.task">
 		<taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop"/>
 	</target>
 
@@ -276,24 +276,52 @@
 		</xslt>
 	</target>
 
-	<target name="export.pdf.hu" depends="export.pdf.convert.hu,fop.task">
+	<target name="export.pdf.compile.hu" depends="export.pdf.convert.hu,export.pdf.fop.task">
 		<copy todir="${build.dir}/images">
 			<fileset dir="images"/>
 		</copy>
 		<fop fofile="${build.dir}/HunNor-FO-HN.xml" messagelevel="warn" outfile="${build.dir}/HunNor-PDF-HN.pdf" userconfig="formats/pdf/fonts.xml"/>
-		<delete file="${build.dir}/HunNor-FO-HN.xml"/>
-		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 		<delete dir="${build.dir}/images"/>
 	</target>
 
-	<target name="export.pdf.nb" depends="export.pdf.convert.nb,fop.task">
+	<target name="export.pdf.compile.nb" depends="export.pdf.convert.nb,export.pdf.fop.task">
 		<copy todir="${build.dir}/images">
 			<fileset dir="images"/>
 		</copy>
 		<fop fofile="${build.dir}/HunNor-FO-NH.xml" messagelevel="warn" outfile="${build.dir}/HunNor-PDF-NH.pdf" userconfig="formats/pdf/fonts.xml"/>
-		<delete file="${build.dir}/HunNor-FO-NH.xml"/>
-		<move file="${build.dir}/HunNor-PDF-NH.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 		<delete dir="${build.dir}/images"/>
+	</target>
+
+	<target name="export.pdf.deploy.bin.hu" depends="export.pdf.compile.hu">
+		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+	</target>
+
+	<target name="export.pdf.deploy.bin.nb" depends="export.pdf.compile.nb">
+		<move file="${build.dir}/HunNor-PDF-NH.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+	</target>
+
+	<target name="export.pdf.deploy.src.hu" depends="export.pdf.convert.hu,export.pdf.compile.hu">
+		<gzip src="${build.dir}/HunNor-FO-HN.xml" destfile="${build.dir}/HunNor-FO-HN.xml.gz"/>
+		<delete file="${build.dir}/HunNor-FO-HN.xml"/>
+		<move file="${build.dir}/HunNor-FO-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.pdf.deploy.src.nb" depends="export.pdf.convert.nb,export.pdf.compile.nb">
+		<gzip src="${build.dir}/HunNor-FO-NH.xml" destfile="${build.dir}/HunNor-FO-NH.xml.gz"/>
+		<delete file="${build.dir}/HunNor-FO-NH.xml"/>
+		<move file="${build.dir}/HunNor-FO-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.pdf.deploy.hu" depends="export.pdf.deploy.bin.hu,export.pdf.deploy.src.hu">
+	</target>
+
+	<target name="export.pdf.deploy.nb" depends="export.pdf.deploy.bin.nb,export.pdf.deploy.src.nb">
+	</target>
+
+	<target name="export.pdf.hu" depends="export.pdf.deploy.hu">
+	</target>
+
+	<target name="export.pdf.nb" depends="export.pdf.deploy.nb">
 	</target>
 
 	<!-- SDictionary: A text file format that can be compiled to a binary .dct dictionary file with the tools included in the SDictionary project. -->
