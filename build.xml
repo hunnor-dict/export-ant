@@ -352,24 +352,36 @@
 		</exec>
 	</target>
 
-	<target name="export.sdict.deploy.hu" depends="export.sdict.compile.hu">
+	<target name="export.sdict.deploy.bin.hu" depends="export.sdict.compile.hu">
 		<move file="${build.dir}/HunNor-SD-HN.dct" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
-	<target name="export.sdict.deploy.nb" depends="export.sdict.compile.nb">
+	<target name="export.sdict.deploy.bin.nb" depends="export.sdict.compile.nb">
 		<move file="${build.dir}/HunNor-SD-NH.dct" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
-	<target name="export.sdict.hu" depends="export.sdict.deploy.hu">
+	<target name="export.sdict.deploy.src.hu" depends="export.sdict.convert.hu,export.sdict.compile.hu">
 		<gzip src="${build.dir}/HunNor-SD-HN.sdct" destfile="${build.dir}/HunNor-SD-HN.sdct.gz"/>
 		<delete file="${build.dir}/HunNor-SD-HN.sdct"/>
 		<move file="${build.dir}/HunNor-SD-HN.sdct.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
-	<target name="export.sdict.nb" depends="export.sdict.deploy.nb">
+	<target name="export.sdict.deploy.src.nb" depends="export.sdict.convert.nb,export.sdict.compile.nb">
 		<gzip src="${build.dir}/HunNor-SD-NH.sdct" destfile="${build.dir}/HunNor-SD-NH.sdct.gz"/>
 		<delete file="${build.dir}/HunNor-SD-NH.sdct"/>
 		<move file="${build.dir}/HunNor-SD-NH.sdct.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.sdict.deploy.hu" depends="export.sdict.deploy.bin.hu,export.sdict.deploy.src.hu">
+	</target>
+
+	<target name="export.sdict.deploy.nb" depends="export.sdict.deploy.bin.nb,export.sdict.deploy.src.nb">
+	</target>
+
+	<target name="export.sdict.hu" depends="export.sdict.deploy.hu">
+	</target>
+
+	<target name="export.sdict.nb" depends="export.sdict.deploy.nb">
 	</target>
 
 	<!-- StarDict -->
