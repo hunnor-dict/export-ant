@@ -126,6 +126,25 @@
 			</x:expect>
 		</x:scenario>
 
+		<x:scenario label="When a form has a 0 n data attribute">
+			<x:context>
+				<span class="orth" data-n="0">orth</span>
+			</x:context>
+			<x:expect label="Then the attribute is ignored">
+				<fo:inline xmlns:fo="http://www.w3.org/1999/XSL/Format" font-weight="bold">orth</fo:inline>
+			</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When a form has a > 0 n data attribute">
+			<x:context>
+				<span class="orth" data-n="1">orth</span>
+			</x:context>
+			<x:expect label="Then the attribute value is in subscript after the form">
+				<fo:inline xmlns:fo="http://www.w3.org/1999/XSL/Format" font-weight="bold">orth</fo:inline>
+				<fo:inline vertical-align="sub" font-size="75%">1</fo:inline>
+			</x:expect>
+		</x:scenario>
+
 		<x:scenario label="When a part-of-speech is in Hungarian">
 			<x:context>
 				<span class="pos">fn</span>

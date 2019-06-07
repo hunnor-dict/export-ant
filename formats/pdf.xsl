@@ -123,6 +123,11 @@
 				<fo:inline font-weight="bold">
 					<xsl:apply-templates/>
 				</fo:inline>
+				<xsl:if test="@class = 'orth' and @data-n > 0">
+					<fo:inline vertical-align="sub" font-size="75%">
+						<xsl:value-of select="@data-n"/>
+					</fo:inline>
+				</xsl:if>
 			</xsl:when>
 			<xsl:when test="@class = 'infl' or @class = 'lbl' or @class = 'q'">
 				<fo:inline font-style="italic">
