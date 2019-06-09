@@ -4,6 +4,7 @@
 	<xsl:output method="xml" indent="yes" encoding="us-ascii" suppress-indentation="definition"/>
 
 	<xsl:param name="direction"/>
+	<xsl:param name="numbers"/>
 
 	<xsl:template match="dictionary">
 		<stardict>
@@ -26,6 +27,11 @@
 		<article>
 			<key>
 				<xsl:value-of select="forms/form[1]"/>
+				<xsl:if test="$numbers = 'true' and forms/form[1]/@n > 1">
+					<xsl:text> (</xsl:text>
+					<xsl:value-of select="forms/form[1]/@n"/>
+					<xsl:text>)</xsl:text>
+				</xsl:if>
 			</key>
 			<xsl:call-template name="synonyms">
 				<xsl:with-param name="key" select="forms/form[1]"/>

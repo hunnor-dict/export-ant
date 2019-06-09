@@ -396,6 +396,7 @@
 		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-ST-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="hn"/>
+			<param name="numbers" expression="false"/>
 		</xslt>
 	</target>
 
@@ -403,6 +404,7 @@
 		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-ST-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="nh"/>
+			<param name="numbers" expression="false"/>
 		</xslt>
 	</target>
 
@@ -452,13 +454,19 @@
 		<move file="${build.dir}/HunNor-ST-NH.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
-	<target name="export.stardict.nosym.num.convert.hu" depends="export.stardict.convert.hu">
-		<xslt style="formats/stardict-nosym-number.xsl" in="${build.dir}/HunNor-ST-HN.xml" out="${build.dir}/HunNor-ST-NoSym-Number-HN.xml" force="true">
+	<target name="export.stardict.nosym.num.convert.hu" depends="export.simple-html.hu">
+		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-ST-NoSym-Number-HN.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<param name="direction" expression="hn"/>
+			<param name="numbers" expression="true"/>
 		</xslt>
 	</target>
 
-	<target name="export.stardict.nosym.num.convert.nb" depends="export.stardict.convert.nb">
-		<xslt style="formats/stardict-nosym-number.xsl" in="${build.dir}/HunNor-ST-NH.xml" out="${build.dir}/HunNor-ST-NoSym-Number-NH.xml" force="true">
+	<target name="export.stardict.nosym.num.convert.nb" depends="export.simple-html.nb">
+		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-ST-NoSym-Number-NH.xml" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+			<param name="direction" expression="nh"/>
+			<param name="numbers" expression="true"/>
 		</xslt>
 	</target>
 

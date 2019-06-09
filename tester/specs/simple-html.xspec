@@ -135,21 +135,21 @@
 				<entry xmlns="http://dict.hunnor.net">
 					<formGrp>
 						<form>
-							<orth n="0">orth1</orth>
-							<orth n="1">orth2</orth>
+							<orth n="1">orth1</orth>
+							<orth n="2">orth2</orth>
 						</form>
 					</formGrp>
 				</entry>
 			</x:context>
-			<x:expect label="Values > 0 are preserved">
+			<x:expect label="Values > 1 are preserved for form elements and values > 0 are preserved in orth span data attributes">
 				<entry>
 					<forms>
 						<form>orth1</form>
-						<form>orth2</form>
+						<form n="2">orth2</form>
 					</forms>
 					<forms-html>
 						<span class="form">
-							<span class="orth">orth1</span><span class="orth">, </span><span class="orth" data-n="1">orth2</span>
+							<span class="orth" data-n="1">orth1</span><span class="orth">, </span><span class="orth" data-n="2">orth2</span>
 						</span>
 					</forms-html>
 				</entry>

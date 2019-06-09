@@ -27,9 +27,12 @@
 			<xsl:if test="dict:formGrp">
 				<xsl:if test="dict:formGrp/dict:form/dict:orth">
 					<forms>
-						<xsl:for-each select="distinct-values(dict:formGrp/dict:form/dict:orth)">
+						<xsl:for-each select="dict:formGrp/dict:form/dict:orth">
 							<xsl:sort select="."/>
 							<form>
+								<xsl:if test="@n > 1">
+									<xsl:copy select="@n"/>
+								</xsl:if>
 								<xsl:value-of select="."/>
 							</form>
 						</xsl:for-each>

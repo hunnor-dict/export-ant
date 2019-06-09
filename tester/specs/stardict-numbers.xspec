@@ -2,7 +2,7 @@
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../../formats/stardict.xsl">
 
 	<x:param name="direction" select="'dir'"/>
-	<x:param name="numbers" select="'false'"/>
+	<x:param name="numbers" select="'true'"/>
 	
 	<x:scenario label="Dictionary">
 
@@ -53,7 +53,7 @@
 			<x:context href="../context/entry-forms-inflections.xml"/>
 			<x:expect label="Then the first form is used as key, and unique subsequent forms are synonyms for the first form">
 				<article>
-					<key>w1</key>
+					<key>w1 (2)</key>
 					<synonym>w2</synonym>
 					<synonym>w3</synonym>
 					<definition><![CDATA[<![CDATA[]]> <![CDATA[]]]]><![CDATA[>]]></definition>

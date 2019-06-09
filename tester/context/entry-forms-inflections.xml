@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entry id="1">
 	<forms>
-		<form>w1</form>
+		<form n="2">w1</form>
 		<form>w2</form>
 	</forms>
 	<inflections>
