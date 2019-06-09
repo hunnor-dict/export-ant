@@ -10,7 +10,7 @@
 	<packaging>jar</packaging>
 
 	<name>Export (Ant)</name>
-	<description>Test runner for XSpec tests</description>	
+	<description>Test runner for XSpec tests</description>
 
 	<properties>
 		<fop.version>2.3</fop.version>

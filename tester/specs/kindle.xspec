@@ -2,7 +2,7 @@
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../../formats/kindle.xsl" xmlns:idx="http://www.mobipocket.com/idx" xmlns:mbp="http://www.mobipocket.com/mbp">
 
 	<x:scenario label="Dictionary">
-		
+
 		<x:scenario label="When the dictionary is empty">
 			<x:context href="../context/dictionary.xml"/>
 			<x:expect label="Then the dictionary begins with the Kindle metadata block">

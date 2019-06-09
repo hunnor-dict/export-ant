@@ -3,7 +3,7 @@
 
 	<x:param name="direction" select="'dir'"/>
 	<x:param name="numbers" select="'false'"/>
-	
+
 	<x:scenario label="Dictionary">
 
 		<x:scenario label="When the dictionary is empty">

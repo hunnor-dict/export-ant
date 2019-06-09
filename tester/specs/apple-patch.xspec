@@ -10,5 +10,5 @@
 		<x:context><span><b>bold</b> normal <i>italic</i></span></x:context>
 		<x:expect label="Then the text is preserved"><span><b>bold</b> normal <i>italic</i></span></x:expect>
 	</x:scenario>
-	
+
 </x:description>
