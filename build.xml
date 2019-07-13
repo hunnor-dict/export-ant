@@ -22,6 +22,24 @@
 	<property name="env.HUNNOR_ANT_DUMP_HU" location="${build.dir}/HunNor-XML-HN.xml"/>
 	<property name="env.HUNNOR_ANT_DUMP_NB" location="${build.dir}/HunNor-XML-NH.xml"/>
 
+	<target name="export.dump.download">
+		<taskdef name="dbxdl" classname="net.hunnor.dict.ant.DropboxDownload"/>
+		<dbxdl file="/Public/Databases/HunNor-XML-HN.xml.gz" tofile="${env.HUNNOR_ANT_DUMP_HU}.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
+		<dbxdl file="/Public/Databases/HunNor-XML-NH.xml.gz" tofile="${env.HUNNOR_ANT_DUMP_NB}.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
+		<delete file="${env.HUNNOR_ANT_DUMP_HU}"/>
+		<delete file="${env.HUNNOR_ANT_DUMP_NB}"/>
+		<gunzip dest="${env.HUNNOR_ANT_DUMP_HU}" src="${env.HUNNOR_ANT_DUMP_HU}.gz"/>
+		<gunzip dest="${env.HUNNOR_ANT_DUMP_NB}" src="${env.HUNNOR_ANT_DUMP_NB}.gz"/>
+		<delete file="${env.HUNNOR_ANT_DUMP_HU}.gz"/>
+		<delete file="${env.HUNNOR_ANT_DUMP_NB}.gz"/>
+	</target>
+
+	<target name="export.apple.upload" depends="export.apple.hu,export.apple.nb">
+		<taskdef name="dbxup" classname="net.hunnor.dict.ant.DropboxUpload"/>
+		<dbxup file="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}/HunNor-Apple-HN.tar.gz" tofile="/Public/Exports/HunNor-Apple-HN.tar.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
+		<dbxup file="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}/HunNor-Apple-NH.tar.gz" tofile="/Public/Exports/HunNor-Apple-NH.tar.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
+	</target>
+
 	<target name="build.dir">
 		<mkdir dir="${build.dir}"/>
 	</target>
