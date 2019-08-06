@@ -13,7 +13,7 @@
 
 	<properties>
 		<ant.version>1.10.6</ant.version>
-		<checkstyle.version>3.0.0</checkstyle.version>
+		<checkstyle.version>3.1.0</checkstyle.version>
 		<dropbox.version>3.1.1</dropbox.version>
 		<jacoco.version>0.8.4</jacoco.version>
 		<junit.version>4.12</junit.version>
@@ -23,7 +23,7 @@
 		<maven.enforcer.plugin.version>3.0.0-M2</maven.enforcer.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<shade.version>3.2.1</shade.version>
-		<spotbugs.version>3.1.11</spotbugs.version>
+		<spotbugs.version>3.1.12</spotbugs.version>
 	</properties>
 
 	<dependencies>

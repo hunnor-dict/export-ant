@@ -3,11 +3,11 @@ package net.hunnor.dict.ant;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 
-import org.apache.tools.ant.BuildException;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import org.apache.tools.ant.BuildException;
 
 public class DropboxDownload extends DropboxBase {
 
