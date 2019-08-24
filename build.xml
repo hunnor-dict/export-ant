@@ -631,7 +631,7 @@
 
 	<target name="export.sqlite.generate" depends="export.sqlite.convert">
 		<delete file="${build.dir}/HunNor-SQLite.sqlite3"/>
-		<sql driver="org.sqlite.JDBC" escapeprocessing="false" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor">
+		<sql driver="org.sqlite.JDBC" encoding="UTF-8" escapeprocessing="false" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor">
 			<filelist dir="${build.dir}">
 				<file name="HunNor-SQLite-HN.sql"/>
 				<file name="HunNor-SQLite-NH.sql"/>
