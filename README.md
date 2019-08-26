@@ -91,6 +91,17 @@ Compiled files: `HunNor-SD-[HN|NH].dct`
 
 An SQLite database with both directions, used by the cross platform mobile apps.
 
+### Normalization
+
+The `_ascii` columns in the `roots` and `inflections` tables contain written forms using ASCII characters only. These values are created with the following process:
+
+1. Replace __æ__ with __ae__
+1. Replace __ø__ with __o__
+1. Apply XSLT function `normalize-unicode` with normalization form NFKD
+1. Remove characters from Unicode category Combining Diacritical Marks
+
+The XSpec tests contain test cases for common Hungarian and Norwegian characters.
+
 ## StarDict
 
 Source files and compiled dictionaries in [StarDict format](https://github.com/huzheng001/stardict-3/blob/master/dict/doc/StarDictFileFormat). The files marked with NoSym-Number are recommended for Windows phones.
