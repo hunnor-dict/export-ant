@@ -102,6 +102,31 @@ The `_ascii` columns in the `roots` and `inflections` tables contain written for
 
 The XSpec tests contain test cases for common Hungarian and Norwegian characters.
 
+Applications can apply the same transformation to user input. Sample code for some languages, using the `String` variable `term`:
+
+#### Java
+
+```
+if (term != null) {
+  term = Normalizer.normalize(term, Normalizer.Form.NFKD)
+    .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+    .replaceAll("æ", "ae").replaceAll("ø", "o")
+    .replaceAll("Æ", "AE").replaceAll("Ø", "O");
+}
+```
+
+#### JavaScript
+
+```
+if (term) {
+  term = term
+    .replace(/æ/g, "ae").replace(/ø/g, "o")
+    .replace(/Æ/g, "AE").replace(/Ø/g, "O")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+```
+
 ## StarDict
 
 Source files and compiled dictionaries in [StarDict format](https://github.com/huzheng001/stardict-3/blob/master/dict/doc/StarDictFileFormat). The files marked with NoSym-Number are recommended for Windows phones.
