@@ -21,7 +21,14 @@ FROM openjdk:11-jdk
 
 COPY --from=maven /opt/hunnor-dict/export-ant/jars /opt/hunnor-dict/jars
 
-RUN apt-get update && apt-get install --assume-yes --allow-unauthenticated ant stardict-tools && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN cd /opt && \
+    wget -q http://apache.uib.no/ant/binaries/apache-ant-1.10.7-bin.tar.gz && \
+    tar -xzf apache-ant-1.10.7-bin.tar.gz && \
+    rm apache-ant-1.10.7-bin.tar.gz
+
+ENV PATH /opt/apache-ant-1.10.7/bin:${PATH}
+
+RUN apt-get update && apt-get install --assume-yes --allow-unauthenticated stardict-tools && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN mkdir -p /opt/sdict && \
     cd /opt/sdict && \
     wget -q http://swaj.net/sdict/ptksdict-1.2.4.tar.gz && \
