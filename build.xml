@@ -42,8 +42,8 @@
 
 	<target name="dropbox.upload.apple" depends="export.apple.hu,export.apple.nb">
 		<taskdef name="dbxup" classname="net.hunnor.dict.ant.DropboxUpload"/>
-		<dbxup file="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}/HunNor-Apple-HN.tar.gz" tofile="/Public/Exports/HunNor-Apple-HN.tar.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
-		<dbxup file="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}/HunNor-Apple-NH.tar.gz" tofile="/Public/Exports/HunNor-Apple-NH.tar.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
+		<dbxup file="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}/HunNor-Apple-HN.tar.gz" tofile="/Public/Exports/HunNor-Apple-HN.tar.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
+		<dbxup file="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}/HunNor-Apple-NH.tar.gz" tofile="/Public/Exports/HunNor-Apple-NH.tar.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
 	</target>
 
 	<!-- Simple HTML: An intermediate XML format which is the basis of further transformation to various offline formats. -->
