@@ -1,0 +1,2 @@
+﻿%1=aáeéioöuü
+%2=bcdfghjklmnpqrstvwxz

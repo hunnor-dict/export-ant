@@ -35,6 +35,10 @@ RUN mkdir -p /opt/sdict && \
     tar -xzf ptksdict-1.2.4.tar.gz && \
     rm ptksdict-1.2.4.tar.gz
 
+RUN dpkg --add-architecture i386 && \
+    apt-get update && \
+    apt-get install --assume-yes wine32
+
 COPY formats /opt/hunnor-dict/export-ant/formats
 COPY images /opt/hunnor-dict/export-ant/images
 COPY build.xml /opt/hunnor-dict/export-ant

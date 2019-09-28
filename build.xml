@@ -10,6 +10,8 @@
 	<property name="env.HUNNOR_ANT_APPLE_DDK_DIR" location="/Volumes/Additional Tools/Utilities/Dictionary Development Kit"/>
 	<property name="env.HUNNOR_ANT_KINDLE_COMPILER" location="/tools/kindlegen-2.9-amazon/kindlegen"/>
 	<property name="env.HUNNOR_ANT_KINDLE_COMPILER_DOWNLOAD" value="http://kindlegen.s3.amazonaws.com/kindlegen_linux_2.6_i386_v2_9.tar.gz"/>
+	<property name="env.HUNNOR_ANT_POCKETBOOK_COMPILER" value="/tools/pocketbook/converter.exe"/>
+	<property name="env.HUNNOR_ANT_POCKETBOOK_COMPILER_DOWNLOAD" value="http://support.pocketbook-int.com/dictionaries/u/DictionaryConverter.zip"/>
 	<property name="env.HUNNOR_ANT_SDICT_COMPILER" location="/opt/sdict/bin/sdict-tools.plx"/>
 	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
@@ -554,7 +556,25 @@
 		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
-	<!-- XDXF -->
+	<!-- XDXF, PocketBook -->
+
+	<target name="export.xdxf.pocketbook.compiler.check">
+		<available file="${env.HUNNOR_ANT_POCKETBOOK_COMPILER}" property="export.xdxf.pocketbook.compiler.available"/>
+	</target>
+
+	<target name="export.xdxf.pocketbook.compiler" depends="export.xdxf.pocketbook.compiler.check" unless="export.xdxf.pocketbook.compiler.available">
+		<!-- Prepare directory -->
+		<dirname file="${env.HUNNOR_ANT_POCKETBOOK_COMPILER}" property="pocketbook.dir"/>
+		<mkdir dir="${pocketbook.dir}"/>
+		<!-- Download compiler -->
+		<get src="${env.HUNNOR_ANT_POCKETBOOK_COMPILER_DOWNLOAD}" dest="${pocketbook.dir}" skipexisting="true"/>
+		<!-- Decompress -->
+		<unzip src="${pocketbook.dir}/DictionaryConverter.zip" dest="${pocketbook.dir}"/>
+		<delete file="${pocketbook.dir}/DictionaryConverter.zip"/>
+		<delete file="${pocketbook.dir}/Instruction.rtf"/>
+		<delete dir="${pocketbook.dir}/eng"/>
+		<delete dir="${pocketbook.dir}/rus"/>
+	</target>
 
 	<target name="export.xdxf.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/xdxf-lousy.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-XDXF-L-HN.xdxf" force="true">
@@ -570,16 +590,70 @@
 		</xslt>
 	</target>
 
-	<target name="export.xdxf.deploy.hu" depends="export.xdxf.convert.hu">
+	<target name="export.xdxf.pocketbook.compile.hu" depends="export.xdxf.convert.hu,export.xdxf.pocketbook.compiler">
+		<copy todir="${build.dir}/hun">
+			<fileset dir="formats/pocketbook/hun"/>
+		</copy>
+		<replace file="${build.dir}/HunNor-XDXF-L-HN.xdxf">
+			<replacetoken><![CDATA[<!DOCTYPE xdxf
+  SYSTEM "xdxf_lousy.dtd">]]></replacetoken>
+			<replacevalue><![CDATA[<!DOCTYPE xdxf SYSTEM "xdxf_lousy.dtd">]]></replacevalue>
+		</replace>
+		<exec dir="${build.dir}" executable="wine" resultproperty="pocketbook.compile.result.hu">
+			<arg file="${env.HUNNOR_ANT_POCKETBOOK_COMPILER}"/>
+			<arg file="${build.dir}/HunNor-XDXF-L-HN.xdxf"/>
+			<arg line="hun"/>
+		</exec>
+		<condition property="pocketbook.compile.result.hu.ok">
+			<equals arg1="${pocketbook.compile.result.hu}" arg2="0"/>
+		</condition>
+		<delete dir="${build.dir}/hun"/>
+	</target>
+
+	<target name="export.xdxf.pocketbook.compile.nb" depends="export.xdxf.convert.nb,export.xdxf.pocketbook.compiler">
+		<copy todir="${build.dir}/nor">
+			<fileset dir="formats/pocketbook/nor"/>
+		</copy>
+		<replace file="${build.dir}/HunNor-XDXF-L-NH.xdxf">
+			<replacetoken><![CDATA[<!DOCTYPE xdxf
+  SYSTEM "xdxf_lousy.dtd">]]></replacetoken>
+			<replacevalue><![CDATA[<!DOCTYPE xdxf SYSTEM "xdxf_lousy.dtd">]]></replacevalue>
+		</replace>
+		<exec dir="${build.dir}" executable="wine" resultproperty="pocketbook.compile.result.nb">
+			<arg file="${env.HUNNOR_ANT_POCKETBOOK_COMPILER}"/>
+			<arg file="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>
+			<arg line="nor"/>
+		</exec>
+		<condition property="pocketbook.compile.result.nb.ok">
+			<equals arg1="${pocketbook.compile.result.nb}" arg2="0"/>
+		</condition>
+		<delete dir="${build.dir}/nor"/>
+	</target>
+
+	<target name="export.xdxf.pocketbook.deploy.bin.hu" depends="export.xdxf.pocketbook.compile.hu" if="${pocketbook.compile.result.hu.ok}">
+		<move file="${build.dir}/HunNor-XDXF-L-HN.dic" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+	</target>
+
+	<target name="export.xdxf.pocketbook.deploy.bin.nb" depends="export.xdxf.pocketbook.compile.nb" if="${pocketbook.compile.result.nb.ok}">
+		<move file="${build.dir}/HunNor-XDXF-L-NH.dic" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+	</target>
+
+	<target name="export.xdxf.deploy.src.hu" depends="export.xdxf.pocketbook.compile.hu">
 		<gzip src="${build.dir}/HunNor-XDXF-L-HN.xdxf" destfile="${build.dir}/HunNor-XDXF-L-HN.xdxf.gz"/>
 		<delete file="${build.dir}/HunNor-XDXF-L-HN.xdxf"/>
 		<move file="${build.dir}/HunNor-XDXF-L-HN.xdxf.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
-	<target name="export.xdxf.deploy.nb" depends="export.xdxf.convert.nb">
+	<target name="export.xdxf.deploy.src.nb" depends="export.xdxf.pocketbook.compile.nb">
 		<gzip src="${build.dir}/HunNor-XDXF-L-NH.xdxf" destfile="${build.dir}/HunNor-XDXF-L-NH.xdxf.gz"/>
 		<delete file="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>
 		<move file="${build.dir}/HunNor-XDXF-L-NH.xdxf.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+	</target>
+
+	<target name="export.xdxf.deploy.hu" depends="export.xdxf.pocketbook.deploy.bin.hu,export.xdxf.deploy.src.hu">
+	</target>
+
+	<target name="export.xdxf.deploy.nb" depends="export.xdxf.pocketbook.deploy.bin.nb,export.xdxf.deploy.src.nb">
 	</target>
 
 	<target name="export.xdxf.hu" depends="export.xdxf.deploy.hu">
