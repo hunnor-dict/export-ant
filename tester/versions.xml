@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset comparisonMethod="maven">
+	<ignoreVersions>
+		<ignoreVersion type="regex">.*-RC[\d]+</ignoreVersion>
+	</ignoreVersions>
+</ruleset>
