@@ -13,6 +13,10 @@ COPY dependencies /opt/hunnor-dict/export-ant/dependencies
 WORKDIR /opt/hunnor-dict/export-ant/dependencies
 RUN mvn verify
 
+COPY lines /opt/hunnor-dict/export-ant/lines
+WORKDIR /opt/hunnor-dict/export-ant/lines
+RUN mvn verify
+
 
 
 
@@ -20,6 +24,8 @@ RUN mvn verify
 FROM openjdk:11-jdk
 
 COPY --from=maven /opt/hunnor-dict/export-ant/jars /opt/hunnor-dict/jars
+
+COPY --from=maven /opt/hunnor-dict/export-ant/lines/target/export-ant-lines-1.0.0.jar /opt/hunnor-dict/jars
 
 RUN cd /opt && \
     wget -q http://apache.uib.no/ant/binaries/apache-ant-1.10.7-bin.tar.gz && \

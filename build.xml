@@ -576,6 +576,10 @@
 		<delete dir="${pocketbook.dir}/rus"/>
 	</target>
 
+	<target name="export.xdxf.pocketbook.segment.task">
+		<taskdef name="segmentsize" classname="net.hunnor.dict.ant.SegmentSize"/>
+	</target>
+
 	<target name="export.xdxf.convert.hu" depends="export.simple-html.hu">
 		<xslt style="formats/xdxf-lousy.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-XDXF-L-HN.xdxf" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
@@ -590,15 +594,13 @@
 		</xslt>
 	</target>
 
-	<target name="export.xdxf.pocketbook.compile.hu" depends="export.xdxf.convert.hu,export.xdxf.pocketbook.compiler">
+	<target name="export.xdxf.pocketbook.compile.hu" depends="export.xdxf.pocketbook.segment.task,export.xdxf.convert.hu,export.xdxf.pocketbook.compiler">
 		<copy todir="${build.dir}/hun">
 			<fileset dir="formats/pocketbook/hun"/>
 		</copy>
-		<replace file="${build.dir}/HunNor-XDXF-L-HN.xdxf">
-			<replacetoken><![CDATA[<!DOCTYPE xdxf
-  SYSTEM "xdxf_lousy.dtd">]]></replacetoken>
-			<replacevalue><![CDATA[<!DOCTYPE xdxf SYSTEM "xdxf_lousy.dtd">]]></replacevalue>
-		</replace>
+		<segmentsize file="${build.dir}/HunNor-XDXF-L-HN.xdxf" tofile="${build.dir}/HunNor-XDXF-L-HN-Out.xdxf" size="4095"/>
+		<delete file="${build.dir}/HunNor-XDXF-L-HN.xdxf"/>
+		<move file="${build.dir}/HunNor-XDXF-L-HN-Out.xdxf" tofile="${build.dir}/HunNor-XDXF-L-HN.xdxf"/>
 		<exec dir="${build.dir}" executable="wine" resultproperty="pocketbook.compile.result.hu">
 			<arg file="${env.HUNNOR_ANT_POCKETBOOK_COMPILER}"/>
 			<arg file="${build.dir}/HunNor-XDXF-L-HN.xdxf"/>
@@ -610,15 +612,13 @@
 		<delete dir="${build.dir}/hun"/>
 	</target>
 
-	<target name="export.xdxf.pocketbook.compile.nb" depends="export.xdxf.convert.nb,export.xdxf.pocketbook.compiler">
+	<target name="export.xdxf.pocketbook.compile.nb" depends="export.xdxf.pocketbook.segment.task,export.xdxf.convert.nb,export.xdxf.pocketbook.compiler">
 		<copy todir="${build.dir}/nor">
 			<fileset dir="formats/pocketbook/nor"/>
 		</copy>
-		<replace file="${build.dir}/HunNor-XDXF-L-NH.xdxf">
-			<replacetoken><![CDATA[<!DOCTYPE xdxf
-  SYSTEM "xdxf_lousy.dtd">]]></replacetoken>
-			<replacevalue><![CDATA[<!DOCTYPE xdxf SYSTEM "xdxf_lousy.dtd">]]></replacevalue>
-		</replace>
+		<segmentsize file="${build.dir}/HunNor-XDXF-L-NH.xdxf" tofile="${build.dir}/HunNor-XDXF-L-NH-Out.xdxf" size="4095"/>
+		<delete file="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>
+		<move file="${build.dir}/HunNor-XDXF-L-NH-Out.xdxf" tofile="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>
 		<exec dir="${build.dir}" executable="wine" resultproperty="pocketbook.compile.result.nb">
 			<arg file="${env.HUNNOR_ANT_POCKETBOOK_COMPILER}"/>
 			<arg file="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>

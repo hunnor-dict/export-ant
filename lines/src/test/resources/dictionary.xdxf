@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xdxf SYSTEM "xdxf_lousy.dtd">
+<xdxf>
+   <full_name>HunNor HN</full_name>
+   <description>HunNor közösségi szótár HN</description>
+   <ar>
+      <def>12 <b>bold</b> text</def>
+   </ar>
+   <ar>
+      <def>123 <b>bold</b> text</def>
+   </ar>
+   <ar>
+      <def>1234 <b>bold</b> text</def>
+   </ar>
+   <ar>
+      <def>12345 <b>bold</b> text</def>
+   </ar>
+   <ar>
+      <def>blåbærsyltetøy <b>er</b> best med <b>mye</b> brunost</def>
+   </ar>
+</xdxf>
