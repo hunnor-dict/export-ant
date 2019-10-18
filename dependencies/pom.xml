@@ -17,10 +17,21 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
 		<maven.enforcer.plugin.version>3.0.0-M2</maven.enforcer.plugin.version>
+		<pdfbox.version>2.0.17</pdfbox.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<saxon.version>9.9.1-5</saxon.version>
 		<sqlite.version>3.28.0</sqlite.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.pdfbox</groupId>
+				<artifactId>fontbox</artifactId>
+				<version>${pdfbox.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
