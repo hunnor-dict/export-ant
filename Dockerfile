@@ -1,6 +1,6 @@
 # Run XSpec tests with Maven
 
-FROM maven:3.6-jdk-11 as maven
+FROM maven:3.6-jdk-13 as maven
 
 COPY tester /opt/hunnor-dict/export-ant/tester
 COPY formats /opt/hunnor-dict/export-ant/formats
@@ -21,7 +21,7 @@ RUN mvn verify
 
 
 
-FROM openjdk:11-jdk
+FROM openjdk:13-jdk-buster
 
 COPY --from=maven /opt/hunnor-dict/export-ant/jars /opt/hunnor-dict/jars
 
@@ -34,7 +34,14 @@ RUN cd /opt && \
 
 ENV PATH /opt/apache-ant-1.10.7/bin:${PATH}
 
-RUN apt-get update && apt-get install --assume-yes --allow-unauthenticated stardict-tools && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    wget http://ftp.no.debian.org/debian/pool/main/m/mariadb-10.1/libmariadbclient18_10.1.41-0+deb9u1_amd64.deb && \
+    apt-get install --assume-yes ./libmariadbclient18_10.1.41-0+deb9u1_amd64.deb && \
+    wget http://ftp.no.debian.org/debian/pool/main/s/stardict-tools/stardict-tools_3.0.2-6_amd64.deb && \
+    apt-get install --assume-yes ./stardict-tools_3.0.2-6_amd64.deb && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 RUN mkdir -p /opt/sdict && \
     cd /opt/sdict && \
     wget -q http://swaj.net/sdict/ptksdict-1.2.4.tar.gz && \
