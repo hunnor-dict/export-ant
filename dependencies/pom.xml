@@ -12,7 +12,7 @@
 	<description>Dependencis for Ant tasks</description>
 
 	<properties>
-		<fop.version>2.3</fop.version>
+		<fop.version>2.4</fop.version>
 		<maven.compiler.source>13</maven.compiler.source>
 		<maven.compiler.target>13</maven.compiler.target>
 		<maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
