@@ -61,6 +61,28 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>${maven.dependency.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<excludeArtifactIds>junit-jupiter-api,junit-jupiter-engine,junit-platform-commons,junit-platform-engine,apiguardian-api,opentest4j</excludeArtifactIds>
+							<excludeScope>provided</excludeScope>
+							<outputDirectory>${project.basedir}/../jars</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<version>${maven.enforcer.plugin.version}</version>
 				<executions>
@@ -142,28 +164,6 @@
 						</goals>
 						<configuration>
 							<dataFile>${project.build.directory}/jacoco.exec</dataFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>${maven.dependency.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<excludeArtifactIds>junit-jupiter-api,junit-jupiter-engine,junit-platform-commons,junit-platform-engine,apiguardian-api,opentest4j</excludeArtifactIds>
-							<excludeScope>provided</excludeScope>
-							<outputDirectory>${project.basedir}/../jars</outputDirectory>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>false</overWriteSnapshots>
-							<overWriteIfNewer>true</overWriteIfNewer>
 						</configuration>
 					</execution>
 				</executions>
