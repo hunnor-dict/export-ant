@@ -14,10 +14,18 @@
 	<properties>
 		<ant.version>1.10.7</ant.version>
 		<fop.version>2.4</fop.version>
+		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
+		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<maven.compiler.source>13</maven.compiler.source>
 		<maven.compiler.target>13</maven.compiler.target>
 		<maven.dependency.plugin.version>3.1.1</maven.dependency.plugin.version>
+		<maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
 		<maven.enforcer.plugin.version>3.0.0-M2</maven.enforcer.plugin.version>
+		<maven.install.plugin.version>3.0.0-M1</maven.install.plugin.version>
+		<maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>
+		<maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
+		<maven.site.plugin.version>3.8.2</maven.site.plugin.version>
+		<maven.surefire.plugin.version>3.0.0-M3</maven.surefire.plugin.version>
 		<pdfbox.version>2.0.18</pdfbox.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<saxon.version>9.9.1-6</saxon.version>
@@ -59,6 +67,50 @@
 	</dependencies>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>${maven.clean.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven.compiler.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>${maven.deploy.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>${maven.install.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>${maven.jar.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>${maven.resources.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>${maven.site.plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven.surefire.plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
