@@ -209,7 +209,7 @@
 					<forms>
 						<form>orth</form>
 					</forms>
-					<forms-html><span class="form"><span class="orth">orth</span> <span class="pos">pos</span> -suff</span></forms-html>
+					<forms-html><span class="form"><span class="orth">orth</span> <span class="pos">pos</span> <span class="suff">-suff</span></span></forms-html>
 				</entry>
 			</x:expect>
 		</x:scenario>
@@ -243,7 +243,7 @@
 					</inflections>
 					<forms-html>
 						<span class="form">
-							<span class="orth">orth</span> <span class="pos">pos</span> -suff <span class="infl">(form0-0, form0-1, form0-2)</span>
+							<span class="orth">orth</span> <span class="pos">pos</span> <span class="suff">-suff</span> <span class="infl">(form0-0, form0-1, form0-2)</span>
 						</span>
 					</forms-html>
 				</entry>
@@ -286,7 +286,7 @@
 					</inflections>
 					<forms-html>
 						<span class="form">
-							<span class="orth">orth</span> <span class="pos">pos</span> -suff <span class="infl">(form0-0, formX, form0-2; form1-0, formX, form1-2)</span>
+							<span class="orth">orth</span> <span class="pos">pos</span> <span class="suff">-suff</span> <span class="infl">(form0-0, formX, form0-2; form1-0, formX, form1-2)</span>
 						</span>
 					</forms-html>
 				</entry>

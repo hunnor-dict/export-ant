@@ -101,11 +101,11 @@ INSERT INTO entries (lang, id, content) VALUES('dir', 1, ' ');
 		<x:scenario label="When the content has root forms and inflected forms">
 			<x:context>
 				<entry id="1">
-					<forms-html><span class="form"><span class="orth">orth</span> <span class="pos">pos</span> -suff <span class="infl">(infl1, infl2)</span></span></forms-html>
+					<forms-html><span class="form"><span class="orth">orth</span> <span class="pos">pos</span> <span class="suff">-suff</span> <span class="infl">(infl1, infl2)</span></span></forms-html>
 				</entry>
 			</x:context>
-			<!-- TODO Missing space between orth and pos -->
-			<x:expect label="Then forms and inflections are separated to base and inflections elements">INSERT INTO entries (lang, id, content) VALUES('dir', 1, '&lt;base&gt;&lt;b&gt;orth&lt;/b&gt;&lt;i&gt;pos&lt;/i&gt; -suff &lt;/base&gt;&lt;inflections&gt;(infl1, infl2)&lt;/inflections&gt; ');
+			<!-- TODO Space between orth, pos and inflection suffix is present in the output, but not recognized by XSpec -->
+			<x:expect label="Then forms and inflections are separated to base and inflections elements">INSERT INTO entries (lang, id, content) VALUES('dir', 1, '&lt;base&gt;&lt;b&gt;orth&lt;/b&gt;&lt;i&gt;pos&lt;/i&gt;&lt;span&gt;-suff&lt;/span&gt;&lt;/base&gt;&lt;inflections&gt;(infl1, infl2)&lt;/inflections&gt; ');
 
 </x:expect>
 		</x:scenario>

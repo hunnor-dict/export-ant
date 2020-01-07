@@ -99,7 +99,9 @@
 	<xsl:template match="dict:inflCode">
 		<xsl:if test="@type = 'suff'">
 			<xsl:text> </xsl:text>
-			<xsl:apply-templates/>
+			<span class="suff">
+				<xsl:apply-templates/>
+			</span>
 		</xsl:if>
 	</xsl:template>
 

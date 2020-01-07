@@ -193,6 +193,15 @@
 					<xsl:apply-templates/>
 				</xsl:if>
 			</xsl:when>
+			<xsl:when test="@class = 'suff'">
+				<xsl:text>&lt;</xsl:text>
+				<xsl:text>span</xsl:text>
+				<xsl:text>&gt;</xsl:text>
+				<xsl:apply-templates/>
+				<xsl:text>&lt;</xsl:text>
+				<xsl:text>/span</xsl:text>
+				<xsl:text>&gt;</xsl:text>
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:apply-templates/>
 			</xsl:otherwise>
