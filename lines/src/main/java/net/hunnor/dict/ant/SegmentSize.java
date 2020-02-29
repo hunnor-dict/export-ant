@@ -2,12 +2,10 @@ package net.hunnor.dict.ant;
 
 import java.io.File;
 import java.io.IOException;
-
 import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.xml.sax.SAXException;

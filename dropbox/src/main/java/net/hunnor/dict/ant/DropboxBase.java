@@ -2,7 +2,6 @@ package net.hunnor.dict.ant;
 
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.v2.DbxClientV2;
-
 import org.apache.tools.ant.Task;
 
 public class DropboxBase extends Task {

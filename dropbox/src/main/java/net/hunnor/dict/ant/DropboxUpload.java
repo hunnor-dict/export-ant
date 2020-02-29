@@ -3,11 +3,9 @@ package net.hunnor.dict.ant;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.WriteMode;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.apache.tools.ant.BuildException;
 
 public class DropboxUpload extends DropboxBase {
