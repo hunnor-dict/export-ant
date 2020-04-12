@@ -48,6 +48,12 @@
 		<dbxup file="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}/HunNor-Apple-NH.tar.gz" tofile="/Public/Exports/HunNor-Apple-NH.tar.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
 	</target>
 
+	<!-- All source formats -->
+
+	<target name="sources.hu" depends="export.simple-html.hu,export.apple.convert.hu,export.babylon.convert.hu,export.kindle.convert.nb,export.pdf.convert.hu,export.sdict.convert.hu,export.stardict.convert.hu,export.stardict.nosym.num.convert.hu,export.xdxf.convert.hu,export.sqlite.convert"/>
+
+	<target name="sources.nb" depends="export.simple-html.nb,export.apple.convert.nb,export.babylon.convert.nb,export.kindle.convert.nb,export.pdf.convert.nb,export.sdict.convert.nb,export.stardict.convert.nb,export.stardict.nosym.num.convert.nb,export.xdxf.convert.nb,export.sqlite.convert"/>
+
 	<!-- Simple HTML: An intermediate XML format which is the basis of further transformation to various offline formats. -->
 
 	<target name="export.simple-html.hu">
