@@ -1,0 +1,29 @@
+<!ELEMENT dictionary (letter*)>
+<!ATTLIST dictionary
+    updated CDATA #REQUIRED>
+
+<!ELEMENT letter (entry*)>
+<!ATTLIST letter
+    label CDATA #REQUIRED>
+
+<!ELEMENT entry (forms*, inflections*, forms-html?, translations-html?)>
+<!ATTLIST entry
+    id CDATA #REQUIRED>
+
+<!ELEMENT forms (form*)>
+
+<!ELEMENT form (#PCDATA)>
+<!ATTLIST form
+    n CDATA #IMPLIED>
+
+<!ELEMENT inflections (inflection*)>
+
+<!ELEMENT inflection (#PCDATA)>
+
+<!ELEMENT forms-html (#PCDATA | span)*>
+
+<!ELEMENT translations-html (#PCDATA | span)*>
+
+<!ELEMENT span (#PCDATA | span)*>
+<!ATTLIST span
+    class CDATA #IMPLIED>
