@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/hunnor-dict/export-ant.svg?branch=master)](https://travis-ci.org/hunnor-dict/export-ant)
+![Build](https://github.com/hunnor-dict/export-ant/workflows/Build/badge.svg)
 
 Scripts and stylesheets for converting the XML dump files to various XML-based dictionary formats.
 
@@ -23,16 +23,16 @@ Download XML dump files from Dropbox:
 
 Some conversions require tools that are not included in the Docker image:
 
-| Target                   | Tool                            | Installation                                                                                |
-|--------------------------|---------------------------------|---------------------------------------------------------------------------------------------|
-| export.android.generate  | export-lucene-indexer-1.0.0.jar | Package the [`export-lucene`](https://github.com/hunnor-dict/export-lucene) repo with Maven |
-| export.kindle.compile.nb | kindlegen                       | Downloaded automatically by `ant`                                                           |
-| export.sqlite.generate   | sqlite-jdbc-3.23.1.jar          | Downloaded automatically by `ant`                                                           |
+| Target                            | Tool                            | Installation                                                                                |
+|-----------------------------------|---------------------------------|---------------------------------------------------------------------------------------------|
+| export.android.generate           | export-lucene-indexer-1.0.0.jar | Package the [`export-lucene`](https://github.com/hunnor-dict/export-lucene) repo with Maven |
+| export.kindle.compile.nb          | kindlegen                       | Downloaded automatically by `ant`                                                           |
+| export.xdxf.pocketbook.compile.hu | converter.exe                   | Downloaded automatically by `ant`                                                           |
+| export.xdxf.pocketbook.compile.nb | converter.exe                   | Downloaded automatically by `ant`                                                           |
 
 Start the Docker container:
 
 `docker run\
-  --env HUNNOR_ANT_SQLITE_JDBC_JAR=/tools/sqlite-jdbc-3.23.1.jar\
   --name export-ant\
   --volume $HOME/hunnor/data:/data\
   --volume $HOME/hunnor/deploy:/deploy\
