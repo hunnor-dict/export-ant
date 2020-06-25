@@ -13,6 +13,7 @@
 
 	<properties>
 		<ant.version>1.10.8</ant.version>
+		<dbunit.version>2.7.0</dbunit.version>
 		<fop.version>2.5</fop.version>
 		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
@@ -52,6 +53,11 @@
 			<groupId>org.apache.xmlgraphics</groupId>
 			<artifactId>fop</artifactId>
 			<version>${fop.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>${dbunit.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.xerial</groupId>

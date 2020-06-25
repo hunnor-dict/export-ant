@@ -720,7 +720,27 @@
 		<checksum file="${build.dir}/HunNor-SQLite.sqlite3" algorithm="MD5" fileext=".md5"/>
 	</target>
 
-	<target name="export.sqlite.deploy" depends="export.sqlite.generate">
+	<target name="export.sqlite.test" depends="export.sqlite.generate">
+		<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
+		<!-- Generate expectations file -->
+		<dbunit driver="org.sqlite.JDBC" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor">
+			<compare format="flat" src="formats/sqlite/expectations.xml">
+				<query name="ENTRIES" sql="SELECT
+					CASE WHEN COUNT(CASE WHEN lang='hu' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS N_HU,
+					CASE WHEN COUNT(CASE WHEN lang='nb' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS N_NB
+					FROM entries"/>
+				<query name="ROOTS" sql="SELECT
+					CASE WHEN COUNT(CASE WHEN lang='hu' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS N_HU,
+					CASE WHEN COUNT(CASE WHEN lang='nb' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS N_NB
+					FROM roots"/>
+				<query name="INFLECTIONS" sql="SELECT
+					CASE WHEN COUNT(CASE WHEN lang='nb' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS N_NB
+					FROM inflections"/>
+			</compare>
+		</dbunit>
+	</target>
+
+	<target name="export.sqlite.deploy" depends="export.sqlite.test">
 		<mkdir dir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 		<move file="${build.dir}/HunNor-SQLite.sqlite3" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 		<move file="${build.dir}/HunNor-SQLite.sqlite3.md5" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
