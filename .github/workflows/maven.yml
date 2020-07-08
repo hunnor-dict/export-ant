@@ -12,8 +12,6 @@ jobs:
         with:
           java-version: '13'
       - run: mvn clean verify
-        working-directory: dropbox
-      - run: mvn clean verify
         working-directory: lines
       - run: mvn clean verify
         working-directory: tester
