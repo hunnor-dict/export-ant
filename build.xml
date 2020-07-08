@@ -28,24 +28,15 @@
 		<mkdir dir="${build.dir}"/>
 	</target>
 
-	<!-- Integration with Dropbox -->
-
-	<target name="dropbox.download.dump">
-		<taskdef name="dbxdl" classname="net.hunnor.dict.ant.DropboxDownload"/>
-		<dbxdl file="/Public/Databases/HunNor-XML-HN.xml.gz" tofile="${env.HUNNOR_ANT_DUMP_HU}.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
-		<dbxdl file="/Public/Databases/HunNor-XML-NH.xml.gz" tofile="${env.HUNNOR_ANT_DUMP_NB}.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
+	<target name="dump.download">
+		<get src="https://dict.hunnor.net/databases/HunNor-XML-HN.xml.gz" dest="${env.HUNNOR_ANT_DUMP_HU}.gz" skipexisting="true"/>
+		<get src="https://dict.hunnor.net/databases/HunNor-XML-NH.xml.gz" dest="${env.HUNNOR_ANT_DUMP_NB}.gz" skipexisting="true"/>
 		<delete file="${env.HUNNOR_ANT_DUMP_HU}"/>
 		<delete file="${env.HUNNOR_ANT_DUMP_NB}"/>
 		<gunzip dest="${env.HUNNOR_ANT_DUMP_HU}" src="${env.HUNNOR_ANT_DUMP_HU}.gz"/>
 		<gunzip dest="${env.HUNNOR_ANT_DUMP_NB}" src="${env.HUNNOR_ANT_DUMP_NB}.gz"/>
 		<delete file="${env.HUNNOR_ANT_DUMP_HU}.gz"/>
 		<delete file="${env.HUNNOR_ANT_DUMP_NB}.gz"/>
-	</target>
-
-	<target name="dropbox.upload.apple" depends="export.apple.hu,export.apple.nb">
-		<taskdef name="dbxup" classname="net.hunnor.dict.ant.DropboxUpload"/>
-		<dbxup file="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}/HunNor-Apple-HN.tar.gz" tofile="/Public/Exports/HunNor-Apple-HN.tar.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
-		<dbxup file="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}/HunNor-Apple-NH.tar.gz" tofile="/Public/Exports/HunNor-Apple-NH.tar.gz" token="${env.HUNNOR_ANT_DROPBOX_TOKEN}"/>
 	</target>
 
 	<!-- All source formats -->
@@ -172,6 +163,11 @@
 	</target>
 
 	<target name="export.apple.nb" depends="export.apple.deploy.nb">
+	</target>
+
+	<target name="export.apple.scp" depends="export.apple.hu,export.apple.nb">
+		<scp file="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}/HunNor-Apple-HN.tar.gz" keyfile="${user.home}/.ssh/id_rsa" todir="hunnor@dict-linode.hunnor.net:Dropbox/Public/Exports" trust="true"/>
+		<scp file="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}/HunNor-Apple-NH.tar.gz" keyfile="${user.home}/.ssh/id_rsa" todir="hunnor@dict-linode.hunnor.net:Dropbox/Public/Exports" trust="true"/>
 	</target>
 
 	<!-- Babylon: A text file format with a proprietary syntax, for use with the Glossary Builder of the Babylon dictionary. -->
