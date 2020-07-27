@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <ENTRIES
-        N_HU="OK" N_NB="OK"/>
-    <ROOTS
-        N_HU="OK" N_NB="OK"/>
-    <INFLECTIONS
-        N_NB="OK"/>
+    <CONTENT
+        COUNT_HU="OK" COUNT_NB="OK"/>
+    <FORMS
+        COUNT_HU="OK" COUNT_NB="OK"/>
 </dataset>

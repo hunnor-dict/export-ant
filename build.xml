@@ -664,13 +664,7 @@
 	<target name="export.xdxf.nb" depends="export.xdxf.deploy.nb">
 	</target>
 
-	<!-- Top-level export targets -->
-
-	<target name="export.hu" depends="export.apple.hu,export.babylon.hu,export.kindle.hu,export.pdf.hu,export.sdict.hu,export.stardict.hu,export.xdxf.hu">
-	</target>
-
-	<target name="export.nb" depends="export.apple.nb,export.babylon.nb,export.kindle.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb,export.xdxf.nb">
-	</target>
+	<!-- Android/Lucene -->
 
 	<target name="export.android.generate">
 		<taskdef name="lucene" classname="net.hunnor.dict.lucene.AntTask"/>
@@ -694,57 +688,69 @@
 	<target name="export.android" depends="export.android.deploy">
 	</target>
 
-	<target name="export.sqlite.convert" depends="export.simple-html.hu,export.simple-html.nb">
-		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-SQLite-HN.sql" force="true">
+	<!-- React/SQLite -->
+
+	<target name="export.sqlite.dbunit.task">
+		<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
+	</target>
+
+	<target name="export.sqlite.convert">
+		<xslt style="formats/sqlite.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${build.dir}/HunNor-SQLite-v2-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<param name="direction" expression="hu"/>
+			<param name="language" expression="HU"/>
 		</xslt>
-		<xslt style="formats/sqlite.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-SQLite-NH.sql" force="true">
+		<xslt style="formats/sqlite.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-SQLite-v2-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
-			<param name="direction" expression="nb"/>
+			<param name="language" expression="NB"/>
 		</xslt>
 	</target>
 
-	<target name="export.sqlite.generate" depends="export.sqlite.convert">
-		<delete file="${build.dir}/HunNor-SQLite.sqlite3"/>
-		<sql driver="org.sqlite.JDBC" encoding="UTF-8" escapeprocessing="false" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor">
-			<filelist dir="${build.dir}">
-				<file name="HunNor-SQLite-HN.sql"/>
-				<file name="HunNor-SQLite-NH.sql"/>
+	<target name="export.sqlite.generate" depends="export.sqlite.convert,export.sqlite.dbunit.task">
+		<delete file="${build.dir}/HunNor-SQLite-v2.sqlite3"/>
+		<sql driver="org.sqlite.JDBC" encoding="UTF-8" escapeprocessing="false" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite-v2.sqlite3" userid="hunnor">
+			<filelist>
+				<file name="formats/sqlite/create.sql"/>
 			</filelist>
 		</sql>
-		<checksum file="${build.dir}/HunNor-SQLite.sqlite3" algorithm="MD5" fileext=".md5"/>
+		<dbunit driver="org.sqlite.JDBC" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite-v2.sqlite3" userid="hunnor">
+			<operation type="INSERT" src="${build.dir}/HunNor-SQLite-v2-HN.xml" format="xml" transaction="true"/>
+			<operation type="INSERT" src="${build.dir}/HunNor-SQLite-v2-NH.xml" format="xml" transaction="true"/>
+		</dbunit>
+		<checksum file="${build.dir}/HunNor-SQLite-v2.sqlite3" algorithm="MD5" fileext=".md5"/>
 	</target>
 
 	<target name="export.sqlite.test" depends="export.sqlite.generate">
-		<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"/>
-		<!-- Generate expectations file -->
-		<dbunit driver="org.sqlite.JDBC" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite.sqlite3" userid="hunnor">
+		<dbunit driver="org.sqlite.JDBC" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite-v2.sqlite3" userid="hunnor">
 			<compare format="flat" src="formats/sqlite/expectations.xml">
-				<query name="ENTRIES" sql="SELECT
-					CASE WHEN COUNT(CASE WHEN lang='hu' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS N_HU,
-					CASE WHEN COUNT(CASE WHEN lang='nb' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS N_NB
-					FROM entries"/>
-				<query name="ROOTS" sql="SELECT
-					CASE WHEN COUNT(CASE WHEN lang='hu' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS N_HU,
-					CASE WHEN COUNT(CASE WHEN lang='nb' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS N_NB
-					FROM roots"/>
-				<query name="INFLECTIONS" sql="SELECT
-					CASE WHEN COUNT(CASE WHEN lang='nb' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS N_NB
-					FROM inflections"/>
+				<query name="CONTENT" sql="SELECT
+					CASE WHEN COUNT(CASE WHEN language='HU' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS COUNT_HU,
+					CASE WHEN COUNT(CASE WHEN language='NB' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS COUNT_NB
+					FROM content"/>
+				<query name="FORMS" sql="SELECT
+					CASE WHEN COUNT(CASE WHEN language='HU' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS COUNT_HU,
+					CASE WHEN COUNT(CASE WHEN language='NB' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS COUNT_NB
+					FROM forms"/>
 			</compare>
 		</dbunit>
 	</target>
 
 	<target name="export.sqlite.deploy" depends="export.sqlite.test">
 		<mkdir dir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<move file="${build.dir}/HunNor-SQLite.sqlite3" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<move file="${build.dir}/HunNor-SQLite.sqlite3.md5" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<delete file="${build.dir}/HunNor-SQLite-HN.sql"/>
-		<delete file="${build.dir}/HunNor-SQLite-NH.sql"/>
+		<move file="${build.dir}/HunNor-SQLite-v2.sqlite3" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<move file="${build.dir}/HunNor-SQLite-v2.sqlite3.md5" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<delete file="${build.dir}/HunNor-SQLite-v2-HN.xml"/>
+		<delete file="${build.dir}/HunNor-SQLite-v2-NH.xml"/>
 	</target>
 
 	<target name="export.sqlite" depends="export.sqlite.deploy">
+	</target>
+
+	<!-- Top-level export targets -->
+
+	<target name="export.hu" depends="export.apple.hu,export.babylon.hu,export.kindle.hu,export.pdf.hu,export.sdict.hu,export.stardict.hu,export.xdxf.hu">
+	</target>
+
+	<target name="export.nb" depends="export.apple.nb,export.babylon.nb,export.kindle.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb,export.xdxf.nb">
 	</target>
 
 	<target name="export.all" depends="build.dir,export.hu,export.nb,export.android,export.sqlite">
