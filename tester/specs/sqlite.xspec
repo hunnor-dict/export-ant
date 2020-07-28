@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" stylesheet="../../formats/sqlite.xsl">
 
-	<x:param name="direction" select="'dir'"/>
+	<x:param name="language" select="'LANG'"/>
 
 	<x:scenario label="Normalization">
 
@@ -26,6 +26,485 @@
 			<x:expect label="Then these characters are preserved">œ</x:expect>
 		</x:scenario>
 
+	</x:scenario>
+
+	<x:scenario label="Dictionary">
+		<x:scenario label="An empty dictionary">
+			<x:context>
+				<hnDict xmlns="http://dict.hunnor.net"/>
+			</x:context>
+			<x:expect label="The table definitions are created">
+				<dataset>
+					<table name="content">
+						<column>id</column>
+						<column>language</column>
+						<column>pos</column>
+						<column>dictForms</column>
+						<column>homonyms</column>
+						<column>inflectionLabels</column>
+						<column>inflectedForms</column>
+						<column>translation</column>
+						<column>sort</column>
+					</table>
+					<table name="forms">
+						<column>id</column>
+						<column>language</column>
+						<column>form</column>
+						<column>inflected</column>
+					</table>
+				</dataset>
+			</x:expect>
+		</x:scenario>
+	</x:scenario>
+
+	<x:scenario label="Entry">
+		<x:scenario label="An entry with forms">
+			<x:context>
+				<hnDict xmlns="http://dict.hunnor.net">
+					<entryGrp head="A">
+						<entry id="1">
+							<formGrp>
+								<form>
+									<orth>førm1</orth>
+									<pos>pos1</pos>
+									<inflCode type="bob">bob1</inflCode>
+									<inflCode type="suff">-suff1</inflCode>
+									<inflPar>
+										<inflSeq form="0-0">form0-0</inflSeq>
+										<inflSeq form="0-1">form0-1</inflSeq>
+										<inflSeq form="0-2">form0-2</inflSeq>
+									</inflPar>
+									<inflPar>
+										<inflSeq form="1-0">form1-0</inflSeq>
+										<inflSeq form="1-1">form1-1</inflSeq>
+										<inflSeq form="1-2">form1-2</inflSeq>
+									</inflPar>
+								</form>
+								<form>
+									<orth>förm1</orth>
+									<inflCode type="bob">bob2</inflCode>
+									<inflCode type="suff">-suff2</inflCode>
+									<inflPar>
+										<inflSeq form="0-0">form0-0</inflSeq>
+										<inflSeq form="0-1">form0-1</inflSeq>
+										<inflSeq form="0-2">form0-2</inflSeq>
+									</inflPar>
+								</form>
+							</formGrp>
+						</entry>
+					</entryGrp>
+				</hnDict>
+			</x:context>
+			<x:expect label="The values are added to both tables">
+				<dataset>
+					<table name="content">
+						<column>id</column>
+						<column>language</column>
+						<column>pos</column>
+						<column>dictForms</column>
+						<column>homonyms</column>
+						<column>inflectionLabels</column>
+						<column>inflectedForms</column>
+						<column>translation</column>
+						<column>sort</column>
+						<row>
+							<value>1</value>
+							<value>LANG</value>
+							<value>pos1</value>
+							<value>["førm1", "förm1"]</value>
+							<null/>
+							<value>["-suff1", "-suff2"]</value>
+							<value>[[["form0-0", "form0-1", "form0-2"], ["form1-0", "form1-1", "form1-2"]], [["form0-0", "form0-1", "form0-2"]]]</value>
+							<value><![CDATA[<![CDATA[]]><![CDATA[]]]]><![CDATA[>]]></value>
+							<value>førm1</value>
+						</row>
+					</table>
+					<table name="forms">
+						<column>id</column>
+						<column>language</column>
+						<column>form</column>
+						<column>inflected</column>
+						<row>
+							<value>1</value>
+							<value>LANG</value>
+							<value>form1</value>
+							<value>0</value>
+						</row>
+						<row>
+							<value>1</value>
+							<value>LANG</value>
+							<value>form1</value>
+							<value>0</value>
+						</row>
+						<row>
+							<value>1</value>
+							<value>LANG</value>
+							<value>form0-0</value>
+							<value>1</value>
+						</row>
+						<row>
+							<value>1</value>
+							<value>LANG</value>
+							<value>form0-1</value>
+							<value>1</value>
+						</row>
+						<row>
+							<value>1</value>
+							<value>LANG</value>
+							<value>form0-2</value>
+							<value>1</value>
+						</row>
+						<row>
+							<value>1</value>
+							<value>LANG</value>
+							<value>form1-0</value>
+							<value>1</value>
+						</row>
+						<row>
+							<value>1</value>
+							<value>LANG</value>
+							<value>form1-1</value>
+							<value>1</value>
+						</row>
+						<row>
+							<value>1</value>
+							<value>LANG</value>
+							<value>form1-2</value>
+							<value>1</value>
+						</row>
+					</table>
+				</dataset>
+			</x:expect>
+		</x:scenario>
+	</x:scenario>
+
+	<x:scenario label="Sense groups">
+		<x:scenario label="A single empty senseGrp tag">
+			<x:context>
+				<senseGrp xmlns="http://dict.hunnor.net"></senseGrp>
+			</x:context>
+			<x:expect label="The result is an empty div. A single senseGrp doesn't need a sequence number.">
+				<div></div>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="A sequence of empty senseGrp tags">
+			<x:context>
+				<senseGrp xmlns="http://dict.hunnor.net"></senseGrp>
+				<senseGrp xmlns="http://dict.hunnor.net"></senseGrp>
+			</x:context>
+			<x:expect label="The result is a sequence of divs with the sequence number in Roman numerals in bold. The divs are separated by a single space. The numbers are followed by a single space.">
+				<div class="senseGrp numbered">
+					<b>I</b>
+					<x:text> </x:text>
+				</div>
+				<div class="senseGrp numbered">
+					<x:text> </x:text>
+					<b>II</b>
+					<x:text> </x:text>
+				</div>
+			</x:expect>
+		</x:scenario>
+	</x:scenario>
+
+	<x:scenario label="Senses">
+		<x:scenario label="A single empty sense">
+			<x:context>
+				<senseGrp xmlns="http://dict.hunnor.net">
+					<sense></sense>
+				</senseGrp>
+			</x:context>
+			<x:expect label="The result is an empty div for both senseGrp and sense. A single sense doesn't need a sequence number.">
+				<div>
+					<div></div>
+				</div>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="A sequence of empty sense tags">
+			<x:context>
+				<senseGrp xmlns="http://dict.hunnor.net">
+					<sense></sense>
+					<sense></sense>
+				</senseGrp>
+			</x:context>
+			<x:expect label="The result is a sequence of divs with the sequence number in bold. The divs are separated by a single space. The numbers are followed by a single space.">
+				<div>
+					<div class="sense numbered">
+						<b>1</b>
+						<x:text> </x:text>
+					</div>
+					<div class="sense numbered">
+						<span>
+							<x:text> </x:text>
+						</span>
+						<b>2</b>
+						<x:text> </x:text>
+					</div>
+				</div>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="Several senseGrp and sense tags">
+			<x:context>
+				<senseGrp xmlns="http://dict.hunnor.net">
+					<sense></sense>
+					<sense></sense>
+				</senseGrp>
+				<senseGrp xmlns="http://dict.hunnor.net">
+					<sense></sense>
+					<sense></sense>
+				</senseGrp>
+			</x:context>
+			<x:expect label="Sequence numbers are separated from each other correctly.">
+				<div class="senseGrp numbered">
+					<b>I</b>
+					<x:text> </x:text>
+					<div class="sense numbered">
+						<b>1</b>
+						<x:text> </x:text>
+					</div>
+					<div class="sense numbered">
+						<span>
+							<x:text> </x:text>
+						</span>
+						<b>2</b>
+						<x:text> </x:text>
+					</div>
+				</div>
+				<div class="senseGrp numbered">
+					<x:text> </x:text>
+					<b>II</b>
+					<x:text> </x:text>
+					<div class="sense numbered">
+						<b>1</b>
+						<x:text> </x:text>
+					</div>
+					<div class="sense numbered">
+						<span>
+							<x:text> </x:text>
+						</span>
+						<b>2</b>
+						<x:text> </x:text>
+					</div>
+				</div>
+			</x:expect>
+		</x:scenario>
+	</x:scenario>
+
+	<x:scenario label="Labels">
+		<x:scenario label="Label before a single sense with a single translation">
+			<x:context>
+				<senseGrp xmlns="http://dict.hunnor.net">
+					<lbl>lbl</lbl>
+					<sense>
+						<trans>trans</trans>
+					</sense>
+				</senseGrp>
+			</x:context>
+			<x:expect label="The label is displayed before the translation.">
+				<div>
+					<i>lbl</i>
+					<x:text> </x:text>
+					<div>trans</div>
+				</div>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="Label before a sequence of senses">
+			<x:context>
+				<senseGrp xmlns="http://dict.hunnor.net">
+					<lbl>lbl</lbl>
+					<sense>
+						<trans>trans1</trans>
+					</sense>
+					<sense>
+						<trans>trans2</trans>
+					</sense>
+				</senseGrp>
+			</x:context>
+			<x:expect label="The label is displayed before the sequence number.">
+				<div>
+					<i>lbl</i>
+					<x:text> </x:text>
+					<div class="sense numbered">
+						<b>1</b>
+						<x:text> trans1</x:text>
+					</div>
+					<div class="sense numbered">
+						<span>
+							<x:text> </x:text>
+						</span>
+						<b>2</b>
+						<x:text> trans2</x:text>
+					</div>
+				</div>
+			</x:expect>
+		</x:scenario>
+	</x:scenario>
+
+	<x:scenario label="Glue string between lbl and lbl">
+		<x:context>
+			<senseGrp xmlns="http://dict.hunnor.net">
+				<sense>
+					<lbl>lbl1</lbl>
+					<lbl>lbl2</lbl>
+				</sense>
+			</senseGrp>
+		</x:context>
+		<x:expect label="The glue string is a comma and a single space.">
+			<div>
+				<div>
+					<i>lbl1</i>
+					<span class="lbl">, </span>
+					<i>lbl2</i>
+				</div>
+			</div>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between trans and lbl">
+		<x:context>
+			<senseGrp xmlns="http://dict.hunnor.net">
+				<sense>
+					<trans>trans</trans>
+					<lbl>lbl</lbl>
+				</sense>
+			</senseGrp>
+		</x:context>
+		<x:expect label="The glue string is a single space.">
+			<div>
+				<div>
+					<x:text>trans </x:text>
+					<i>lbl</i>
+				</div>
+			</div>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between lbl and trans">
+		<x:context>
+			<senseGrp xmlns="http://dict.hunnor.net">
+				<sense>
+					<lbl>lbl</lbl>
+					<trans>trans</trans>
+				</sense>
+			</senseGrp>
+		</x:context>
+		<x:expect label="The glue string is a single space.">
+			<div>
+				<div>
+					<i>lbl</i>
+					<x:text> trans</x:text>
+				</div>
+			</div>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between trans and trans">
+		<x:context>
+			<senseGrp xmlns="http://dict.hunnor.net">
+				<sense>
+					<trans>trans1</trans>
+					<trans>trans2</trans>
+				</sense>
+			</senseGrp>
+		</x:context>
+		<x:expect label="The glue string is a comma and a single space.">
+			<div>
+				<div>trans1, trans2</div>
+			</div>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between lbl and eg">
+		<x:context>
+			<senseGrp xmlns="http://dict.hunnor.net">
+				<sense>
+					<lbl>lbl</lbl>
+					<eg></eg>
+				</sense>
+			</senseGrp>
+		</x:context>
+		<x:expect label="The glue string is a single space.">
+			<div>
+				<div>
+					<i>lbl</i>
+					<x:text> </x:text>
+				</div>
+			</div>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between trans and eg">
+		<x:context>
+			<senseGrp xmlns="http://dict.hunnor.net">
+				<sense>
+					<trans>trans</trans>
+					<eg></eg>
+				</sense>
+			</senseGrp>
+		</x:context>
+		<x:expect label="The glue string is semicolon and a single space.">
+			<div>
+				<div>trans; </div>
+			</div>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between eg and eg">
+		<x:context>
+			<senseGrp xmlns="http://dict.hunnor.net">
+				<sense>
+					<eg></eg>
+					<eg></eg>
+				</sense>
+			</senseGrp>
+		</x:context>
+		<x:expect label="The glue string is semicolon and a single space.">
+			<div>
+				<div>; </div>
+			</div>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between q and q">
+		<x:context>
+			<senseGrp xmlns="http://dict.hunnor.net">
+				<sense>
+					<eg>
+						<q>q1</q>
+						<q>q2</q>
+					</eg>
+				</sense>
+			</senseGrp>
+		</x:context>
+		<x:expect label="The glue string is a comma and a single space.">
+			<div>
+				<div>
+					<b>q1</b>
+					<span class="q">, </span>
+					<b>q2</b>
+				</div>
+			</div>
+		</x:expect>
+	</x:scenario>
+
+	<x:scenario label="Glue string between q and trans">
+		<x:context>
+			<senseGrp xmlns="http://dict.hunnor.net">
+				<sense>
+					<eg>
+						<q>q</q>
+						<trans>trans</trans>
+					</eg>
+				</sense>
+			</senseGrp>
+		</x:context>
+		<x:expect label="The glue string is a single space.">
+			<div>
+				<div>
+					<b>q</b>
+					<x:text> trans</x:text>
+				</div>
+			</div>
+		</x:expect>
 	</x:scenario>
 
 </x:description>
