@@ -157,7 +157,9 @@
 			</value>
 			<!-- sort -->
 			<value>
-				<xsl:value-of select="dict:formGrp/dict:form[1]/dict:orth"/>
+				<xsl:call-template name="sortkey">
+					<xsl:with-param name="value" select="dict:formGrp/dict:form[1]/dict:orth"/>
+				</xsl:call-template>
 				<xsl:value-of select="dict:formGrp/dict:form[1]/dict:orth/@n"/>
 			</value>
 		</row>
@@ -332,6 +334,12 @@
 		<xsl:variable name="phase4" select="replace($phase3, 'Ø', 'O')"/>
 		<xsl:variable name="phase5" select="replace(normalize-unicode($phase4, 'NFKD'), '\p{IsCombiningDiacriticalMarks}', '')"/>
 		<xsl:value-of select="lower-case($phase5)"/>
+	</xsl:template>
+
+	<xsl:template name="sortkey">
+		<xsl:param name="value"/>
+		<xsl:variable name="phase1" select="replace($value, ' ', '')"/>
+		<xsl:value-of select="lower-case($phase1)"/>
 	</xsl:template>
 
 	<xsl:template match="*"/>

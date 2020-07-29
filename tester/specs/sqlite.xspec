@@ -28,6 +28,23 @@
 
 	</x:scenario>
 
+	<x:scenario label="SortKey">
+
+		<x:scenario label="When the input contains Hungarian or Norwegian characters">
+			<x:call template="sortkey">
+				<x:param name="value">árvíztűrő tükörfúrógép blåbærsyltetøy</x:param>
+			</x:call>
+			<x:expect label="Then these characters are preserved">árvíztűrőtükörfúrógépblåbærsyltetøy</x:expect>
+		</x:scenario>
+
+		<x:scenario label="When the input contains uppercase characters or spaces">
+			<x:call template="sortkey">
+				<x:param name="value">ÁRVÍZTŰRŐ TÜKÖRFÚRÓGÉP BLÅBÆRSYLTETØY</x:param>
+			</x:call>
+			<x:expect label="Then the output is lowercase, with spaces removed">árvíztűrőtükörfúrógépblåbærsyltetøy</x:expect>
+		</x:scenario>
+	</x:scenario>
+
 	<x:scenario label="Dictionary">
 		<x:scenario label="An empty dictionary">
 			<x:context>
