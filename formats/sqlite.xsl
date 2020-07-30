@@ -235,12 +235,7 @@
 	<xsl:template match="dict:sense">
 		<div>
 			<xsl:if test="count(../dict:sense) > 1">
-				<xsl:attribute name="class" select="'sense numbered'"/>
-				<xsl:if test="preceding-sibling::dict:sense">
-					<span>
-						<xsl:text> </xsl:text>
-					</span>
-				</xsl:if>
+				<xsl:attribute name="class" select="'numbered'"/>
 				<b>
 					<xsl:number value="count(preceding-sibling::dict:sense) + 1"/>
 				</b>
@@ -255,7 +250,7 @@
 			<xsl:variable name="previousTag" select="local-name(preceding-sibling::dict:*[1])"/>
 			<xsl:choose>
 				<xsl:when test="$previousTag = 'lbl'">
-					<span class="lbl">, </span>
+					<i>, </i>
 				</xsl:when>
 				<xsl:when test="$previousTag = 'trans'">
 					<xsl:text> </xsl:text>
@@ -317,7 +312,7 @@
 					<xsl:text> </xsl:text>
 				</xsl:when>
 				<xsl:when test="$previousTag = 'q'">
-					<span class="q">, </span>
+					<b>, </b>
 				</xsl:when>
 			</xsl:choose>
 		</xsl:if>

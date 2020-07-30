@@ -245,14 +245,11 @@
 			</x:context>
 			<x:expect label="The result is a sequence of divs with the sequence number in bold. The divs are separated by a single space. The numbers are followed by a single space.">
 				<div>
-					<div class="sense numbered">
+					<div class="numbered">
 						<b>1</b>
 						<x:text> </x:text>
 					</div>
-					<div class="sense numbered">
-						<span>
-							<x:text> </x:text>
-						</span>
+					<div class="numbered">
 						<b>2</b>
 						<x:text> </x:text>
 					</div>
@@ -274,14 +271,11 @@
 				<div class="senseGrp numbered">
 					<b>I</b>
 					<x:text> </x:text>
-					<div class="sense numbered">
+					<div class="numbered">
 						<b>1</b>
 						<x:text> </x:text>
 					</div>
-					<div class="sense numbered">
-						<span>
-							<x:text> </x:text>
-						</span>
+					<div class="numbered">
 						<b>2</b>
 						<x:text> </x:text>
 					</div>
@@ -290,14 +284,11 @@
 					<x:text> </x:text>
 					<b>II</b>
 					<x:text> </x:text>
-					<div class="sense numbered">
+					<div class="numbered">
 						<b>1</b>
 						<x:text> </x:text>
 					</div>
-					<div class="sense numbered">
-						<span>
-							<x:text> </x:text>
-						</span>
+					<div class="numbered">
 						<b>2</b>
 						<x:text> </x:text>
 					</div>
@@ -340,14 +331,11 @@
 				<div>
 					<i>lbl</i>
 					<x:text> </x:text>
-					<div class="sense numbered">
+					<div class="numbered">
 						<b>1</b>
 						<x:text> trans1</x:text>
 					</div>
-					<div class="sense numbered">
-						<span>
-							<x:text> </x:text>
-						</span>
+					<div class="numbered">
 						<b>2</b>
 						<x:text> trans2</x:text>
 					</div>
@@ -369,7 +357,7 @@
 			<div>
 				<div>
 					<i>lbl1</i>
-					<span class="lbl">, </span>
+					<i>, </i>
 					<i>lbl2</i>
 				</div>
 			</div>
@@ -496,7 +484,7 @@
 			<div>
 				<div>
 					<b>q1</b>
-					<span class="q">, </span>
+					<b>, </b>
 					<b>q2</b>
 				</div>
 			</div>
