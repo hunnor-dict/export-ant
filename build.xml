@@ -688,6 +688,16 @@
 	<target name="export.android" depends="export.android.deploy">
 	</target>
 
+	<!-- iOS/Realm -->
+	<target name="export.realm.convert">
+		<xslt style="formats/realm.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${build.dir}/HunNor-Realm-HN.json" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+		</xslt>
+		<xslt style="formats/realm.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Realm-NH.json" force="true">
+			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
+		</xslt>
+	</target>
+
 	<!-- React/SQLite -->
 
 	<target name="export.sqlite.dbunit.task">
