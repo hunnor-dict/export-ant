@@ -20,14 +20,18 @@
 				<column>inflectionLabels</column>
 				<column>inflectedForms</column>
 				<column>translation</column>
-				<column>sort</column>
 				<xsl:apply-templates mode="content"/>
 			</table>
 			<table name="forms">
 				<column>id</column>
 				<column>language</column>
-				<column>form</column>
 				<column>inflected</column>
+				<column>form</column>
+				<column>form_normalized</column>
+				<column>label</column>
+				<column>n</column>
+				<column>homonym</column>
+				<column>sort</column>
 				<xsl:apply-templates mode="forms"/>
 			</table>
 		</dataset>
@@ -155,13 +159,6 @@
 				<xsl:apply-templates select="dict:senseGrp"/>
 				<xsl:text disable-output-escaping="yes"><![CDATA[]]]]><![CDATA[>]]></xsl:text>
 			</value>
-			<!-- sort -->
-			<value>
-				<xsl:call-template name="sortkey">
-					<xsl:with-param name="value" select="dict:formGrp/dict:form[1]/dict:orth"/>
-				</xsl:call-template>
-				<xsl:value-of select="dict:formGrp/dict:form[1]/dict:orth/@n"/>
-			</value>
 		</row>
 	</xsl:template>
 
@@ -172,44 +169,102 @@
 	</xsl:template>
 
 	<xsl:template match="dict:entry" mode="forms">
+		<!-- value of orth is expected to be unique within the entry -->
+		<xsl:apply-templates select="dict:formGrp/dict:form/dict:orth"/>
+		<!-- inflected forms are not unique -->
 		<xsl:variable name="id" select="@id"/>
-		<xsl:for-each select="distinct-values(dict:formGrp/dict:form/dict:orth)">
-			<xsl:call-template name="formsRow">
-				<xsl:with-param name="id" select="$id"/>
-				<xsl:with-param name="language" select="$language"/>
-				<xsl:with-param name="form" select="."/>
-				<xsl:with-param name="inflected" select="'0'"/>
-			</xsl:call-template>
-		</xsl:for-each>
 		<xsl:for-each select="distinct-values(dict:formGrp/dict:form/dict:inflPar/dict:inflSeq)">
 			<xsl:call-template name="formsRow">
 				<xsl:with-param name="id" select="$id"/>
 				<xsl:with-param name="language" select="$language"/>
 				<xsl:with-param name="form" select="."/>
+				<xsl:with-param name="label" select="''"/>
 				<xsl:with-param name="inflected" select="'1'"/>
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
 
+	<xsl:template match="dict:orth">
+		<xsl:call-template name="formsRow">
+			<xsl:with-param name="id" select="../../../@id"/>
+			<xsl:with-param name="language" select="$language"/>
+			<xsl:with-param name="form" select="."/>
+			<xsl:with-param name="n" select="position()"/>
+			<xsl:with-param name="homonym" select="@n"/>
+			<xsl:with-param name="label" select="../../dict:form[1]/dict:pos"/>
+			<xsl:with-param name="inflected" select="'0'"/>
+		</xsl:call-template>
+	</xsl:template>
+
 	<xsl:template name="formsRow">
 		<xsl:param name="id"/>
 		<xsl:param name="language"/>
-		<xsl:param name="form"/>
 		<xsl:param name="inflected"/>
+		<xsl:param name="form"/>
+		<xsl:param name="n"/>
+		<xsl:param name="homonym"/>
+		<xsl:param name="label"/>
 		<row>
+			<!-- id -->
 			<value>
 				<xsl:value-of select="$id"/>
 			</value>
+			<!-- language -->
 			<value>
 				<xsl:value-of select="$language"/>
 			</value>
+			<!-- inflected -->
 			<value>
-				<xsl:call-template name="normalize">
+				<xsl:value-of select="$inflected"/>
+			</value>
+			<!-- form -->
+			<value>
+				<xsl:value-of select="."/>
+			</value>
+			<!-- form_normalized -->
+			<value>
+				<xsl:call-template name="form_normalized">
 					<xsl:with-param name="value" select="."/>
 				</xsl:call-template>
 			</value>
+			<!-- label -->
+			<xsl:choose>
+				<xsl:when test="$label != ''">
+					<value>
+						<xsl:value-of select="$label"/>
+					</value>
+				</xsl:when>
+				<xsl:otherwise>
+					<null/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- n -->
+			<xsl:choose>
+				<xsl:when test="$n">
+					<value>
+						<xsl:value-of select="$n"/>
+					</value>
+				</xsl:when>
+				<xsl:otherwise>
+					<null/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- homonym -->
+			<xsl:choose>
+				<xsl:when test="$homonym != '' and $homonym != '0'">
+					<value>
+						<xsl:value-of select="$homonym"/>
+					</value>
+				</xsl:when>
+				<xsl:otherwise>
+					<null/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<!-- sort -->
 			<value>
-				<xsl:value-of select="$inflected"/>
+				<xsl:call-template name="sort">
+					<xsl:with-param name="value" select="."/>
+				</xsl:call-template>
 			</value>
 		</row>
 	</xsl:template>
@@ -321,21 +376,33 @@
 		</b>
 	</xsl:template>
 
-	<xsl:template name="normalize">
+	<xsl:template name="form_normalized">
 		<xsl:param name="value"/>
-		<xsl:variable name="phase1" select="replace($value, 'æ', 'ae')"/>
-		<xsl:variable name="phase2" select="replace($phase1, 'Æ', 'AE')"/>
-		<xsl:variable name="phase3" select="replace($phase2, 'ø', 'o')"/>
-		<xsl:variable name="phase4" select="replace($phase3, 'Ø', 'O')"/>
-		<xsl:variable name="phase5" select="replace(normalize-unicode($phase4, 'NFKD'), '\p{IsCombiningDiacriticalMarks}', '')"/>
-		<xsl:value-of select="lower-case($phase5)"/>
+		<xsl:variable name="phase1" select="lower-case($value)"/>
+		<xsl:variable name="phase2" select="dict:to_ascii($phase1)"/>
+		<xsl:value-of select="$phase2"/>
 	</xsl:template>
 
-	<xsl:template name="sortkey">
+	<xsl:template name="sort">
+		<xsl:param name="value"/>
+		<xsl:variable name="phase1" select="lower-case($value)"/>
+		<xsl:variable name="phase2" select="dict:remove_punctuation($phase1)"/>
+		<xsl:value-of select="$phase2"/>
+	</xsl:template>
+
+	<xsl:function name="dict:to_ascii">
+		<xsl:param name="value"/>
+		<xsl:variable name="phase1" select="replace($value, 'æ', 'ae')"/>
+		<xsl:variable name="phase2" select="replace($phase1, 'ø', 'o')"/>
+		<xsl:variable name="phase3" select="replace(normalize-unicode($phase2, 'NFKD'), '\p{IsCombiningDiacriticalMarks}', '')"/>
+		<xsl:value-of select="$phase3"/>
+	</xsl:function>
+
+	<xsl:function name="dict:remove_punctuation">
 		<xsl:param name="value"/>
 		<xsl:variable name="phase1" select="replace($value, ' ', '')"/>
-		<xsl:value-of select="lower-case($phase1)"/>
-	</xsl:template>
+		<xsl:value-of select="$phase1"/>
+	</xsl:function>
 
 	<xsl:template match="*"/>
 

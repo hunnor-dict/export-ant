@@ -6,13 +6,17 @@ CREATE TABLE "content" (
   "homonyms" TEXT,
   "inflectionLabels" TEXT,
   "inflectedForms" TEXT,
-  "translation" TEXT,
-  "sort" TEXT
+  "translation" TEXT
 );
 
 CREATE TABLE "forms" (
   "id" INTEGER,
   "language" TEXT,
+  "inflected" INTEGER,
   "form" TEXT,
-  "inflected" INTEGER
+  "form_normalized" TEXT,
+  "label" TEXT,
+  "n" INTEGER,
+  "homonym" INTEGER,
+  "sort" TEXT
 );
