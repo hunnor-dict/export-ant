@@ -6,9 +6,7 @@
 	<x:scenario label="Dictionary">
 
 		<x:scenario label="When the dictionary is empty">
-			<x:context href="../context/dictionary.xml">
-				<x:param name="direction" select="'hn'"/>
-			</x:context>
+			<x:context href="../context/dictionary.xml"/>
 			<x:expect label="Then the dictionary begins with the SDictionary metadata block"># HunNor közösségi szótár
 # SDictionary formátum
 &lt;header&gt;
@@ -22,9 +20,7 @@ a_lang = no
 		</x:scenario>
 
 		<x:scenario label="When the dictionary has entries">
-			<x:context href="../context/dictionary-entries.xml">
-				<x:param name="direction" select="'hn'"/>
-			</x:context>
+			<x:context href="../context/dictionary-entries.xml"/>
 			<x:expect label="Then the dictionary has all entries"># HunNor közösségi szótár
 # SDictionary formátum
 &lt;header&gt;
