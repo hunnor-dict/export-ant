@@ -80,6 +80,10 @@ A Lucene index directory with both directions, used by the native Android app. S
 
 Separate PDF files for each direction, generated with Apache FOP.
 
+## Realm
+
+A Realm database with both directions. Realm supports several cross platform frameworks as well as native Android and iOS apps.
+
 ## SDictionary
 
 The custom format of the [SDictionary Project](http://swaj.net/sdict/). The textual source format compiles to an open source binary format.
