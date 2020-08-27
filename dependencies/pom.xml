@@ -28,7 +28,7 @@
 		<maven.site.plugin.version>3.9.1</maven.site.plugin.version>
 		<maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<saxon.version>10.1</saxon.version>
+		<saxon.version>10.2</saxon.version>
 		<sqlite.version>3.32.3.2</sqlite.version>
 	</properties>
 
