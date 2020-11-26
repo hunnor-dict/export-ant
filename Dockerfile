@@ -1,6 +1,6 @@
 # Run XSpec tests with Maven
 
-FROM maven:3.6-jdk-13 as maven
+FROM maven:3.6-jdk-11 as maven
 
 COPY tester /opt/hunnor-dict/export-ant/tester
 COPY formats /opt/hunnor-dict/export-ant/formats
@@ -21,7 +21,7 @@ RUN mvn verify
 
 
 
-FROM openjdk:13-jdk-buster
+FROM openjdk:11-jdk-buster
 
 COPY --from=maven /opt/hunnor-dict/export-ant/jars /opt/hunnor-dict/jars
 
