@@ -3,8 +3,6 @@
 
 	<description>Convert the dictionary database to various XML based formats.</description>
 
-	<property name="build.dir" location="build"/>
-
 	<property environment="env"/>
 
 	<property name="env.HUNNOR_ANT_APPLE_DDK_DIR" location="/Volumes/Additional Tools/Utilities/Dictionary Development Kit"/>
@@ -15,17 +13,18 @@
 	<property name="env.HUNNOR_ANT_SDICT_COMPILER" location="/opt/sdict/bin/sdict-tools.plx"/>
 	<property name="env.HUNNOR_ANT_STARDICT_COMPILER" location="/usr/lib/stardict-tools/stardict-text2bin"/>
 
+	<property name="env.HUNNOR_ANT_WORKSPACE" location="/data"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_DIR" location="/deploy"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_BACKUP_DIR" location="${env.HUNNOR_ANT_DEPLOY_DIR}/Backup"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_PUB_DIR" location="${env.HUNNOR_ANT_DEPLOY_DIR}/Public"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR" location="${env.HUNNOR_ANT_DEPLOY_PUB_DIR}/Databases"/>
 	<property name="env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR" location="${env.HUNNOR_ANT_DEPLOY_PUB_DIR}/Exports"/>
 
-	<property name="env.HUNNOR_ANT_DUMP_HU" location="${build.dir}/HunNor-XML-HN.xml"/>
-	<property name="env.HUNNOR_ANT_DUMP_NB" location="${build.dir}/HunNor-XML-NH.xml"/>
+	<property name="env.HUNNOR_ANT_DUMP_HU" location="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XML-HN.xml"/>
+	<property name="env.HUNNOR_ANT_DUMP_NB" location="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XML-NH.xml"/>
 
 	<target name="build.dir">
-		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${env.HUNNOR_ANT_WORKSPACE}"/>
 	</target>
 
 	<target name="dump.download">
@@ -48,13 +47,13 @@
 	<!-- Simple HTML: An intermediate XML format which is the basis of further transformation to various offline formats. -->
 
 	<target name="export.simple-html.hu">
-		<xslt style="formats/simple-html.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${build.dir}/HunNor-SimpleHTML-HN.xml" force="true">
+		<xslt style="formats/simple-html.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 		</xslt>
 	</target>
 
 	<target name="export.simple-html.nb">
-		<xslt style="formats/simple-html.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-SimpleHTML-NH.xml" force="true">
+		<xslt style="formats/simple-html.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 		</xslt>
 	</target>
@@ -66,30 +65,30 @@
 	</target>
 
 	<target name="export.apple.convert.hu" depends="export.simple-html.hu">
-		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN-Original.xml" force="true">
+		<xslt style="formats/apple.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-HN.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN-Original.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
-		<xslt style="formats/apple-patch.xsl" in="${build.dir}/HunNor-Apple-HN-Original.xml" out="${build.dir}/HunNor-Apple-HN.xml" force="true">
+		<xslt style="formats/apple-patch.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN-Original.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 		</xslt>
-		<delete file="${build.dir}/HunNor-Apple-HN-Original.xml"/>
-		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-Apple-HN-PList.xml" force="true">
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN-Original.xml"/>
+		<xslt style="formats/apple-plist.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-HN.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN-PList.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
 
 	<target name="export.apple.convert.nb" depends="export.simple-html.nb">
-		<xslt style="formats/apple.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH-Original.xml" force="true">
+		<xslt style="formats/apple.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH-Original.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
-		<xslt style="formats/apple-patch.xsl" in="${build.dir}/HunNor-Apple-NH-Original.xml" out="${build.dir}/HunNor-Apple-NH.xml" force="true">
+		<xslt style="formats/apple-patch.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH-Original.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 		</xslt>
-		<delete file="${build.dir}/HunNor-Apple-NH-Original.xml"/>
-		<xslt style="formats/apple-plist.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Apple-NH-PList.xml" force="true">
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH-Original.xml"/>
+		<xslt style="formats/apple-plist.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH-PList.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
@@ -97,60 +96,60 @@
 
 	<target name="export.apple.compile.hu" depends="export.apple.convert.hu,export.apple.ddk.check" if="${export.apple.ddk.available}">
 		<exec executable="${env.HUNNOR_ANT_APPLE_DDK_DIR}/bin/build_dict.sh" failonerror="yes">
-			<arg line="HunNor-HN ${build.dir}/HunNor-Apple-HN.xml formats/apple/apple.css ${build.dir}/HunNor-Apple-HN-PList.xml"/>
+			<arg line="HunNor-HN ${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN.xml formats/apple/apple.css ${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN-PList.xml"/>
 			<env key="DICT_BUILD_TOOL_DIR" value="${env.HUNNOR_ANT_APPLE_DDK_DIR}"/>
-			<env key="DICT_DEV_KIT_OBJ_DIR" file="${build.dir}/apple-hu"/>
+			<env key="DICT_DEV_KIT_OBJ_DIR" file="${env.HUNNOR_ANT_WORKSPACE}/apple-hu"/>
 		</exec>
 		<exec executable="ditto" failonerror="yes">
-			<arg line="--noextattr --norsrc ${build.dir}/apple-hu/HunNor-HN.dictionary ${build.dir}/HunNor-HN.dictionary"/>
+			<arg line="--noextattr --norsrc ${env.HUNNOR_ANT_WORKSPACE}/apple-hu/HunNor-HN.dictionary ${env.HUNNOR_ANT_WORKSPACE}/HunNor-HN.dictionary"/>
 		</exec>
-		<delete dir="${build.dir}/apple-hu"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/apple-hu"/>
 	</target>
 
 	<target name="export.apple.compile.nb" depends="export.apple.convert.nb,export.apple.ddk.check" if="${export.apple.ddk.available}">
 		<exec executable="${env.HUNNOR_ANT_APPLE_DDK_DIR}/bin/build_dict.sh" failonerror="yes">
-			<arg line="HunNor-NH ${build.dir}/HunNor-Apple-NH.xml formats/apple/apple.css ${build.dir}/HunNor-Apple-NH-PList.xml"/>
+			<arg line="HunNor-NH ${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH.xml formats/apple/apple.css ${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH-PList.xml"/>
 			<env key="DICT_BUILD_TOOL_DIR" value="${env.HUNNOR_ANT_APPLE_DDK_DIR}"/>
-			<env key="DICT_DEV_KIT_OBJ_DIR" file="${build.dir}/apple-nb"/>
+			<env key="DICT_DEV_KIT_OBJ_DIR" file="${env.HUNNOR_ANT_WORKSPACE}/apple-nb"/>
 		</exec>
 		<exec executable="ditto" failonerror="yes">
-			<arg line="--noextattr --norsrc ${build.dir}/apple-nb/HunNor-NH.dictionary ${build.dir}/HunNor-NH.dictionary"/>
+			<arg line="--noextattr --norsrc ${env.HUNNOR_ANT_WORKSPACE}/apple-nb/HunNor-NH.dictionary ${env.HUNNOR_ANT_WORKSPACE}/HunNor-NH.dictionary"/>
 		</exec>
-		<delete dir="${build.dir}/apple-nb"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/apple-nb"/>
 	</target>
 
 	<target name="export.apple.deploy.bin.hu" depends="export.apple.compile.hu" if="${export.apple.ddk.available}">
-		<tar compression="gzip" destfile="${build.dir}/HunNor-Apple-HN.tar.gz">
-			<fileset dir="${build.dir}" includes="HunNor-HN.dictionary/**"/>
+		<tar compression="gzip" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN.tar.gz">
+			<fileset dir="${env.HUNNOR_ANT_WORKSPACE}" includes="HunNor-HN.dictionary/**"/>
 		</tar>
-		<delete dir="${build.dir}/HunNor-HN.dictionary"/>
-		<move file="${build.dir}/HunNor-Apple-HN.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/HunNor-HN.dictionary"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.apple.deploy.bin.nb" depends="export.apple.compile.nb" if="${export.apple.ddk.available}">
-		<tar compression="gzip" destfile="${build.dir}/HunNor-Apple-NH.tar.gz">
-			<fileset dir="${build.dir}" includes="HunNor-NH.dictionary/**"/>
+		<tar compression="gzip" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH.tar.gz">
+			<fileset dir="${env.HUNNOR_ANT_WORKSPACE}" includes="HunNor-NH.dictionary/**"/>
 		</tar>
-		<delete dir="${build.dir}/HunNor-NH.dictionary"/>
-		<move file="${build.dir}/HunNor-Apple-NH.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/HunNor-NH.dictionary"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.apple.deploy.src.hu" depends="export.apple.convert.hu,export.apple.compile.hu">
-		<tar compression="gzip" destfile="${build.dir}/HunNor-Apple-HN.tar.gz">
-			<filelist dir="${build.dir}" files="${build.dir}/HunNor-Apple-HN.xml,${build.dir}/HunNor-Apple-HN-PList.xml"/>
+		<tar compression="gzip" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN.tar.gz">
+			<filelist dir="${env.HUNNOR_ANT_WORKSPACE}" files="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN.xml,${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN-PList.xml"/>
 		</tar>
-		<delete file="${build.dir}/HunNor-Apple-HN.xml"/>
-		<delete file="${build.dir}/HunNor-Apple-HN-PList.xml"/>
-		<move file="${build.dir}/HunNor-Apple-HN.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN.xml"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN-PList.xml"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-HN.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.apple.deploy.src.nb" depends="export.apple.convert.nb,export.apple.compile.nb">
-		<tar compression="gzip" destfile="${build.dir}/HunNor-Apple-NH.tar.gz">
-			<filelist dir="${build.dir}" files="${build.dir}/HunNor-Apple-NH.xml,${build.dir}/HunNor-Apple-NH-PList.xml"/>
+		<tar compression="gzip" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH.tar.gz">
+			<filelist dir="${env.HUNNOR_ANT_WORKSPACE}" files="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH.xml,${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH-PList.xml"/>
 		</tar>
-		<delete file="${build.dir}/HunNor-Apple-NH.xml"/>
-		<delete file="${build.dir}/HunNor-Apple-NH-PList.xml"/>
-		<move file="${build.dir}/HunNor-Apple-NH.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH.xml"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH-PList.xml"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Apple-NH.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.apple.deploy.hu" depends="export.apple.deploy.bin.hu,export.apple.deploy.src.hu">
@@ -173,29 +172,29 @@
 	<!-- Babylon: A text file format with a proprietary syntax, for use with the Glossary Builder of the Babylon dictionary. -->
 
 	<target name="export.babylon.convert.hu" depends="export.simple-html.hu">
-		<xslt style="formats/babylon.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-BB-HN.gls" force="true">
+		<xslt style="formats/babylon.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-HN.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-BB-HN.gls" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
 
 	<target name="export.babylon.convert.nb" depends="export.simple-html.nb">
-		<xslt style="formats/babylon.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-BB-NH.gls" force="true">
+		<xslt style="formats/babylon.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-BB-NH.gls" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 	</target>
 
 	<target name="export.babylon.deploy.hu" depends="export.babylon.convert.hu">
-		<gzip src="${build.dir}/HunNor-BB-HN.gls" destfile="${build.dir}/HunNor-BB-HN.gls.gz"/>
-		<delete file="${build.dir}/HunNor-BB-HN.gls"/>
-		<move file="${build.dir}/HunNor-BB-HN.gls.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-BB-HN.gls" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-BB-HN.gls.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-BB-HN.gls"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-BB-HN.gls.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.babylon.deploy.nb" depends="export.babylon.convert.nb">
-		<gzip src="${build.dir}/HunNor-BB-NH.gls" destfile="${build.dir}/HunNor-BB-NH.gls.gz"/>
-		<delete file="${build.dir}/HunNor-BB-NH.gls"/>
-		<move file="${build.dir}/HunNor-BB-NH.gls.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-BB-NH.gls" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-BB-NH.gls.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-BB-NH.gls"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-BB-NH.gls.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.babylon.hu" depends="export.babylon.deploy.hu">
@@ -237,43 +236,43 @@
 	</target>
 
 	<target name="export.kindle.convert.nb" depends="export.simple-html.nb">
-		<xslt style="formats/kindle.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.html" force="true">
+		<xslt style="formats/kindle.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Kindle-NH.html" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 		</xslt>
-		<xslt style="formats/kindle-opf.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-Kindle-NH.opf" force="true">
+		<xslt style="formats/kindle-opf.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Kindle-NH.opf" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="contentFile" expression="HunNor-Kindle-NH.html"/>
-			<param name="logoFile" expression="${build.dir}/images/logo-colors.png"/>
+			<param name="logoFile" expression="${env.HUNNOR_ANT_WORKSPACE}/images/logo-colors.png"/>
 			<param name="inLanguage" expression="no"/>
 			<param name="outLanguage" expression="hu"/>
 		</xslt>
 	</target>
 
 	<target name="export.kindle.compile.nb" depends="export.kindle.convert.nb,export.kindle.compiler">
-		<copy todir="${build.dir}/images">
+		<copy todir="${env.HUNNOR_ANT_WORKSPACE}/images">
 			<fileset dir="images"/>
 		</copy>
 		<!--
 			Warning: W26001: Index not supported for enhanced mobi.
 			Meaning: KF8 version of content is not created, see https://wiki.mobileread.com/wiki/KF8#The_Format
 		-->
-		<exec dir="${build.dir}" executable="${env.HUNNOR_ANT_KINDLE_COMPILER}" failonerror="yes">
+		<exec dir="${env.HUNNOR_ANT_WORKSPACE}" executable="${env.HUNNOR_ANT_KINDLE_COMPILER}" failonerror="yes">
 			<arg line="HunNor-Kindle-NH.opf"/>
 		</exec>
-		<delete dir="${build.dir}/images"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/images"/>
 	</target>
 
 	<target name="export.kindle.deploy.bin.nb" depends="export.kindle.compile.nb">
-		<move file="${build.dir}/HunNor-Kindle-NH.mobi" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Kindle-NH.mobi" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.kindle.deploy.src.nb" depends="export.kindle.compile.nb">
-		<tar compression="gzip" destfile="${build.dir}/HunNor-Kindle-HN.tar.gz">
-			<filelist dir="${build.dir}" files="${build.dir}/HunNor-Kindle-NH.html,${build.dir}/HunNor-Kindle-NH.opf"/>
+		<tar compression="gzip" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Kindle-HN.tar.gz">
+			<filelist dir="${env.HUNNOR_ANT_WORKSPACE}" files="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Kindle-NH.html,${env.HUNNOR_ANT_WORKSPACE}/HunNor-Kindle-NH.opf"/>
 		</tar>
-		<delete file="${build.dir}/HunNor-Kindle-NH.html"/>
-		<delete file="${build.dir}/HunNor-Kindle-NH.opf"/>
-		<move file="${build.dir}/HunNor-Kindle-HN.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Kindle-NH.html"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Kindle-NH.opf"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Kindle-HN.tar.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.kindle.deploy.nb" depends="export.kindle.deploy.bin.nb,export.kindle.deploy.src.nb">
@@ -289,51 +288,51 @@
 	</target>
 
 	<target name="export.pdf.convert.hu" depends="export.simple-html.hu">
-		<xslt style="formats/pdf.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-FO-HN.xml" force="true">
+		<xslt style="formats/pdf.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-HN.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 		</xslt>
 	</target>
 
 	<target name="export.pdf.convert.nb" depends="export.simple-html.nb">
-		<xslt style="formats/pdf.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-FO-NH.xml" force="true">
+		<xslt style="formats/pdf.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 		</xslt>
 	</target>
 
 	<target name="export.pdf.compile.hu" depends="export.pdf.convert.hu,export.pdf.fop.task">
-		<copy todir="${build.dir}/images">
+		<copy todir="${env.HUNNOR_ANT_WORKSPACE}/images">
 			<fileset dir="images"/>
 		</copy>
-		<fop fofile="${build.dir}/HunNor-FO-HN.xml" messagelevel="warn" outfile="${build.dir}/HunNor-PDF-HN.pdf" userconfig="formats/pdf/fonts.xml"/>
-		<delete dir="${build.dir}/images"/>
+		<fop fofile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-HN.xml" messagelevel="warn" outfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-PDF-HN.pdf" userconfig="formats/pdf/fonts.xml"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/images"/>
 	</target>
 
 	<target name="export.pdf.compile.nb" depends="export.pdf.convert.nb,export.pdf.fop.task">
-		<copy todir="${build.dir}/images">
+		<copy todir="${env.HUNNOR_ANT_WORKSPACE}/images">
 			<fileset dir="images"/>
 		</copy>
-		<fop fofile="${build.dir}/HunNor-FO-NH.xml" messagelevel="warn" outfile="${build.dir}/HunNor-PDF-NH.pdf" userconfig="formats/pdf/fonts.xml"/>
-		<delete dir="${build.dir}/images"/>
+		<fop fofile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-NH.xml" messagelevel="warn" outfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-PDF-NH.pdf" userconfig="formats/pdf/fonts.xml"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/images"/>
 	</target>
 
 	<target name="export.pdf.deploy.bin.hu" depends="export.pdf.compile.hu">
-		<move file="${build.dir}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-PDF-HN.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.pdf.deploy.bin.nb" depends="export.pdf.compile.nb">
-		<move file="${build.dir}/HunNor-PDF-NH.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-PDF-NH.pdf" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.pdf.deploy.src.hu" depends="export.pdf.convert.hu,export.pdf.compile.hu">
-		<gzip src="${build.dir}/HunNor-FO-HN.xml" destfile="${build.dir}/HunNor-FO-HN.xml.gz"/>
-		<delete file="${build.dir}/HunNor-FO-HN.xml"/>
-		<move file="${build.dir}/HunNor-FO-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-HN.xml" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-HN.xml.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-HN.xml"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.pdf.deploy.src.nb" depends="export.pdf.convert.nb,export.pdf.compile.nb">
-		<gzip src="${build.dir}/HunNor-FO-NH.xml" destfile="${build.dir}/HunNor-FO-NH.xml.gz"/>
-		<delete file="${build.dir}/HunNor-FO-NH.xml"/>
-		<move file="${build.dir}/HunNor-FO-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-NH.xml" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-NH.xml.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-NH.xml"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-FO-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.pdf.deploy.hu" depends="export.pdf.deploy.bin.hu,export.pdf.deploy.src.hu">
@@ -351,14 +350,14 @@
 	<!-- SDictionary: A text file format that can be compiled to a binary .dct dictionary file with the tools included in the SDictionary project. -->
 
 	<target name="export.sdict.convert.hu" depends="export.simple-html.hu">
-		<xslt style="formats/sdict.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-SD-HN.sdct" force="true">
+		<xslt style="formats/sdict.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-HN.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-HN.sdct" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
 
 	<target name="export.sdict.convert.nb" depends="export.simple-html.nb">
-		<xslt style="formats/sdict.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-SD-NH.sdct" force="true">
+		<xslt style="formats/sdict.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-NH.sdct" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
@@ -366,34 +365,34 @@
 
 	<target name="export.sdict.compile.hu" depends="export.sdict.convert.hu">
 		<exec executable="${env.HUNNOR_ANT_SDICT_COMPILER}" failonerror="yes">
-			<arg line="--compile --input-file=${build.dir}/HunNor-SD-HN.sdct --output-file=${build.dir}/HunNor-SD-HN.dct"/>
+			<arg line="--compile --input-file=${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-HN.sdct --output-file=${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-HN.dct"/>
 		</exec>
 	</target>
 
 	<target name="export.sdict.compile.nb" depends="export.sdict.convert.nb">
 		<exec executable="${env.HUNNOR_ANT_SDICT_COMPILER}" failonerror="yes">
-			<arg line="--compile --input-file=${build.dir}/HunNor-SD-NH.sdct --output-file=${build.dir}/HunNor-SD-NH.dct"/>
+			<arg line="--compile --input-file=${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-NH.sdct --output-file=${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-NH.dct"/>
 		</exec>
 	</target>
 
 	<target name="export.sdict.deploy.bin.hu" depends="export.sdict.compile.hu">
-		<move file="${build.dir}/HunNor-SD-HN.dct" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-HN.dct" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.sdict.deploy.bin.nb" depends="export.sdict.compile.nb">
-		<move file="${build.dir}/HunNor-SD-NH.dct" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-NH.dct" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.sdict.deploy.src.hu" depends="export.sdict.convert.hu,export.sdict.compile.hu">
-		<gzip src="${build.dir}/HunNor-SD-HN.sdct" destfile="${build.dir}/HunNor-SD-HN.sdct.gz"/>
-		<delete file="${build.dir}/HunNor-SD-HN.sdct"/>
-		<move file="${build.dir}/HunNor-SD-HN.sdct.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-HN.sdct" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-HN.sdct.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-HN.sdct"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-HN.sdct.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.sdict.deploy.src.nb" depends="export.sdict.convert.nb,export.sdict.compile.nb">
-		<gzip src="${build.dir}/HunNor-SD-NH.sdct" destfile="${build.dir}/HunNor-SD-NH.sdct.gz"/>
-		<delete file="${build.dir}/HunNor-SD-NH.sdct"/>
-		<move file="${build.dir}/HunNor-SD-NH.sdct.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-NH.sdct" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-NH.sdct.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-NH.sdct"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SD-NH.sdct.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.sdict.deploy.hu" depends="export.sdict.deploy.bin.hu,export.sdict.deploy.src.hu">
@@ -417,7 +416,7 @@
 	</target>
 
 	<target name="export.stardict.convert.hu" depends="export.simple-html.hu">
-		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-ST-HN.xml" force="true">
+		<xslt style="formats/stardict.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-HN.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="hn"/>
 			<param name="numbers" expression="false"/>
@@ -425,7 +424,7 @@
 	</target>
 
 	<target name="export.stardict.convert.nb" depends="export.simple-html.nb">
-		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-ST-NH.xml" force="true">
+		<xslt style="formats/stardict.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="nh"/>
 			<param name="numbers" expression="false"/>
@@ -434,52 +433,52 @@
 
 	<target name="export.stardict.compile.hu" depends="export.stardict.convert.hu,export.stardict.compiler" if="${stardict.compiler}">
 		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}" failonerror="yes">
-			<arg line="${build.dir}/HunNor-ST-HN.xml ${build.dir}/HunNor-ST-HN.ifo"/>
+			<arg line="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.xml ${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="${build.dir}/HunNor-ST-HN.tmp" failonerror="yes">
-			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-HN.ifo"/>
+		<exec executable="tail" output="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.tmp" failonerror="yes">
+			<arg line="--bytes=+4 ${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.ifo"/>
 		</exec>
-		<delete file="${build.dir}/HunNor-ST-HN.ifo"/>
-		<move file="${build.dir}/HunNor-ST-HN.tmp" tofile="${build.dir}/HunNor-ST-HN.ifo"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.ifo"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.tmp" tofile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.ifo"/>
 	</target>
 
 	<target name="export.stardict.compile.nb" depends="export.stardict.convert.nb,export.stardict.compiler" if="${stardict.compiler}">
 		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}" failonerror="yes">
-			<arg line="${build.dir}/HunNor-ST-NH.xml ${build.dir}/HunNor-ST-NH.ifo"/>
+			<arg line="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.xml ${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="${build.dir}/HunNor-ST-NH.tmp" failonerror="yes">
-			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-NH.ifo"/>
+		<exec executable="tail" output="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.tmp" failonerror="yes">
+			<arg line="--bytes=+4 ${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.ifo"/>
 		</exec>
-		<delete file="${build.dir}/HunNor-ST-NH.ifo"/>
-		<move file="${build.dir}/HunNor-ST-NH.tmp" tofile="${build.dir}/HunNor-ST-NH.ifo"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.ifo"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.tmp" tofile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.ifo"/>
 	</target>
 
 	<target name="export.stardict.deploy.hu" depends="export.stardict.compile.hu" if="${stardict.compiler}">
-		<zip destfile="${build.dir}/HunNor-ST-HN.zip" level="9">
-			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-HN.dict.dz,${build.dir}/HunNor-ST-HN.ifo,${build.dir}/HunNor-ST-HN.idx,${build.dir}/HunNor-ST-HN.syn"/>
+		<zip destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.zip" level="9">
+			<filelist dir="${env.HUNNOR_ANT_WORKSPACE}" files="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.dict.dz,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.ifo,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.idx,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.syn"/>
 		</zip>
-		<delete file="${build.dir}/HunNor-ST-HN.dict.dz"/>
-		<delete file="${build.dir}/HunNor-ST-HN.ifo"/>
-		<delete file="${build.dir}/HunNor-ST-HN.idx"/>
-		<delete file="${build.dir}/HunNor-ST-HN.syn"/>
-		<move file="${build.dir}/HunNor-ST-HN.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.dict.dz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.ifo"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.idx"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.syn"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.stardict.deploy.nb" depends="export.stardict.compile.nb" if="${stardict.compiler}">
-		<zip destfile="${build.dir}/HunNor-ST-NH.zip" level="9">
-			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-NH.dict.dz,${build.dir}/HunNor-ST-NH.ifo,${build.dir}/HunNor-ST-NH.idx,${build.dir}/HunNor-ST-NH.syn"/>
+		<zip destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.zip" level="9">
+			<filelist dir="${env.HUNNOR_ANT_WORKSPACE}" files="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.dict.dz,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.ifo,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.idx,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.syn"/>
 		</zip>
-		<delete file="${build.dir}/HunNor-ST-NH.dict.dz"/>
-		<delete file="${build.dir}/HunNor-ST-NH.ifo"/>
-		<delete file="${build.dir}/HunNor-ST-NH.idx"/>
-		<delete file="${build.dir}/HunNor-ST-NH.syn"/>
-		<move file="${build.dir}/HunNor-ST-NH.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.dict.dz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.ifo"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.idx"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.syn"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.stardict.nosym.num.convert.hu" depends="export.simple-html.hu">
-		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-ST-NoSym-Number-HN.xml" force="true">
+		<xslt style="formats/stardict.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-HN.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="hn"/>
 			<param name="numbers" expression="true"/>
@@ -487,7 +486,7 @@
 	</target>
 
 	<target name="export.stardict.nosym.num.convert.nb" depends="export.simple-html.nb">
-		<xslt style="formats/stardict.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-ST-NoSym-Number-NH.xml" force="true">
+		<xslt style="formats/stardict.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="nh"/>
 			<param name="numbers" expression="true"/>
@@ -496,66 +495,66 @@
 
 	<target name="export.stardict.nosym.num.compile.hu" depends="export.stardict.nosym.num.convert.hu,export.stardict.compiler" if="${stardict.compiler}">
 		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}" failonerror="yes">
-			<arg line="${build.dir}/HunNor-ST-NoSym-Number-HN.xml ${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
+			<arg line="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.xml ${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="${build.dir}/HunNor-ST-NoSym-Number-HN.tmp" failonerror="yes">
-			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
+		<exec executable="tail" output="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.tmp" failonerror="yes">
+			<arg line="--bytes=+4 ${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.ifo"/>
 		</exec>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
-		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.tmp" tofile="${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.ifo"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.tmp" tofile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.ifo"/>
 	</target>
 
 	<target name="export.stardict.nosym.num.compile.nb" depends="export.stardict.nosym.num.convert.nb,export.stardict.compiler" if="${stardict.compiler}">
 		<exec executable="${env.HUNNOR_ANT_STARDICT_COMPILER}" failonerror="yes">
-			<arg line="${build.dir}/HunNor-ST-NoSym-Number-NH.xml ${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
+			<arg line="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.xml ${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.ifo"/>
 		</exec>
 		<!-- Cut the BOM from the .ifo file -->
-		<exec executable="tail" output="${build.dir}/HunNor-ST-NoSym-Number-NH.tmp" failonerror="yes">
-			<arg line="--bytes=+4 ${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
+		<exec executable="tail" output="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.tmp" failonerror="yes">
+			<arg line="--bytes=+4 ${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.ifo"/>
 		</exec>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
-		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.tmp" tofile="${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.ifo"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.tmp" tofile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.ifo"/>
 	</target>
 
 	<target name="export.stardict.nosym.num.deploy.hu" depends="export.stardict.nosym.num.compile.hu" if="${stardict.compiler}">
-		<zip destfile="${build.dir}/HunNor-ST-NoSym-Number-HN.zip" level="9">
-			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-NoSym-Number-HN.dict.dz,${build.dir}/HunNor-ST-NoSym-Number-HN.ifo,${build.dir}/HunNor-ST-NoSym-Number-HN.idx,${build.dir}/HunNor-ST-NoSym-Number-HN.syn"/>
+		<zip destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.zip" level="9">
+			<filelist dir="${env.HUNNOR_ANT_WORKSPACE}" files="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.dict.dz,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.ifo,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.idx,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.syn"/>
 		</zip>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.dict.dz"/>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.ifo"/>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.idx"/>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.syn"/>
-		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.dict.dz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.ifo"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.idx"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.syn"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.stardict.nosym.num.deploy.nb" depends="export.stardict.nosym.num.compile.nb" if="${stardict.compiler}">
-		<zip destfile="${build.dir}/HunNor-ST-NoSym-Number-NH.zip" level="9">
-			<filelist dir="${build.dir}" files="${build.dir}/HunNor-ST-NoSym-Number-NH.dict.dz,${build.dir}/HunNor-ST-NoSym-Number-NH.ifo,${build.dir}/HunNor-ST-NoSym-Number-NH.idx,${build.dir}/HunNor-ST-NoSym-Number-NH.syn"/>
+		<zip destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.zip" level="9">
+			<filelist dir="${env.HUNNOR_ANT_WORKSPACE}" files="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.dict.dz,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.ifo,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.idx,${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.syn"/>
 		</zip>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.dict.dz"/>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.ifo"/>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.idx"/>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.syn"/>
-		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.dict.dz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.ifo"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.idx"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.syn"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.stardict.hu" depends="export.stardict.deploy.hu,export.stardict.nosym.num.deploy.hu">
-		<gzip src="${build.dir}/HunNor-ST-HN.xml" destfile="${build.dir}/HunNor-ST-HN.xml.gz"/>
-		<delete file="${build.dir}/HunNor-ST-HN.xml"/>
-		<move file="${build.dir}/HunNor-ST-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<gzip src="${build.dir}/HunNor-ST-NoSym-Number-HN.xml" destfile="${build.dir}/HunNor-ST-NoSym-Number-HN.xml.gz"/>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-HN.xml"/>
-		<move file="${build.dir}/HunNor-ST-NoSym-Number-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.xml" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.xml.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.xml"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.xml" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.xml.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.xml"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-HN.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.stardict.nb" depends="export.stardict.deploy.nb,export.stardict.nosym.num.deploy.nb">
-		<gzip src="${build.dir}/HunNor-ST-NH.xml" destfile="${build.dir}/HunNor-ST-NH.xml.gz"/>
-		<delete file="${build.dir}/HunNor-ST-NH.xml"/>
-		<move file="${build.dir}/HunNor-ST-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<gzip src="${build.dir}/HunNor-ST-NoSym-Number-NH.xml" destfile="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz"/>
-		<delete file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml"/>
-		<move file="${build.dir}/HunNor-ST-NoSym-Number-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.xml" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.xml.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.xml"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.xml" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.xml.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.xml"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-ST-NoSym-Number-NH.xml.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<!-- XDXF, PocketBook -->
@@ -583,73 +582,73 @@
 	</target>
 
 	<target name="export.xdxf.convert.hu" depends="export.simple-html.hu">
-		<xslt style="formats/xdxf-lousy.xsl" in="${build.dir}/HunNor-SimpleHTML-HN.xml" out="${build.dir}/HunNor-XDXF-L-HN.xdxf" force="true">
+		<xslt style="formats/xdxf-lousy.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-HN.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN.xdxf" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="hn"/>
 		</xslt>
 	</target>
 
 	<target name="export.xdxf.convert.nb" depends="export.simple-html.nb">
-		<xslt style="formats/xdxf-lousy.xsl" in="${build.dir}/HunNor-SimpleHTML-NH.xml" out="${build.dir}/HunNor-XDXF-L-NH.xdxf" force="true">
+		<xslt style="formats/xdxf-lousy.xsl" in="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH.xdxf" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="direction" expression="nh"/>
 		</xslt>
 	</target>
 
 	<target name="export.xdxf.pocketbook.compile.hu" depends="export.xdxf.pocketbook.segment.task,export.xdxf.convert.hu,export.xdxf.pocketbook.compiler">
-		<copy todir="${build.dir}/hun">
+		<copy todir="${env.HUNNOR_ANT_WORKSPACE}/hun">
 			<fileset dir="formats/pocketbook/hun"/>
 		</copy>
-		<segmentsize file="${build.dir}/HunNor-XDXF-L-HN.xdxf" tofile="${build.dir}/HunNor-XDXF-L-HN-Out.xdxf" size="4095"/>
-		<delete file="${build.dir}/HunNor-XDXF-L-HN.xdxf"/>
-		<move file="${build.dir}/HunNor-XDXF-L-HN-Out.xdxf" tofile="${build.dir}/HunNor-XDXF-L-HN.xdxf"/>
-		<exec dir="${build.dir}" executable="wine" resultproperty="pocketbook.compile.result.hu">
+		<segmentsize file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN.xdxf" tofile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN-Out.xdxf" size="4095"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN.xdxf"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN-Out.xdxf" tofile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN.xdxf"/>
+		<exec dir="${env.HUNNOR_ANT_WORKSPACE}" executable="wine" resultproperty="pocketbook.compile.result.hu">
 			<arg file="${env.HUNNOR_ANT_POCKETBOOK_COMPILER}"/>
-			<arg file="${build.dir}/HunNor-XDXF-L-HN.xdxf"/>
+			<arg file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN.xdxf"/>
 			<arg line="hun"/>
 		</exec>
 		<condition property="pocketbook.compile.result.hu.ok">
 			<equals arg1="${pocketbook.compile.result.hu}" arg2="0"/>
 		</condition>
-		<delete dir="${build.dir}/hun"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/hun"/>
 	</target>
 
 	<target name="export.xdxf.pocketbook.compile.nb" depends="export.xdxf.pocketbook.segment.task,export.xdxf.convert.nb,export.xdxf.pocketbook.compiler">
-		<copy todir="${build.dir}/nor">
+		<copy todir="${env.HUNNOR_ANT_WORKSPACE}/nor">
 			<fileset dir="formats/pocketbook/nor"/>
 		</copy>
-		<segmentsize file="${build.dir}/HunNor-XDXF-L-NH.xdxf" tofile="${build.dir}/HunNor-XDXF-L-NH-Out.xdxf" size="4095"/>
-		<delete file="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>
-		<move file="${build.dir}/HunNor-XDXF-L-NH-Out.xdxf" tofile="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>
-		<exec dir="${build.dir}" executable="wine" resultproperty="pocketbook.compile.result.nb">
+		<segmentsize file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH.xdxf" tofile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH-Out.xdxf" size="4095"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH.xdxf"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH-Out.xdxf" tofile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH.xdxf"/>
+		<exec dir="${env.HUNNOR_ANT_WORKSPACE}" executable="wine" resultproperty="pocketbook.compile.result.nb">
 			<arg file="${env.HUNNOR_ANT_POCKETBOOK_COMPILER}"/>
-			<arg file="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>
+			<arg file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH.xdxf"/>
 			<arg line="nor"/>
 		</exec>
 		<condition property="pocketbook.compile.result.nb.ok">
 			<equals arg1="${pocketbook.compile.result.nb}" arg2="0"/>
 		</condition>
-		<delete dir="${build.dir}/nor"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/nor"/>
 	</target>
 
 	<target name="export.xdxf.pocketbook.deploy.bin.hu" depends="export.xdxf.pocketbook.compile.hu" if="${pocketbook.compile.result.hu.ok}">
-		<move file="${build.dir}/HunNor-XDXF-L-HN.dic" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN.dic" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.xdxf.pocketbook.deploy.bin.nb" depends="export.xdxf.pocketbook.compile.nb" if="${pocketbook.compile.result.nb.ok}">
-		<move file="${build.dir}/HunNor-XDXF-L-NH.dic" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH.dic" todir="${env.HUNNOR_ANT_DEPLOY_PUB_EXPORTS_DIR}"/>
 	</target>
 
 	<target name="export.xdxf.deploy.src.hu" depends="export.xdxf.pocketbook.compile.hu">
-		<gzip src="${build.dir}/HunNor-XDXF-L-HN.xdxf" destfile="${build.dir}/HunNor-XDXF-L-HN.xdxf.gz"/>
-		<delete file="${build.dir}/HunNor-XDXF-L-HN.xdxf"/>
-		<move file="${build.dir}/HunNor-XDXF-L-HN.xdxf.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN.xdxf" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN.xdxf.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN.xdxf"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-HN.xdxf.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.xdxf.deploy.src.nb" depends="export.xdxf.pocketbook.compile.nb">
-		<gzip src="${build.dir}/HunNor-XDXF-L-NH.xdxf" destfile="${build.dir}/HunNor-XDXF-L-NH.xdxf.gz"/>
-		<delete file="${build.dir}/HunNor-XDXF-L-NH.xdxf"/>
-		<move file="${build.dir}/HunNor-XDXF-L-NH.xdxf.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH.xdxf" destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH.xdxf.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH.xdxf"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-XDXF-L-NH.xdxf.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.xdxf.deploy.hu" depends="export.xdxf.pocketbook.deploy.bin.hu,export.xdxf.deploy.src.hu">
@@ -668,21 +667,21 @@
 
 	<target name="export.android.generate">
 		<taskdef name="lucene" classname="net.hunnor.dict.lucene.AntTask"/>
-		<delete dir="${build.dir}/hunnor-lucene-index"/>
-		<delete dir="${build.dir}/hunnor-lucene-spelling"/>
-		<delete file="${build.dir}/HunNor-Lucene.zip"/>
-		<lucene language="HU" main="${build.dir}/hunnor-lucene-index" source="${env.HUNNOR_ANT_DUMP_HU}" spelling="${build.dir}/hunnor-lucene-spelling"/>
-		<lucene language="NO" main="${build.dir}/hunnor-lucene-index" source="${env.HUNNOR_ANT_DUMP_NB}" spelling="${build.dir}/hunnor-lucene-spelling"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/hunnor-lucene-index"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/hunnor-lucene-spelling"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Lucene.zip"/>
+		<lucene language="HU" main="${env.HUNNOR_ANT_WORKSPACE}/hunnor-lucene-index" source="${env.HUNNOR_ANT_DUMP_HU}" spelling="${env.HUNNOR_ANT_WORKSPACE}/hunnor-lucene-spelling"/>
+		<lucene language="NO" main="${env.HUNNOR_ANT_WORKSPACE}/hunnor-lucene-index" source="${env.HUNNOR_ANT_DUMP_NB}" spelling="${env.HUNNOR_ANT_WORKSPACE}/hunnor-lucene-spelling"/>
 	</target>
 
 	<target name="export.android.deploy" depends="export.android.generate">
-		<zip destfile="${build.dir}/HunNor-Lucene.zip" level="9" filesonly="yes">
-			<zipfileset dir="${build.dir}/hunnor-lucene-index" prefix="hunnor-lucene-index"/>
-			<zipfileset dir="${build.dir}/hunnor-lucene-spelling" prefix="hunnor-lucene-spelling"/>
+		<zip destfile="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Lucene.zip" level="9" filesonly="yes">
+			<zipfileset dir="${env.HUNNOR_ANT_WORKSPACE}/hunnor-lucene-index" prefix="hunnor-lucene-index"/>
+			<zipfileset dir="${env.HUNNOR_ANT_WORKSPACE}/hunnor-lucene-spelling" prefix="hunnor-lucene-spelling"/>
 		</zip>
-		<move file="${build.dir}/HunNor-Lucene.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<delete dir="${build.dir}/hunnor-lucene-index"/>
-		<delete dir="${build.dir}/hunnor-lucene-spelling"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Lucene.zip" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/hunnor-lucene-index"/>
+		<delete dir="${env.HUNNOR_ANT_WORKSPACE}/hunnor-lucene-spelling"/>
 	</target>
 
 	<target name="export.android" depends="export.android.deploy">
@@ -691,10 +690,10 @@
 	<!-- iOS/Realm -->
 
 	<target name="export.realm.convert">
-		<xslt style="formats/realm.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${build.dir}/HunNor-Realm-HN.json" force="true">
+		<xslt style="formats/realm.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Realm-HN.json" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 		</xslt>
-		<xslt style="formats/realm.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-Realm-NH.json" force="true">
+		<xslt style="formats/realm.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-Realm-NH.json" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 		</xslt>
 	</target>
@@ -706,32 +705,32 @@
 	</target>
 
 	<target name="export.sqlite.convert">
-		<xslt style="formats/sqlite.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${build.dir}/HunNor-SQLite-v2-HN.xml" force="true">
+		<xslt style="formats/sqlite.xsl" in="${env.HUNNOR_ANT_DUMP_HU}" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2-HN.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="language" expression="HU"/>
 		</xslt>
-		<xslt style="formats/sqlite.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${build.dir}/HunNor-SQLite-v2-NH.xml" force="true">
+		<xslt style="formats/sqlite.xsl" in="${env.HUNNOR_ANT_DUMP_NB}" out="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2-NH.xml" force="true">
 			<factory name="net.sf.saxon.TransformerFactoryImpl"/>
 			<param name="language" expression="NB"/>
 		</xslt>
 	</target>
 
 	<target name="export.sqlite.generate" depends="export.sqlite.convert,export.sqlite.dbunit.task">
-		<delete file="${build.dir}/HunNor-SQLite-v2.sqlite3"/>
-		<sql driver="org.sqlite.JDBC" encoding="UTF-8" escapeprocessing="false" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite-v2.sqlite3" userid="hunnor">
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2.sqlite3"/>
+		<sql driver="org.sqlite.JDBC" encoding="UTF-8" escapeprocessing="false" password="hunnor" url="jdbc:sqlite:${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2.sqlite3" userid="hunnor">
 			<filelist>
 				<file name="formats/sqlite/create.sql"/>
 			</filelist>
 		</sql>
-		<dbunit driver="org.sqlite.JDBC" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite-v2.sqlite3" userid="hunnor">
-			<operation type="INSERT" src="${build.dir}/HunNor-SQLite-v2-HN.xml" format="xml" transaction="true"/>
-			<operation type="INSERT" src="${build.dir}/HunNor-SQLite-v2-NH.xml" format="xml" transaction="true"/>
+		<dbunit driver="org.sqlite.JDBC" password="hunnor" url="jdbc:sqlite:${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2.sqlite3" userid="hunnor">
+			<operation type="INSERT" src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2-HN.xml" format="xml" transaction="true"/>
+			<operation type="INSERT" src="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2-NH.xml" format="xml" transaction="true"/>
 		</dbunit>
-		<checksum file="${build.dir}/HunNor-SQLite-v2.sqlite3" algorithm="MD5" fileext=".md5"/>
+		<checksum file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2.sqlite3" algorithm="MD5" fileext=".md5"/>
 	</target>
 
 	<target name="export.sqlite.test" depends="export.sqlite.generate">
-		<dbunit driver="org.sqlite.JDBC" password="hunnor" url="jdbc:sqlite:${build.dir}/HunNor-SQLite-v2.sqlite3" userid="hunnor">
+		<dbunit driver="org.sqlite.JDBC" password="hunnor" url="jdbc:sqlite:${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2.sqlite3" userid="hunnor">
 			<compare format="flat" src="formats/sqlite/expectations.xml">
 				<query name="CONTENT" sql="SELECT
 					CASE WHEN COUNT(CASE WHEN language='HU' THEN 1 ELSE NULL END) > 35000 THEN 'OK' ELSE 'ERROR' END AS COUNT_HU,
@@ -747,10 +746,10 @@
 
 	<target name="export.sqlite.deploy" depends="export.sqlite.test">
 		<mkdir dir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<move file="${build.dir}/HunNor-SQLite-v2.sqlite3" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<move file="${build.dir}/HunNor-SQLite-v2.sqlite3.md5" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
-		<delete file="${build.dir}/HunNor-SQLite-v2-HN.xml"/>
-		<delete file="${build.dir}/HunNor-SQLite-v2-NH.xml"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2.sqlite3" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2.sqlite3.md5" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2-HN.xml"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SQLite-v2-NH.xml"/>
 	</target>
 
 	<target name="export.sqlite" depends="export.sqlite.deploy">
@@ -768,14 +767,14 @@
 	</target>
 
 	<target name="export.cleanup.hu" depends="export.all">
-		<delete file="${build.dir}/HunNor-SimpleHTML-HN.xml"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-HN.xml"/>
 		<gzip src="${env.HUNNOR_ANT_DUMP_HU}" destfile="${env.HUNNOR_ANT_DUMP_HU}.gz"/>
 		<delete file="${env.HUNNOR_ANT_DUMP_HU}"/>
 		<move file="${env.HUNNOR_ANT_DUMP_HU}.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
 	</target>
 
 	<target name="export.cleanup.nb" depends="export.all">
-		<delete file="${build.dir}/HunNor-SimpleHTML-NH.xml"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/HunNor-SimpleHTML-NH.xml"/>
 		<gzip src="${env.HUNNOR_ANT_DUMP_NB}" destfile="${env.HUNNOR_ANT_DUMP_NB}.gz"/>
 		<delete file="${env.HUNNOR_ANT_DUMP_NB}"/>
 		<move file="${env.HUNNOR_ANT_DUMP_NB}.gz" todir="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}"/>
@@ -796,10 +795,10 @@
 	</target>
 
 	<target name="backup" depends="week.of.year">
-		<gzip src="${build.dir}/hunnor.sql" destfile="${build.dir}/hunnor.MySQL.${week}.sql.gz"/>
-		<delete file="${build.dir}/hunnor.sql"/>
-		<copy file="${build.dir}/hunnor.MySQL.${week}.sql.gz" tofile="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}/HunNor-MySQL.sql.gz"/>
-		<move file="${build.dir}/hunnor.MySQL.${week}.sql.gz" todir="${env.HUNNOR_ANT_DEPLOY_BACKUP_DIR}"/>
+		<gzip src="${env.HUNNOR_ANT_WORKSPACE}/hunnor.sql" destfile="${env.HUNNOR_ANT_WORKSPACE}/hunnor.MySQL.${week}.sql.gz"/>
+		<delete file="${env.HUNNOR_ANT_WORKSPACE}/hunnor.sql"/>
+		<copy file="${env.HUNNOR_ANT_WORKSPACE}/hunnor.MySQL.${week}.sql.gz" tofile="${env.HUNNOR_ANT_DEPLOY_PUB_DB_DIR}/HunNor-MySQL.sql.gz"/>
+		<move file="${env.HUNNOR_ANT_WORKSPACE}/hunnor.MySQL.${week}.sql.gz" todir="${env.HUNNOR_ANT_DEPLOY_BACKUP_DIR}"/>
 	</target>
 
 </project>
