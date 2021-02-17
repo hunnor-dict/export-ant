@@ -14,7 +14,7 @@
 	<properties>
 		<ant.version>1.10.9</ant.version>
 		<dbunit.version>2.7.0</dbunit.version>
-		<fop.version>2.5</fop.version>
+		<fop.version>2.6</fop.version>
 		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<maven.compiler.source>11</maven.compiler.source>
@@ -29,7 +29,7 @@
 		<maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<saxon.version>10.3</saxon.version>
-		<sqlite.version>3.32.3.2</sqlite.version>
+		<sqlite.version>3.34.0</sqlite.version>
 	</properties>
 
 	<dependencyManagement>
@@ -37,7 +37,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.13.1</version>
+				<version>4.13.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ant</groupId>
