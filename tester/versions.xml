@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ruleset comparisonMethod="maven">
-	<ignoreVersions>
-		<ignoreVersion type="regex">.*-RC[\d]+</ignoreVersion>
-	</ignoreVersions>
+	<rules>
+		<rule groupId="io.xspec" artifactId="xspec" comparisonMethod="maven">
+			<ignoreVersions>
+				<ignoreVersion type="regex">2\..*</ignoreVersion>
+			</ignoreVersions>
+		</rule>
+	</rules>
 </ruleset>

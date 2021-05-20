@@ -26,7 +26,7 @@
 		<maven.versions.plugin.version>2.8.1</maven.versions.plugin.version>
 		<maven.xspec.plugin.version>2.0.0</maven.xspec.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<saxon.version>10.3</saxon.version>
+		<saxon.version>10.5</saxon.version>
 	</properties>
 
 	<dependencies>
