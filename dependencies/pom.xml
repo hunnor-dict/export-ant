@@ -12,8 +12,8 @@
 	<description>Dependencis for Ant tasks</description>
 
 	<properties>
-		<ant.version>1.10.10</ant.version>
-		<dbunit.version>2.7.0</dbunit.version>
+		<ant.version>1.10.11</ant.version>
+		<dbunit.version>2.7.2</dbunit.version>
 		<fop.version>2.6</fop.version>
 		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
@@ -29,7 +29,7 @@
 		<maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<saxon.version>10.5</saxon.version>
-		<sqlite.version>3.34.0</sqlite.version>
+		<sqlite.version>3.36.0.1</sqlite.version>
 	</properties>
 
 	<dependencyManagement>
