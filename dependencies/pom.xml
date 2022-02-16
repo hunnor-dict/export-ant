@@ -13,8 +13,8 @@
 
 	<properties>
 		<ant.version>1.10.12</ant.version>
-		<dbunit.version>2.7.2</dbunit.version>
-		<fop.version>2.6</fop.version>
+		<dbunit.version>2.7.3</dbunit.version>
+		<fop.version>2.7</fop.version>
 		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<maven.compiler.source>11</maven.compiler.source>

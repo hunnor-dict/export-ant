@@ -15,7 +15,7 @@
 		<ant.version>1.10.12</ant.version>
 		<checkstyle.version>3.1.2</checkstyle.version>
 		<jacoco.version>0.8.6</jacoco.version>
-		<junit5.version>5.8.1</junit5.version>
+		<junit5.version>5.8.2</junit5.version>
 		<maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<maven.compiler.source>11</maven.compiler.source>
