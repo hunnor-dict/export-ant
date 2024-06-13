@@ -28,11 +28,11 @@ COPY --from=maven /opt/hunnor-dict/export-ant/jars /opt/hunnor-dict/jars
 COPY --from=maven /opt/hunnor-dict/export-ant/lines/target/export-ant-lines-1.0.0.jar /opt/hunnor-dict/jars
 
 RUN cd /opt && \
-    wget -q http://apache.uib.no/ant/binaries/apache-ant-1.10.12-bin.tar.gz && \
-    tar -xzf apache-ant-1.10.12-bin.tar.gz && \
-    rm apache-ant-1.10.12-bin.tar.gz
+    wget -q https://dlcdn.apache.org/ant/binaries/apache-ant-1.10.14-bin.tar.gz && \
+    tar -xzf apache-ant-1.10.14-bin.tar.gz && \
+    rm apache-ant-1.10.14-bin.tar.gz
 
-ENV PATH /opt/apache-ant-1.10.12/bin:${PATH}
+ENV PATH /opt/apache-ant-1.10.14/bin:${PATH}
 
 RUN apt-get update && \
     wget http://ftp.no.debian.org/debian/pool/main/m/mariadb-10.1/libmariadbclient18_10.1.45-0+deb9u1_amd64.deb && \
