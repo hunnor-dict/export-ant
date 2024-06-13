@@ -757,10 +757,10 @@
 
 	<!-- Top-level export targets -->
 
-	<target name="export.hu" depends="export.apple.hu,export.babylon.hu,export.kindle.hu,export.pdf.hu,export.sdict.hu,export.stardict.hu,export.xdxf.hu">
+	<target name="export.hu" depends="export.apple.hu,export.babylon.hu,export.pdf.hu,export.sdict.hu,export.stardict.hu,export.xdxf.hu">
 	</target>
 
-	<target name="export.nb" depends="export.apple.nb,export.babylon.nb,export.kindle.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb,export.xdxf.nb">
+	<target name="export.nb" depends="export.apple.nb,export.babylon.nb,export.pdf.nb,export.sdict.nb,export.stardict.nb,export.xdxf.nb">
 	</target>
 
 	<target name="export.all" depends="build.dir,export.hu,export.nb,export.android,export.sqlite">
