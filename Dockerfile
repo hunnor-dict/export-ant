@@ -35,9 +35,9 @@ RUN cd /opt && \
 ENV PATH /opt/apache-ant-1.10.14/bin:${PATH}
 
 RUN apt-get update && \
-    wget http://ftp.no.debian.org/debian/pool/main/m/mariadb-10.1/libmariadbclient18_10.1.45-0+deb9u1_amd64.deb && \
+    wget http://archive.debian.org/debian-archive/debian/pool/main/m/mariadb-10.1/libmariadbclient18_10.1.45-0+deb9u1_amd64.deb && \
     apt-get install --assume-yes ./libmariadbclient18_10.1.45-0+deb9u1_amd64.deb && \
-    wget http://ftp.no.debian.org/debian/pool/main/s/stardict-tools/stardict-tools_3.0.2-6_amd64.deb && \
+    wget http://archive.debian.org/debian-archive/debian/pool/main/s/stardict-tools/stardict-tools_3.0.2-6_amd64.deb && \
     apt-get install --assume-yes ./stardict-tools_3.0.2-6_amd64.deb && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
