@@ -1,6 +1,6 @@
 # Run XSpec tests with Maven
 
-FROM maven:3.9-eclipse-temurin-17 as maven
+FROM maven:3.9-eclipse-temurin-17 AS maven
 
 COPY tester /opt/hunnor-dict/export-ant/tester
 COPY formats /opt/hunnor-dict/export-ant/formats
